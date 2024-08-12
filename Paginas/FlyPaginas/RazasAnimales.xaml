@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.RazasAnimales"
+             Title="RazasAnimales">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,*">
+        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" VerticalOptions="Start" Margin="10">
+            <Image Source="imagen_20240730.png" WidthRequest="50" HeightRequest="50" Margin="5"/>
+            <Label Text="DOGS" FontSize="25" Margin="5"/>
+        </VerticalStackLayout>
+
+        <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical" Margin="10" VerticalOptions="Start">
+            <Label Text="Buscar por raza:" FontSize="18" Margin="5"/>
+            <Picker x:Name="dogSelector" TextColor="White"  WidthRequest="250" HeightRequest="100" Margin="5"/>
+            <Button x:Name="BtBuscar" Text="Cambiar fotos" WidthRequest="200" HeightRequest="60" Margin="5" Clicked="BtBuscar_Clicked"/>
+        </StackLayout>
+
+        <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="apiStackLayout" Orientation="Vertical" Margin="10">
+                <!-- nodos dinámicos (REQUEST HTTP)-->
+            </StackLayout>
+        </ScrollView>
+
+        <Label x:Name="messageLabel" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" VerticalOptions="End"/>
+    </Grid>
+</ContentPage>

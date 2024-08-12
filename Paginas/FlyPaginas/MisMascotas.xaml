@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
+             Title="MisMascotas">
+    <ScrollView>
+        <Frame 
+ Margin="20"
+ BackgroundColor="White" 
+ BorderColor="Purple">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Sección: Encabezado "Mis Mascotas" -->
+                <Grid Grid.Row="0" Grid.Column="0" Padding="10">
+                    <Grid BackgroundColor="#f8fafb" Padding="4" Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                 Grid.Column="0" 
+                 Text="Mis Mascotas" 
+                 FontSize="Large" 
+                 FontAttributes="Bold" 
+                 HorizontalTextAlignment="Center"
+                 VerticalOptions="Center" />
+                        <Button 
+                 Grid.Column="1" 
+                 ImageSource="Gear" 
+                 WidthRequest="24" 
+                 HeightRequest="24" 
+                 HorizontalOptions="End" 
+                 VerticalOptions="Center"/>
+                    </Grid>
+                </Grid>
+
+                <!-- Sección: Perfil de la mascota -->
+                <Grid Grid.Row="1" Grid.Column="0" Padding="10">
+                    <Grid ColumnSpacing="10" VerticalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image 
+                 Grid.Column="0" 
+                 Source="tarjetaperro.png" 
+                 WidthRequest="40" 
+                 HeightRequest="40" 
+                 VerticalOptions="Center" />
+                        <StackLayout 
+                 Grid.Column="1" 
+                 Spacing="2" 
+                 VerticalOptions="Center" 
+                 HorizontalOptions="Start">
+                            <Label 
+                     Text="Sample Pet Profile" 
+                     FontSize="Medium" />
+                            <Label 
+                     Text="This is a sample pet profile" 
+                     FontSize="Small" 
+                     TextColor="Gray" />
+                        </StackLayout>
+                        <Button 
+                 Grid.Column="2" 
+                 ImageSource="CaretRight" 
+                 WidthRequest="24" 
+                 HeightRequest="24" 
+                 VerticalOptions="Center" 
+                 HorizontalOptions="End" />
+                    </Grid>
+                </Grid>
+
+                <!-- Sección: Botón "Agregar Nueva Mascota" al final -->
+                <Grid Grid.Row="3" Grid.Column="0" Padding="10" VerticalOptions="EndAndExpand">
+                    <Grid Padding="4" Margin="0,0,0,2">
+                        <Button 
+                  x:Name="btNuevaMascota"        
+                 Text="Agregar Nueva Mascota" 
+                 BackgroundColor="#368ce2" 
+                 TextColor="#f8fafb" 
+                 FontSize="Medium" 
+                 HorizontalOptions="FillAndExpand" 
+                 Clicked="btNuevaMascota_Clicked" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Frame>
+    </ScrollView>
+</ContentPage>
