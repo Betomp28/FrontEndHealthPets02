@@ -11,6 +11,7 @@ namespace FrontEndHealthPets.Entidades.Entitys
         public static long id_usuario { get; set; }
         public static string nombre { get; set; }
         public static string apellidos { get; set; }
+
         public static string token { get; set; }
 
         public static bool validarSesion()

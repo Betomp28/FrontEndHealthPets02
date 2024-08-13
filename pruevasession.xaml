@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.pruevasession"
+             Title="pruevasession">
+    <ScrollView>
+        <Frame BackgroundColor="White" BorderColor="Purple">
+            <ScrollView>
+                <VerticalStackLayout Spacing="20">
+                    <VerticalStackLayout Padding="10,20" Spacing="10">
+                        <Grid BackgroundColor="#f8fafb">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Frame WidthRequest="80" HeightRequest="80" CornerRadius="40" BackgroundColor="White" BorderColor="Purple" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0">
+                                <Image x:Name="imgPerfil" Source="default_profile.png" Aspect="AspectFill" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                            <Label Text="Perfil" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,-20,0" />
+                            <Button Text="X" FontSize="Small" BackgroundColor="Purple" BorderColor="Black" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Margin="5" Padding="5,0" />
+                        </Grid>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Nombre" FontSize="Medium" FontAttributes="Bold"/>
+                        <Entry Text="{Binding First name}" Placeholder="Nombre" />
+                        <Label Text="Apellido" FontSize="Medium" FontAttributes="Bold"/>
+                        <Entry Text="{Binding Last name}" Placeholder="Apellido" />
+                        <Label Text="Correo electrónico" FontSize="Medium" FontAttributes="Bold"/>
+                        <Entry Text="{Binding Email}" Placeholder="Correo electrónico" />
+                        <Label Text="Contraseña" FontSize="Medium" FontAttributes="Bold"/>
+                        <Entry Text="{Binding Password}" Placeholder="Contraseña" IsPassword="True" />
+                    </VerticalStackLayout>
+                    <Button Text="Guardar Cambios" BackgroundColor="Purple" TextColor="White" CornerRadius="20" Margin="0,0,0,20" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>
+    </ScrollView>
+</ContentPage>
