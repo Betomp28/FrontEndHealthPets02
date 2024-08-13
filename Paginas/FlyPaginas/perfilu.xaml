@@ -23,8 +23,8 @@
                                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
                                 </Frame.GestureRecognizers>
                             </Frame>
-                            <Label Text="Perfil Usuario" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,-20,0" />
-                            <Button Text="X" FontSize="Small" BackgroundColor="Purple" BorderColor="Black" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Margin="5" Padding="5,0" />
+                            <Label Text="Perfil Usuario" FontSize="Large" TextColor="Black" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,-20,0" />
+                            <Button Text="X" FontSize="Small" BackgroundColor="Purple" BorderColor="Black"  TextColor="White" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Margin="5" Padding="5,0" />
                             <!-- Resto del contenido -->
                         </Grid>
                         <!-- Usa un Grid con RowDefinitions para apilar las etiquetas -->
@@ -35,24 +35,38 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="0">
-                                <Label Text="{Binding Nombre}" TextColor="Black" VerticalOptions="Center" Padding="10"/>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="1">
-                                <Label Text="{Binding Apellido}" TextColor="Black" VerticalOptions="Center" Padding="10"/>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="2">
-                                <Label Text="{Binding CorreoElectronico}" TextColor="Black" VerticalOptions="Center" Padding="10"/>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="3">
-                                <Label Text="{Binding Password}" TextColor="Black" VerticalOptions="Center" Padding="10"/>
-                            </Frame>
+                            <StackLayout Orientation="Vertical" Spacing="20" Padding="10">
+                                <StackLayout Orientation="Horizontal" Spacing="20" Padding="10">
+                                    <Label Text="Nombre" TextColor="Black" VerticalOptions="Center" />
+                                    <Label Text="{Binding Nombre}" TextColor="Black" VerticalOptions="Center" />
+                                    <Button x:Name="BtActualizarNombre" Text="Editar" TextColor="White" BackgroundColor="Purple" VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="BtActualizarNombre_Clicked" />
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Spacing="20" Padding="10">
+                                    <Label Text="Apellido:" TextColor="Black" VerticalOptions="Center" />
+                                    <Label Text="{Binding Apellido}" TextColor="Black" VerticalOptions="Center" />
+                                    <Button x:Name="BtActualizarApeliido" Text="Editar" TextColor="White" BackgroundColor="Purple" VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="BtActualizarApeliido_Clicked" />
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Spacing="20" Padding="10">
+                                    <Label Text="Correo Electrónico:" TextColor="Black" VerticalOptions="Center" />
+                                    <Label Text="{Binding CorreoElectronico}" TextColor="Black" VerticalOptions="Center" />
+                                    <Button x:Name="BtActualizarCooreo" Text="Editar" TextColor="White" BackgroundColor="Purple" VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="BtActualizarCooreo_Clicked" />
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal" Spacing="20" Padding="10">
+                                    <Label Text="Contraseña:" TextColor="Black" VerticalOptions="Center" />
+                                    <Label Text="{Binding Password}" TextColor="Black" VerticalOptions="Center" />
+                                    <Button x:Name="BtActualizarPassword" Text="Editar" TextColor="White" BackgroundColor="Purple" VerticalOptions="Center" HorizontalOptions="EndAndExpand" Clicked="BtActualizarPassword_Clicked" />
+                                </StackLayout>
+                            </StackLayout>
                         </Grid>
                         <Button Margin="0,20,0,0"
                             x:Name="btRegresar"
                             BackgroundColor="Purple"
                             BorderColor="White"
                             FontAttributes="Bold"
+                            TextColor="White"    
                             FontSize="Medium"
                             Text="Registrarse"
                             Clicked="btRegresar_Clicked" />
