@@ -12,6 +12,10 @@ namespace FrontEndHealthPets.Entidades.Entitys
         public static string nombre { get; set; }
         public static string apellidos { get; set; }
 
+        public static string Correo_Electronico { get; set; }
+
+        public static string Password { get; set; }
+
         public static string token { get; set; }
 
         public static bool validarSesion()
@@ -31,6 +35,8 @@ namespace FrontEndHealthPets.Entidades.Entitys
             Sesion.id_usuario = 0;
             Sesion.nombre = String.Empty;
             Sesion.apellidos = String.Empty;
+            Sesion.Correo_Electronico = String.Empty;
+            Sesion.Password = String.Empty;
             Sesion.token = String.Empty;
 
         }
