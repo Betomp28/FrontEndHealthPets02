@@ -2,7 +2,9 @@
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.Response;
 using FrontEndHealthPets.Paginas;
+using FrontEndHealthPets.Paginas.FlyPaginas;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace FrontEndHealthPets
 {
@@ -17,8 +19,7 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new pruevasession());
-             /*
+            
             try
             {
                 // Validación de campos de inicio de sesión
@@ -58,7 +59,12 @@ namespace FrontEndHealthPets
                             Sesion.id_usuario = res.Registro_Usuario.Id_Usuario;
                             Sesion.nombre = res.Registro_Usuario.Nombre;
                             Sesion.apellidos = res.Registro_Usuario.Apellidos;
+                            Sesion.Correo_Electronico = res.Registro_Usuario.Correo_Electronico;
+                            Sesion.Password = res.Registro_Usuario.Password;
                             Sesion.token = res.Registro_Usuario.token;
+
+                            Debug.WriteLine($"Correo_Electronico: {Sesion.Correo_Electronico}");
+                            Debug.WriteLine($"Password: {Sesion.Password}");
 
                             await Navigation.PushAsync(new PagFlyPrincipal());
                         }
@@ -78,7 +84,7 @@ namespace FrontEndHealthPets
                 await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
             }
 
-            */
+           
         }
 
 

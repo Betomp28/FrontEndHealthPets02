@@ -19,9 +19,9 @@
                 <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
                                             Icono="tarjetaperro.png"
                                             TargetType="{x:Type local:MisMascotas}" />
-                <loca1:Pagina_Flyout_Items  Titulo="Contacto"
+                <loca1:Pagina_Flyout_Items  Titulo="Perfil"
                                             Icono="contacto.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
+                                            TargetType="{x:Type local:perfilu}" />
               
                 
             </x:Array>
