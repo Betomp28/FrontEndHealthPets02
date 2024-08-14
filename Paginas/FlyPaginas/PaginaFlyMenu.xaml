@@ -14,17 +14,21 @@
         <CollectionView.ItemsSource>
             <x:Array Type="{x:Type loca1:Pagina_Flyout_Items}">
                 <loca1:Pagina_Flyout_Items  Titulo="Busqueda de Mascotas"
-                                            Icono="contacto.png"
-                                            TargetType="{x:Type local:RazasAnimales}" />
-                <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
-                                            Icono="tarjetaperro.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
+                                Icono="contacto.png"
+                                TargetType="{x:Type local:RazasAnimales}" />
+                <loca1:Pagina_Flyout_Items  Titulo="MisMascotas"
+                                Icono="tarjetaperro.png"
+                                TargetType="{x:Type local:MisMascotas}" />
                 <loca1:Pagina_Flyout_Items  Titulo="Contacto"
-                                            Icono="contacto.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
-              
-                
+                                Icono="contacto.png"
+                                TargetType="{x:Type local:MisMascotas}" />
+                <!-- Nuevo ítem para "Baños" -->
+                <loca1:Pagina_Flyout_Items Titulo="Baños"
+                           Icono="bath.png"
+                           TargetType="{x:Type local:BañosPage}" />
+
             </x:Array>
+
         </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>
             <DataTemplate>
