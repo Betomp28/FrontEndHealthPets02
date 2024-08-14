@@ -8,7 +8,7 @@ namespace FrontEndHealthPets.Entidades
 {
     public class Registro_Mascota
     {
-        public Int64 Id_Mascota { get; set; }
+        public int Id_Mascota { get; set; }
 
         public Int64 id_Usuario { get; set; }
         public string Nombre { get; set; }
