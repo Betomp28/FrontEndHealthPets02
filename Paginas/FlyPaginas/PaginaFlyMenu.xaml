@@ -22,8 +22,11 @@
                 <loca1:Pagina_Flyout_Items  Titulo="Contacto"
                                             Icono="contacto.png"
                                             TargetType="{x:Type local:MisMascotas}" />
-              
-                
+                <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
+                                            Icono="contacto.png"
+                                            TargetType="{x:Type local:ClinicaVeterinaria}" />
+
+
             </x:Array>
         </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>

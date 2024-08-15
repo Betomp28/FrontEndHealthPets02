@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.ClinicaVeterinaria"
+             Title="ClinicaVeterinaria"
+             BackgroundColor="Purple">
+    
+            
+    <Frame HeightRequest="400" WidthRequest="600">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+
+            <Picker x:Name="pickerClinicas" Title="Selecciona una clinica" SelectedIndexChanged="PickerClinicas_SelectedIndexChanged" Grid.Row="0" WidthRequest="400">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Clínica Veterinaria San Francisco</x:String>
+                        <x:String>Clínica Veterinaria Los Ángeles</x:String>
+                        <x:String>Clínica Veterinaria El Bosque</x:String>
+                        <x:String>Clínica Veterinaria La Pradera</x:String>
+                        <x:String>Clínica Veterinaria El Roble</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label x:Name="lblDireccion" Text="Dirección: " FontSize="Small" Grid.Row="1" Margin="0,15,0,0" />
+
+            <Label x:Name="lblTelefono" Text="Teléfono: " FontSize="Small" Grid.Row="2" Margin="0,15,0,0" />
+
+            <Image Source="imagen_20240730.png" HeightRequest="100" WidthRequest="100" Grid.Row="3" Margin="0,15,0,0"/>
+
+
+
+            <Button Grid.Column="0" Text="Agregar" Clicked="Agregar_Clicked" BackgroundColor="Purple" TextColor="White" Margin="45" Grid.Row="4" />
+        </Grid>
+    </Frame>
+</ContentPage>
