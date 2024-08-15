@@ -22,10 +22,12 @@
                 <loca1:Pagina_Flyout_Items  Titulo="Contacto"
                                 Icono="contacto.png"
                                 TargetType="{x:Type local:MisMascotas}" />
-                <!-- Nuevo ítem para "Baños" -->
                 <loca1:Pagina_Flyout_Items Titulo="Baños"
-                           Icono="bath.png"
-                           TargetType="{x:Type local:BañosPage}" />
+                                Icono="bath.png"
+                                TargetType="{x:Type local:BañosPage}" />
+                <loca1:Pagina_Flyout_Items Titulo="Vacunas"
+                                Icono="vacunas.png"
+                                TargetType="{x:Type local:VacunasPage}" />
 
             </x:Array>
 

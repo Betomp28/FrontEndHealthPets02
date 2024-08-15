@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.VacunasPage">
+
+    <ContentPage.BackgroundImageSource>
+        <FileImageSource File="fondomascota.jpg" />
+    </ContentPage.BackgroundImageSource>
+
+    <StackLayout VerticalOptions="Center">
+        <Button Text="Agregar Vacuna"
+                BackgroundColor="Purple"
+                TextColor="White"
+                FontSize="Medium"
+                CornerRadius="20"
+                HorizontalOptions="Center"
+                WidthRequest="200"
+                Clicked="OnAddVaccineClicked" />
+
+        <Button Text="Consultar Vacunas"
+                BackgroundColor="Purple"
+                TextColor="White"
+                FontSize="Medium"
+                CornerRadius="20"
+                HorizontalOptions="Center"
+                WidthRequest="200"
+                Clicked="OnConsultVaccineClicked"
+                Margin="0,10,0,0" />
+    </StackLayout>
+
+</ContentPage>

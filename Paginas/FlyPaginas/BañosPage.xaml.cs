@@ -7,9 +7,11 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             InitializeComponent();
         }
 
-        private async void OnAddNewBathClicked(object sender, EventArgs e)
+        // Controlador del evento para el botón "Agregar nuevo baño"
+        private void OnAddBathClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AgregarBañoPage());
+            // Aquí puedes navegar a la página para agregar un baño o ejecutar otra lógica
+            Navigation.PushAsync(new AgregarBañoPage());
         }
     }
 }

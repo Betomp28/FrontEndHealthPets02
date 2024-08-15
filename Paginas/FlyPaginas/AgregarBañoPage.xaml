@@ -50,7 +50,7 @@
 
             <!-- Botón Guardar -->
             <Button Text="Guardar"
-                    BackgroundColor="#368ce2"
+                    BackgroundColor="purple"
                     TextColor="White"
                     FontSize="Medium"
                     CornerRadius="20"

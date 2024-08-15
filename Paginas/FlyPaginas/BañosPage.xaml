@@ -3,23 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.BañosPage"
              Title="Baños de tu mascota">
-    <StackLayout Padding="20">
-        <!-- Título de la Página -->
-        <Label Text="Baños de tu mascota"
-               FontSize="Large"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               VerticalOptions="CenterAndExpand" />
 
-        <!-- Botón para Agregar Nuevo Baño -->
-        <Button Text="Agregar Nuevo Baño"
-                BackgroundColor="#368ce2"
-                TextColor="White"
-                FontSize="Medium"
-                CornerRadius="20"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="End"
-                Margin="0,20,0,0"
-                Clicked="OnAddNewBathClicked" />
-    </StackLayout>
+    <Grid>
+        <!-- Imagen de fondo -->
+        <Image Source="fondomascota.jpg"
+               Aspect="AspectFill"
+               VerticalOptions="FillAndExpand"
+               HorizontalOptions="FillAndExpand" />
+
+        <!-- Contenido principal -->
+        <ScrollView>
+            <StackLayout Padding="20"
+                         VerticalOptions="CenterAndExpand"
+                         Spacing="10">
+                <!-- Espaciado entre los botones -->
+                <!-- Título -->
+                <Label Text="Baños de tu mascota"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="White" />
+
+                <Button Text="Agregar nuevo baño"
+                       BackgroundColor="Purple"
+                       TextColor="White"
+                       FontSize="Medium"
+                       CornerRadius="20"
+                       HorizontalOptions="Center"
+                       WidthRequest="200"
+                       Clicked="OnAddBathClicked"/>
+
+                <!-- Nuevo botón para consultar baños -->
+                <Button Text="Consultar baños"
+                        BackgroundColor="Purple"
+                        TextColor="White"
+                        FontSize="Medium"
+                        CornerRadius="20"
+                        HorizontalOptions="Center"
+                        WidthRequest="200" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
