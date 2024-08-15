@@ -1,4 +1,4 @@
-﻿using FrontEndHealthPets.Entidades.Entitys;
+using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.Response;
 using FrontEndHealthPets.Paginas;
@@ -19,6 +19,7 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
+
             
             try
             {
@@ -83,6 +84,7 @@ namespace FrontEndHealthPets
             {
                 await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
             }
+
 
            
         }
