@@ -1,13 +1,16 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
+             xmlns:local="clr-namespace:FrontEndHealthPets.Modelos"
              Title="MisMascotas">
+    <ContentPage.BindingContext>
+        <local:MascotasViewModel />
+    </ContentPage.BindingContext>
     <ScrollView>
         <Frame 
- Margin="20"
- BackgroundColor="White" 
- BorderColor="Purple">
+              Margin="20"
+              BackgroundColor="White" 
+              BorderColor="Purple">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -43,42 +46,25 @@
                     </Grid>
                 </Grid>
 
-                <!-- Sección: Perfil de la mascota -->
-                <Grid Grid.Row="1" Grid.Column="0" Padding="10">
-                    <Grid ColumnSpacing="10" VerticalOptions="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Image 
-                 Grid.Column="0" 
-                 Source="tarjetaperro.png" 
-                 WidthRequest="40" 
-                 HeightRequest="40" 
-                 VerticalOptions="Center" />
-                        <StackLayout 
-                 Grid.Column="1" 
-                 Spacing="2" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Start">
-                            <Label 
-                     Text="Sample Pet Profile" 
-                     FontSize="Medium" />
-                            <Label 
-                     Text="This is a sample pet profile" 
-                     FontSize="Small" 
-                     TextColor="Gray" />
-                        </StackLayout>
-                        <Button 
-                 Grid.Column="2" 
-                 ImageSource="CaretRight" 
-                 WidthRequest="24" 
-                 HeightRequest="24" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="End" />
-                    </Grid>
-                </Grid>
+                <ListView ItemsSource="{Binding PerfilMascotas}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="{Binding ImageSource}" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" />
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontSize="Medium" />
+                                        <Label Text="{Binding Description}" FontSize="Small" TextColor="Gray" />
+                                    </StackLayout>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <!-- Sección: Botón "Agregar Nueva Mascota" al final -->
                 <Grid Grid.Row="3" Grid.Column="0" Padding="10" VerticalOptions="EndAndExpand">
