@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Label x:Name="lblSelectedDoctor" 
@@ -29,7 +30,6 @@
             <StackLayout Orientation="Horizontal" 
                          HorizontalOptions="Center" 
                          Grid.Row="1">
-                
                 <Label x:Name="lblTelefono" 
                        Text="" 
                        FontSize="Medium" 
@@ -47,7 +47,15 @@
                        FontSize="Medium" 
                        HorizontalOptions="Center" />
             </StackLayout>
-            <!--Boton-->
+
+            <StackLayout Orientation="Horizontal" 
+                         HorizontalOptions="Center" 
+                         Grid.Row="3">
+                <Button Text="Siguiente" 
+                        FontSize="Medium" 
+                        HorizontalOptions="Center" 
+                        Clicked="Button_Clicked" />
+            </StackLayout>
         </Grid>
     </Frame>
 </ContentPage>
