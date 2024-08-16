@@ -12,5 +12,7 @@ namespace FrontEndHealthPets.Entidades.Response
         public bool resultado { get; set; }
 
         public string Error { get; set; }
+
+        
     }
 }
