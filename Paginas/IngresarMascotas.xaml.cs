@@ -5,6 +5,7 @@ using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.response;
 using FrontEndHealthPets.Paginas.FlyPaginas;
+using FrontEndHealthPets.Modelos;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -59,7 +60,6 @@ public partial class IngresarMascotas : ContentPage
         }
     }
 
-
     private async void btRegistrar_Clicked(object sender, EventArgs e)
     {
         try
@@ -79,64 +79,60 @@ public partial class IngresarMascotas : ContentPage
                 DisplayAlert("Error", "Especie vacía", "Aceptar");
                 return;
             }
-            else
-            if (string.IsNullOrEmpty(Raza.Text))
+            else if (string.IsNullOrEmpty(Raza.Text))
             {
                 Debug.WriteLine("Error: Raza vacía");
                 DisplayAlert("Error", "Raza vacía", "Aceptar");
                 return;
             }
-
             else if (fechaNacimiento == DateTime.MinValue)
             {
                 await DisplayAlert("Error", "Por favor, selecciona una fecha de nacimiento válida.", "OK");
                 return;
             }
 
-
-            Req_Mascota req = new Req_Mascota();
-
-            req.Registro_Mascota = new Registro_Mascota();
-
-            
-
-            req.Registro_Mascota.id_Usuario = Sesion.id_usuario;
-            Debug.WriteLine($"Nombre recibido: {req.Registro_Mascota.Nombre}, ID Usuario recibido: {req.Registro_Mascota.id_Usuario}");
-
-            req.Registro_Mascota.Nombre = Nombre.Text;
-            Debug.WriteLine($"Nombre recibido: {req.Registro_Mascota.Nombre}");
-
-            req.Registro_Mascota.especie = Especie.Text;
-            Debug.WriteLine($"Especie recibida: {req.Registro_Mascota.especie}");
-
-            req.Registro_Mascota.raza = Raza.Text;
-            Debug.WriteLine($"Raza recibida: {req.Registro_Mascota.raza}");
-
-            req.Registro_Mascota.Fecha_Nacimiento = fechaNacimiento;
-            Debug.WriteLine($"Fecha de Nacimiento recibida: {req.Registro_Mascota.Fecha_Nacimiento}");
+            Req_Mascota req = new Req_Mascota
+            {
+                Registro_Mascota = new Registro_Mascota
+                {
+                    id_Usuario = Sesion.id_usuario,
+                    Nombre = Nombre.Text,
+                    especie = Especie.Text,
+                    raza = Raza.Text,
+                    Fecha_Nacimiento = fechaNacimiento
+                }
+            };
 
             var json = JsonConvert.SerializeObject(req);
             Debug.WriteLine("JSON enviado: " + json);
 
-            var jsoncontent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
+            var jsoncontent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             HttpClient httpClient = new HttpClient();
 
             var response = await httpClient.PostAsync(LaURL + "/Registro_Mascota/IngresarMascota", jsoncontent);
             Debug.WriteLine("Código de estado: " + response.StatusCode);
-            if (response.IsSuccessStatusCode)// saber si el api esta vivo
+
+            if (response.IsSuccessStatusCode)
             {
-                // si conecto
                 string responseContent = await response.Content.ReadAsStringAsync();
-                var responsecontent = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine("Contenido de la respuesta: " + responseContent);
 
-                Res_Mascota res = new Res_Mascota();
-
-                res = JsonConvert.DeserializeObject<Res_Mascota>(responsecontent);
+                Res_Mascota res = JsonConvert.DeserializeObject<Res_Mascota>(responseContent);
 
                 if (res.resultado)
                 {
                     await DisplayActionSheet("Registro", "Mascota Registrada", "Aceptar");
+
+                    // Crear nuevo perfil de mascota
+                    var nuevoPerfil = new PerfilMascota
+                    {
+                        Name = req.Registro_Mascota.Nombre,
+                        Description = req.Registro_Mascota.raza + " - " + req.Registro_Mascota.especie,
+                        ImageSource = ImageSource.FromStream(() => new MemoryStream(imagenSeleccionadaMemoryStream.ToArray()))
+                    };
+
+                    var viewModel = BindingContext as MascotasViewModel;
+                    viewModel?.AgregarPerfilMascota(nuevoPerfil);
 
                     // Subir la foto de perfil
                     if (imagenSeleccionadaMemoryStream != null)
@@ -191,13 +187,13 @@ public partial class IngresarMascotas : ContentPage
                 await DisplayAlert("Error de conexión", "Ocurrió un error de conexión", "Aceptar");
             }
         }
-    
-    catch (Exception ex)
-    {
-        Debug.WriteLine("Excepción capturada: " + ex.Message);
-        await DisplayAlert("Error", ex.Message, "Aceptar");
-}
-}
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Excepción capturada: " + ex.Message);
+            await DisplayAlert("Error", ex.Message, "Aceptar");
+        }
+    }
+
 
     private async Task<Res_FotosMascotas> EnviarFotoAlServidor(Req_FotosMascota req)
     {
