@@ -30,11 +30,22 @@
                 </Picker.ItemsSource>
             </Picker>
 
-            <Label x:Name="lblDireccion" Text="Dirección: " FontSize="Small" Grid.Row="1" Margin="0,15,0,0" />
+            <Picker x:Name="pickerDoctor" Title="Selecciona un doctor" SelectedIndexChanged="PickerDoctor_SelectedIndexChanged" Grid.Row="1" WidthRequest="400">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Dr. Juan Pérez</x:String>
+                        <x:String>Dr. Carlos Gómez</x:String>
+                        <x:String>Dr. Luis Rodríguez</x:String>
+                        <x:String>Dr. Alejandro Martínez</x:String>
+                        <x:String>Dr. Manuel Sánchez</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
 
-            <Label x:Name="lblTelefono" Text="Teléfono: " FontSize="Small" Grid.Row="2" Margin="0,15,0,0" />
+            <Label x:Name="lblDireccion" Text="Dirección: " FontSize="Small" Grid.Row="2" Margin="0,15,0,0" HorizontalOptions="Center" />
 
-            <Image Source="imagen_20240730.png" HeightRequest="100" WidthRequest="100" Grid.Row="3" Margin="0,15,0,0"/>
+            <Label x:Name="lblTelefono" Text="Teléfono: " FontSize="Small" Grid.Row="3" Margin="0,15,0,0" HorizontalOptions="Center" />
+
 
 
 
