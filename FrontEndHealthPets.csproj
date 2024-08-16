@@ -73,6 +73,8 @@
 	<ItemGroup>
 
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
+		  	    <Generator>MSBuild:Compile</Generator>
+		  </MauiXaml>
 
 	  <MauiXaml Update="Paginas\FlyPaginas\AgregarBañoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
