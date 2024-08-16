@@ -71,7 +71,7 @@
 	</ItemGroup>
 
 	
-
+        <ItemGroup>
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		  </MauiXaml>
