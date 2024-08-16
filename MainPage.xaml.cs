@@ -93,8 +93,8 @@ namespace FrontEndHealthPets
 
 
 
-=======
-        //by
+
+       
 
         private void btregistrarse_Clicked(object sender, EventArgs e)
         {
