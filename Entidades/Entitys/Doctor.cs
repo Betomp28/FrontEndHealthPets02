@@ -10,6 +10,6 @@ namespace FrontEndHealthPets.Entidades.Entitys
     {
         public string Nombre { get; set; }
         public string Telefono { get; set; }
-        public string Correo_Electronico { get; set; }
+        public string Correo_Doctor { get; set; }
     }
 }
