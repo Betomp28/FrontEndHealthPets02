@@ -4,6 +4,22 @@
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.Agregar_Medicamentos_Mascota"
              Title="Agregar_Medicamentos_Mascota">
     <VerticalStackLayout>
+        <Picker x:Name="MascotaPicker"
+            Title="Seleccione una mascota"
+            ItemsSource="{Binding Mascotas}"
+            ItemDisplayBinding="{Binding Nombre}"
+            SelectedIndexChanged="MascotaPicker_SelectedIndexChanged" />
+
+        <!-- Labels to display pet details -->      
+        <Label Text="Especie:" FontAttributes="Bold" />
+        <Label Text="{Binding especie}" />
+
+        <Label Text="Raza:" FontAttributes="Bold" />
+        <Label Text="{Binding raza}" />
+
+
+
+        <BoxView HeightRequest="2" Color="Gray" Margin="0,20,0,0"/>
         <!-- Picker to select a medication -->
         <Picker x:Name="MedicamentoPicker"
         SelectedIndexChanged="MedicamentoPicker_SelectedIndexChanged"

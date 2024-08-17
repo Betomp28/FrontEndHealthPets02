@@ -14,47 +14,119 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
         string LaURL = "https://localhost:44348/api";
         private ObservableCollection<Entidades.Medicamentos> Medicamentos { get; set; }
+        private ObservableCollection<Registro_Mascota> Mascotas { get; set; }
 
         public Agregar_Medicamentos_Mascota()
-        {
-            Debug.WriteLine("Constructor Agregar_Medicamentos_Mascota iniciado.");
+        { 
+           
             InitializeComponent();
 
             _httpClient = new HttpClient(); // Inicializa HttpClient
-            Debug.WriteLine("HttpClient inicializado.");
+           
 
             Medicamentos = new ObservableCollection<Entidades.Medicamentos>();
-            Debug.WriteLine("ObservableCollection Medicamentos inicializado.");
+            Mascotas = new ObservableCollection<Registro_Mascota>();
+
+           
 
             BindingContext = this;
-            Debug.WriteLine("BindingContext establecido.");
+            
 
             CargarMedicamentos();
-            Debug.WriteLine("CargarMedicamentos llamado.");
+            
+            CargarMascotas();
+            
         }
-
+            // cargar medicamentos
         private async void CargarMedicamentos()
         {
-            Debug.WriteLine("Iniciando CargarMedicamentos.");
+            
             var medicamentos = await ObtenerMedicamentosAsync();
-            Debug.WriteLine($"Cantidad de medicamentos obtenidos: {medicamentos.Count}");
+            
 
             Medicamentos.Clear(); // Limpia la colección antes de añadir nuevos medicamentos
             foreach (var medicamento in medicamentos)
             {
                 Medicamentos.Add(medicamento);
-                Debug.WriteLine($"Medicamento añadido: {medicamento.Nombre}");
+                
             }
 
             // Actualiza el ItemsSource del Picker explícitamente
             MedicamentoPicker.ItemsSource = Medicamentos;
         }
 
+        // CArgar mascotas metodo
+        private async void CargarMascotas()
+        {
+            
+            var mascotas = await ObtenerMascotasAsync();
+            
+
+            Mascotas.Clear();
+            foreach (var mascota in mascotas)
+            {
+                Mascotas.Add(mascota);
+              
+            }
+
+            // Actualiza el ItemsSource del Picker explícitamente
+            MascotaPicker.ItemsSource = Mascotas;
+        }
+
+        //mobtener lista mascotas
+        private async Task<List<Registro_Mascota>> ObtenerMascotasAsync()
+        {
+            try
+            {
+               
+
+                // Crear la solicitud sin encabezado Content-Type
+                var request = new HttpRequestMessage(HttpMethod.Get, LaURL + "/Lista_Mascotas/Obtener_Lista_Mascotas");
+
+
+                // Enviar la solicitud
+                var response = await _httpClient.SendAsync(request);
+               
+
+                response.EnsureSuccessStatusCode(); // Lanza una excepción si la respuesta no es exitosa
+                
+
+                // Leer la respuesta como una cadena
+                var jsonString = await response.Content.ReadAsStringAsync();
+                
+
+                // Deserializar la cadena JSON a un objeto Res_LIstaMedicamentos
+                var result = JsonConvert.DeserializeObject<Res_Lista_mascotas>(jsonString);
+                
+
+                // Verificar si el resultado es exitoso y retornar la lista de medicamentos
+                if (result.resultado)
+                {
+                    
+                    return result.ListaMascotas;
+                }
+                else
+                {
+                    
+                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
+                    return new List<Entidades.Registro_Mascota>(); // Retorna una lista vacía en caso de error
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                // Manejo de errores de solicitud HTTP
+               
+                await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
+                return new List<Entidades.Registro_Mascota>(); // Retorna una lista vacía en caso de error
+            }
+        }
+
+         // obtener lista medicamentos
         private async Task<List<Entidades.Medicamentos>> ObtenerMedicamentosAsync()
         {
             try
             {
-                Debug.WriteLine($"Realizando solicitud GET a la API: {LaURL}/Lista_Medicamentos/Obtener_Lista_Medicamentos");
+               
 
                 // Crear la solicitud sin encabezado Content-Type
                 var request = new HttpRequestMessage(HttpMethod.Get, LaURL + "/Lista_Medicamentos/Obtener_Lista_Medicamentos");
@@ -62,28 +134,28 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
                 // Enviar la solicitud
                 var response = await _httpClient.SendAsync(request);
-                Debug.WriteLine("Código de estado de la respuesta: " + response.StatusCode);
+               
 
                 response.EnsureSuccessStatusCode(); // Lanza una excepción si la respuesta no es exitosa
-                Debug.WriteLine("Respuesta de la API fue exitosa.");
+               
 
                 // Leer la respuesta como una cadena
                 var jsonString = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("Respuesta de la API convertida a cadena.");
+               
 
                 // Deserializar la cadena JSON a un objeto Res_LIstaMedicamentos
                 var result = JsonConvert.DeserializeObject<Res_LIstaMedicamentos>(jsonString);
-                Debug.WriteLine($"Resultado de la deserialización: resultado={result.resultado}, Error={result.Error}");
+                
 
                 // Verificar si el resultado es exitoso y retornar la lista de medicamentos
                 if (result.resultado)
                 {
-                    Debug.WriteLine("Resultado exitoso. Retornando lista de medicamentos.");
+                  
                     return result.ListarMedicamentos;
                 }
                 else
                 {
-                    Debug.WriteLine($"Error en la API: {result.Error}");
+                   
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
                     return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
                 }
@@ -91,15 +163,15 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             catch (HttpRequestException ex)
             {
                 // Manejo de errores de solicitud HTTP
-                Debug.WriteLine($"Excepción HttpRequestException: {ex.Message}");
+              
                 await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
                 return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
             }
         }
-
+             // verificador de medicamentos
         private void MedicamentoPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("Evento SelectedIndexChanged del Picker activado.");
+           
 
             // Verifica si hay algún elemento seleccionado
             if (MedicamentoPicker.SelectedIndex != -1)
@@ -108,25 +180,37 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
                 if (medicamentoSeleccionado != null)
                 {
-                    Debug.WriteLine($"Medicamento seleccionado: {medicamentoSeleccionado.Nombre}");
-                    Debug.WriteLine($"Categoria: {medicamentoSeleccionado.Categoria}");
-                    Debug.WriteLine($"Descripcion: {medicamentoSeleccionado.Decripcion}");
-                    Debug.WriteLine($"Fecha de Vencimiento: {medicamentoSeleccionado.FechaDeVencimiento}");
+                    
 
                     // Aquí puedes actualizar tu BindingContext o realizar alguna acción adicional
                     BindingContext = medicamentoSeleccionado;
                 }
-                else
-                {
-                    Debug.WriteLine("No se ha seleccionado ningún medicamento.");
-                }
-            }
-            else
-            {
-                Debug.WriteLine("No se ha seleccionado ningún índice en el Picker.");
+                              
             }
         }
 
+        private void MascotaPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            
+
+            // Verifica si hay algún elemento seleccionado
+            if (MascotaPicker.SelectedIndex != -1)
+            {
+                var mascotaSeleccionada = (Registro_Mascota)MascotaPicker.SelectedItem;
+
+                if (mascotaSeleccionada != null)
+                {
+                    
+                    
+
+                    // Aquí puedes actualizar tu BindingContext o realizar alguna acción adicional
+                    BindingContext = mascotaSeleccionada;
+                }
+               
+            }
+
+        }
     }
 }
     
