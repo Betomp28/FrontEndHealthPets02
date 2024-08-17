@@ -20,7 +20,7 @@ namespace FrontEndHealthPets
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new PagFlyPrincipal());
-            /*
+            /* de
           
      try
     {
