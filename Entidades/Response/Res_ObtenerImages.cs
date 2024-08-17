@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace FrontEndHealthPets.Entidades.response
 {
-    public class Res_ObtenerBreeds
+    public class Res_ObtenerImages
     {
-
-        public Dictionary<string, List<string>> Breeds { get; set; }
+        public List<string> Images { get; set; } // Cambia 'Images' a List<string> si tu API devuelve una lista de URLs
         public string Status { get; set; }
-
     }
 }
+

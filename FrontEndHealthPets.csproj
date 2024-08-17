@@ -57,6 +57,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\banos.png" />
+	  <None Remove="Resources\Images\clinica.png" />
+	  <None Remove="Resources\Images\fondo_medicamento.jpg" />
+	  <None Remove="Resources\Images\inyeccion.png" />
+	  <None Remove="Resources\Images\medicamentos.png" />
+	  <None Remove="Resources\Images\refugio-de-animales.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.6.24327.7" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
@@ -75,6 +84,12 @@
 	  <MauiXaml Update="Paginas\Doctor.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\AgregarMedicamento.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\Agregar_Medicamentos_Mascota.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		  </MauiXaml>
@@ -87,6 +102,9 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\BañosPage.xaml">
 
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\Medicamentos.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\MisMascotas.xaml">

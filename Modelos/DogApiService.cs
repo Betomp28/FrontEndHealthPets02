@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using FrontEndHealthPets.Entidades.response;
+using FrontEndHealthPets.Entidades.Response;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +18,55 @@ namespace FrontEndHealthPets.Modelo
             _httpClient = httpClient;
         }
 
-        public async Task<Dictionary<string, List<string>>> GetBreedsAsync()
+        public async Task<Res_ObtenerBreeds> GetBreedsAsync()
         {
-            var response = await _httpClient.GetStringAsync("api/Perros/GetBreeds");
-            return JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(response);
+            try
+            {
+                var response = await _httpClient.GetAsync("https://dog.ceo/api/breeds/list/all");
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("JSON Response: " + json); // Debugging
+
+                // Deserializar en la clase intermedia
+                var breedResponse = JsonConvert.DeserializeObject<BreedResponse>(json);
+
+                // Mapear a Res_ObtenerBreeds
+                return new Res_ObtenerBreeds
+                {
+                    Breeds = breedResponse?.Message ?? new Dictionary<string, List<string>>(),
+                    Status = breedResponse?.Status
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
 
-        public async Task<List<string>> GetImagesAsync(string breed)
+        public async Task<Res_ObtenerImages> GetImagesAsync(string breed)
         {
-            var response = await _httpClient.GetStringAsync($"api/Perros/GetImages/{breed}");
-            // Aquí deberías definir el tipo esperado para la respuesta
-            return JsonConvert.DeserializeObject<List<string>>(response);
+            try
+            {
+                var response = await _httpClient.GetAsync($"https://dog.ceo/api/breed/{breed}/images/random");
+                response.EnsureSuccessStatusCode();
+
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("JSON Response: " + json); // Debugging
+
+                var imageResponse = JsonConvert.DeserializeObject<ImageResponse>(json);
+
+                return new Res_ObtenerImages
+                {
+                    Images = imageResponse?.Message,
+                    Status = imageResponse?.Status
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
     }
 }
