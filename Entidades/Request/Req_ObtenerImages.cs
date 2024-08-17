@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FrontEndHealthPets.Entidades.Request
 {
-    public class Req_ObtenerBreeds
+    public class Req_ObtenerImages
     {
-        public Dictionary<string, List<string>> Breeds { get; set; }
+
+        public string Breed { get; set; }
+
     }
 }

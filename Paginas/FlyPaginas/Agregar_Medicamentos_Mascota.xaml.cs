@@ -184,47 +184,31 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             }
         }
         // verificador de medicamentos
-        private void MedicamentoPicker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-            // Verifica si hay algún elemento seleccionado
-            if (MedicamentoPicker.SelectedIndex != -1)
-            {
-                var medicamentoSeleccionado = (Entidades.Medicamentos)MedicamentoPicker.SelectedItem;
-
-                if (medicamentoSeleccionado != null)
-                {
-
-
-                    // Aquí puedes actualizar tu BindingContext o realizar alguna acción adicional
-                    BindingContext = medicamentoSeleccionado;
-                }
-
-            }
-        }
-
         private void MascotaPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
-
-            // Verifica si hay algún elemento seleccionado
             if (MascotaPicker.SelectedIndex != -1)
             {
                 var mascotaSeleccionada = (Registro_Mascota)MascotaPicker.SelectedItem;
-
                 if (mascotaSeleccionada != null)
                 {
-
-
-
-                    // Aquí puedes actualizar tu BindingContext o realizar alguna acción adicional
-                    BindingContext = mascotaSeleccionada;
+                    EspecieLabel.Text = mascotaSeleccionada.especie;
+                    RazaLabel.Text = mascotaSeleccionada.raza;
                 }
-
             }
+        }
 
+        private void MedicamentoPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (MedicamentoPicker.SelectedIndex != -1)
+            {
+                var medicamentoSeleccionado = (Entidades.Medicamentos)MedicamentoPicker.SelectedItem;
+                if (medicamentoSeleccionado != null)
+                {
+                    CategoriaLabel.Text = medicamentoSeleccionado.Categoria;
+                    DescripcionLabel.Text = medicamentoSeleccionado.Decripcion;
+                    FechaDeVencimientoLabel.Text = medicamentoSeleccionado.FechaDeVencimiento.ToString("dd/MM/yyyy");
+                }
+            }
         }
 
         private async void BtaplicarMedicamento_Clicked(object sender, EventArgs e)

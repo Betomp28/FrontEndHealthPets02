@@ -7,21 +7,21 @@
         <VerticalStackLayout>
             <!-- Picker to select a pet -->
             <Picker x:Name="MascotaPicker"
-            Title="Seleccione una mascota"
-            ItemsSource="{Binding Mascotas}"
-            ItemDisplayBinding="{Binding Nombre}"
-            SelectedIndexChanged="MascotaPicker_SelectedIndexChanged" />
+                Title="Seleccione una mascota"
+                ItemsSource="{Binding Mascotas}"
+                ItemDisplayBinding="{Binding Nombre}"
+                SelectedIndexChanged="MascotaPicker_SelectedIndexChanged" />
 
             <!-- VerticalStackLayout for displaying pet details -->
             <VerticalStackLayout>
                 <HorizontalStackLayout Spacing="10">
                     <Label Text="Especie:" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="{Binding especie}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+                    <Label x:Name="EspecieLabel" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="10">
                     <Label Text="Raza:" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="{Binding raza}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+                    <Label x:Name="RazaLabel" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
@@ -29,30 +29,31 @@
 
             <!-- Picker to select a medication -->
             <Picker x:Name="MedicamentoPicker"
-            SelectedIndexChanged="MedicamentoPicker_SelectedIndexChanged"
-            Title="Seleccione un medicamento"
-            ItemsSource="{Binding Medicamentos}"
-            ItemDisplayBinding="{Binding Nombre}" />
+                SelectedIndexChanged="MedicamentoPicker_SelectedIndexChanged"
+                Title="Seleccione un medicamento"
+                ItemsSource="{Binding Medicamentos}"
+                ItemDisplayBinding="{Binding Nombre}" />
 
             <!-- VerticalStackLayout for displaying medication details -->
             <VerticalStackLayout>
                 <HorizontalStackLayout Spacing="10">
                     <Label Text="Categoría:" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="{Binding Categoria}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+                    <Label x:Name="CategoriaLabel" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="10">
                     <Label Text="Descripción:" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="{Binding Decripcion}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+                    <Label x:Name="DescripcionLabel" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="10">
                     <Label Text="Fecha de Vencimiento:" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="{Binding FechaDeVencimiento, StringFormat='{0:dd/MM/yyyy}'}" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
+                    <Label x:Name="FechaDeVencimientoLabel" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
-            <BoxView HeightRequest="2" Color="Gray" Margin="0,20,0,0"/>
+
+        <BoxView HeightRequest="2" Color="Gray" Margin="0,20,0,0"/>
 
             <!-- Picker for Administration Mode -->
             <Label Text="Modo de Administración:" FontAttributes="Bold" />
