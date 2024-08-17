@@ -62,6 +62,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Plugin.LocalNotification" Version="11.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -73,6 +74,9 @@
 	
         <ItemGroup>
 	  <MauiXaml Update="Paginas\Doctor.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\AsignarVacunaMascotaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">

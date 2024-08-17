@@ -12,34 +12,11 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
         private void OnAddVaccineClicked(object sender, EventArgs e)
         {
-            string nombreVacuna = nombreVacunaEntry.Text;
-            string descripcionVacuna = descripcionVacunaEntry.Text;
+            string nombre = nombreVacunaEntry.Text;
+            string descripcion = descripcionVacunaEditor.Text;  // Asegúrate de usar el nombre correcto del Editor
             DateTime fechaVencimiento = fechaVencimientoPicker.Date;
 
-            // Validar los datos ingresados
-            if (string.IsNullOrWhiteSpace(nombreVacuna))
-            {
-                DisplayAlert("Error", "Por favor ingrese el nombre de la vacuna.", "OK");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(descripcionVacuna))
-            {
-                DisplayAlert("Error", "Por favor ingrese una descripción para la vacuna.", "OK");
-                return;
-            }
-
-            if (fechaVencimiento == default)
-            {
-                DisplayAlert("Error", "Por favor seleccione una fecha de vencimiento.", "OK");
-                return;
-            }
-
-            // Código para agregar la vacuna
-            // Ejemplo: guardarla en una base de datos o en una lista
-
-            DisplayAlert("Éxito", "Vacuna agregada exitosamente.", "OK");
-            Navigation.PopAsync();
+            // Implementar lógica para guardar los datos de la vacuna
         }
     }
 }

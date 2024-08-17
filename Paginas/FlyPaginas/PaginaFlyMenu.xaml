@@ -31,7 +31,7 @@
                                 Icono="bath.png"
                                 TargetType="{x:Type local:BañosPage}" />
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
-                                Icono="vacunas.png"
+                                Icono="vacuna.png"
                                 TargetType="{x:Type local:VacunasPage}" />
             </x:Array>
 

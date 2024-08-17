@@ -1,16 +1,22 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.AgregarVacunasPage">
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.AgregarVacunasPage"
+             Title="Agregar Vacuna">
 
-    <StackLayout Padding="10">
-        <Entry x:Name="nombreVacunaEntry" Placeholder="Nombre de la Vacuna" />
-        <Entry x:Name="descripcionVacunaEntry" Placeholder="Descripción de la Vacuna" />
+    <StackLayout Padding="20">
+        <!-- Campo para el nombre de la vacuna -->
+        <Label Text="Nombre de la vacuna" />
+        <Entry x:Name="nombreVacunaEntry" Placeholder="Ingrese el nombre de la vacuna" />
+
+        <!-- Campo para la descripción -->
+        <Label Text="Descripción" />
+        <Editor x:Name="descripcionVacunaEditor" Placeholder="Ingrese una descripción" />
+
+        <!-- Campo para la fecha de vencimiento -->
+        <Label Text="Ingrese fecha vencimiento de la vacuna" />
         <DatePicker x:Name="fechaVencimientoPicker" />
-        <Button Text="Agregar Vacuna" 
-                BackgroundColor="Purple"
-                TextColor="White"
-                Clicked="OnAddVaccineClicked" />
-    </StackLayout>
 
+        <!-- Botón para agregar la vacuna -->
+        <Button Text="Agregar Vacuna" Clicked="OnAddVaccineClicked" BackgroundColor="Purple" TextColor="White"/>
+    </StackLayout>
 </ContentPage>

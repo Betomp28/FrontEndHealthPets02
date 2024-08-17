@@ -1,0 +1,15 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.AsignarVacunaMascotaPage"
+             Title="Asignar Vacuna a Mascota">
+
+    <StackLayout Padding="20">
+        <Label Text="Seleccione la mascota" />
+        <!-- Aquí puedes añadir un Picker para seleccionar la mascota -->
+
+        <Label Text="Seleccione la vacuna" />
+        <!-- Aquí puedes añadir un Picker para seleccionar la vacuna -->
+
+        <Button Text="Asignar Vacuna" Clicked="OnAssignVaccineClicked" BackgroundColor="Purple" TextColor="White"/>
+    </StackLayout>
+</ContentPage>

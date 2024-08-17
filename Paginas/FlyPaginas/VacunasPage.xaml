@@ -1,31 +1,39 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.VacunasPage">
+             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.VacunasPage"
+             Title="Vacunas">
 
-    <ContentPage.BackgroundImageSource>
-        <FileImageSource File="fondomascota.jpg" />
-    </ContentPage.BackgroundImageSource>
+    <!-- Definir el fondo con la imagen -->
+    <Grid>
+        <Image Source="fondomascota.jpg" Aspect="AspectFill" Opacity="0.5"/>
 
-    <StackLayout VerticalOptions="Center">
-        <Button Text="Agregar Vacuna"
-                BackgroundColor="Purple"
-                TextColor="White"
-                FontSize="Medium"
-                CornerRadius="20"
-                HorizontalOptions="Center"
-                WidthRequest="200"
-                Clicked="OnAddVaccineClicked" />
+        <!-- Colocar los elementos en la página -->
+        <StackLayout Padding="20">
+            <!-- Botón para agregar vacunas -->
+            <Button Text="Agregar Vacuna"
+                    Clicked="OnAddVaccineClicked"
+                    BackgroundColor="Purple"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"/>
 
-        <Button Text="Consultar Vacunas"
-                BackgroundColor="Purple"
-                TextColor="White"
-                FontSize="Medium"
-                CornerRadius="20"
-                HorizontalOptions="Center"
-                WidthRequest="200"
-                Clicked="OnConsultVaccineClicked"
-                Margin="0,10,0,0" />
-    </StackLayout>
+            <!-- Botón para asignar vacuna a mascota -->
+            <Button Text="Asignar Vacuna Mascota"
+                    Clicked="OnAssignVaccineToPetClicked"
+                    BackgroundColor="Purple"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="0,10,0,0"/>
 
+            <!-- Botón para consultar vacunas -->
+            <Button Text="Consultar Vacunas"
+                    Clicked="OnConsultVaccinesClicked"
+                    BackgroundColor="Purple"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="0,10,0,0"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>
