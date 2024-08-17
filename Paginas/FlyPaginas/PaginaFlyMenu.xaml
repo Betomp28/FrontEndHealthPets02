@@ -33,8 +33,12 @@
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
                                 Icono="vacunas.png"
                                 TargetType="{x:Type local:VacunasPage}" />
+                <loca1:Pagina_Flyout_Items Titulo="Medicamentos"
+                                Icono="vacunas.png"
+                                TargetType="{x:Type local:Medicamentos}" />
             </x:Array>
 
+            
         </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>
             <DataTemplate>
