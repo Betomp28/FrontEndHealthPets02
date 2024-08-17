@@ -19,8 +19,9 @@ namespace FrontEndHealthPets
 
          private async void btiniciarsecion_Clicked(object sender, EventArgs e)
  {
-             Navigation.PushAsync(new PagFlyPrincipal());
-            /*
+
+             
+            
           
      try
     {
@@ -44,6 +45,31 @@ namespace FrontEndHealthPets
 
          var jsonContent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
 
+            Navigation.PushAsync(new PagFlyPrincipal());
+
+            try
+            {
+                // Validación de campos de inicio de sesión
+                if (string.IsNullOrWhiteSpace(Correo.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, ingresa tu usuario o correo electrónico.", "OK");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(Passwoord.Text))
+                {
+                    await DisplayAlert("Error", "Por favor, ingresa tu contraseña.", "OK");
+                    return;
+                }
+
+                Req_Login req = new Req_Login
+                {
+                    Correo_Electronico = Correo.Text,
+                    Contrasena = Passwoord.Text
+                };
+
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
+
+
                 using (HttpClient httpClient = new HttpClient())
                 {
                     var responseTask = httpClient.PostAsync($"{laURL}/login/IngresarLogin", jsonContent);
@@ -53,6 +79,7 @@ namespace FrontEndHealthPets
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
                         Res_Login res = JsonConvert.DeserializeObject<Res_Login>(responseContent);
+
 
                             
                         if (res.resultado)
@@ -85,16 +112,16 @@ namespace FrontEndHealthPets
              {
                  await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
              }
-            */
+         
             
                     }
+
 
 
                 
 
 
 
-       
 
         private void btregistrarse_Clicked(object sender, EventArgs e)
         {
