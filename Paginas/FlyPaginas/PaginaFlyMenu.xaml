@@ -13,29 +13,34 @@
                  SelectionMode="Single">
         <CollectionView.ItemsSource>
             <x:Array Type="{x:Type loca1:Pagina_Flyout_Items}">
+             
                 <loca1:Pagina_Flyout_Items  Titulo="Busqueda de Mascotas"
                                             Icono="contacto.png"
                                             TargetType="{x:Type local:RazasAnimales}" />
-                <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
-                                            Icono="tarjetaperro.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
-
-                <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
-                                            Icono="contacto.png"
-                                            TargetType="{x:Type local:ClinicaVeterinaria}" />
+                
                 <loca1:Pagina_Flyout_Items  Titulo="Perfil Usuario"
-                              Icono="contacto.png"
-                              TargetType="{x:Type local:perfilu}" />
+                                            Icono="contacto.png"
+                                            TargetType="{x:Type local:perfilu}" />
+                 
+                <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
+                                            Icono="mascotas.png"
+                                            TargetType="{x:Type local:MisMascotas}" />
+                
+                <loca1:Pagina_Flyout_Items  Titulo="Baños"
+                                            Icono="banos.png"
+                                            TargetType="{x:Type local:BañosPage}" />
+                
+                <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
+                                            Icono="clinica.png"
+                                            TargetType="{x:Type local:ClinicaVeterinaria}" />
+                <loca1:Pagina_Flyout_Items  Titulo="Medicamentos"
+                                            Icono="medicamentos.png"
+                                            TargetType="{x:Type local:Medicamentos}" />
 
-                <loca1:Pagina_Flyout_Items Titulo="Baños"
-                                Icono="bath.png"
-                                TargetType="{x:Type local:BañosPage}" />
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
-                                Icono="vacunas.png"
-                                TargetType="{x:Type local:VacunasPage}" />
-                <loca1:Pagina_Flyout_Items Titulo="Medicamentos"
-                                Icono="vacunas.png"
-                                TargetType="{x:Type local:Medicamentos}" />
+                                           Icono="inyeccion.png"
+                                           TargetType="{x:Type local:VacunasPage}" />
+               
             </x:Array>
 
             

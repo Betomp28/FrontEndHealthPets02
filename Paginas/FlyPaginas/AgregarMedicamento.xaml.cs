@@ -55,6 +55,7 @@ public partial class AgregarMedicamento : ContentPage
             req.Medicamentos.Categoria = Categoria.SelectedItem.ToString();
             req.Medicamentos.Decripcion = Descripcion.Text;
             req.Medicamentos.FechaDeVencimiento = FechaVencimiento.Date;
+            
 
             var jsoncontent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
             HttpClient httpClient = new HttpClient();

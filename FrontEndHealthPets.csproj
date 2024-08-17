@@ -57,7 +57,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\banos.png" />
+	  <None Remove="Resources\Images\clinica.png" />
 	  <None Remove="Resources\Images\fondo_medicamento.jpg" />
+	  <None Remove="Resources\Images\inyeccion.png" />
+	  <None Remove="Resources\Images\medicamentos.png" />
+	  <None Remove="Resources\Images\refugio-de-animales.png" />
 	</ItemGroup>
 
 	<ItemGroup>
