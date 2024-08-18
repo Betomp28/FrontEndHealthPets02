@@ -3,6 +3,8 @@ using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.Response;
 using FrontEndHealthPets.Paginas;
 using FrontEndHealthPets.Paginas.FlyPaginas;
+using FrontEndHealthPets.Paginas.tabpage;
+
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -19,9 +21,9 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new PagFlyPrincipal());
-            /* de
-          
+           
+            
+         
      try
     {
          // Validación de campos de inicio de sesión
@@ -85,8 +87,8 @@ namespace FrontEndHealthPets
              {
                  await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
              }
-            */
-
+            
+            
         }
 
 

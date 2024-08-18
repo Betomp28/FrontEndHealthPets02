@@ -1,4 +1,5 @@
 using FrontEndHealthPets.Entidades;
+using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.response;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -73,33 +74,34 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         // CArgar mascotas metodo
         private async void CargarMascotas()
         {
+            int id_usuario = (int)Sesion.id_usuario;
 
-            var mascotas = await ObtenerMascotasAsync();
+            // Imprime el ID del usuario en la salida de depuración
+            Debug.WriteLine($"ID del usuario: {id_usuario}");
 
-
+            var mascotas = await ObtenerMascotasAsync(id_usuario);
             Mascotas.Clear();
             foreach (var mascota in mascotas)
             {
                 Mascotas.Add(mascota);
-
             }
-
             // Actualiza el ItemsSource del Picker explícitamente
             MascotaPicker.ItemsSource = Mascotas;
         }
 
+
         //mobtener lista mascotas
-        private async Task<List<Registro_Mascota>> ObtenerMascotasAsync()
+        private async Task<List<Registro_Mascota>> ObtenerMascotasAsync(int id_usuario)
         {
             try
             {
+                Debug.WriteLine($"ID del usuario: {id_usuario}");
+                Debug.WriteLine($"URL de solicitud: {LaURL}/Lista_Mascotas/Obtener_Lista_Mascotas?id_usuario={id_usuario}");
 
+                // Crear la solicitud con el ID de usuario como parámetro de consulta
+                var requestUrl = $"{LaURL}/Lista_Mascotas/Obtener_Lista_Mascotas?id_usuario={id_usuario}";
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
-                // Crear la solicitud sin encabezado Content-Type
-                var request = new HttpRequestMessage(HttpMethod.Get, LaURL + "/Lista_Mascotas/Obtener_Lista_Mascotas");
-
-
-                // Enviar la solicitud
                 var response = await _httpClient.SendAsync(request);
 
 
@@ -124,7 +126,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 {
 
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
-                    return new List<Entidades.Registro_Mascota>(); // Retorna una lista vacía en caso de error
+                    return new List<Registro_Mascota>(); // Retorna una lista vacía en caso de error
                 }
             }
             catch (HttpRequestException ex)
@@ -132,7 +134,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 // Manejo de errores de solicitud HTTP
 
                 await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
-                return new List<Entidades.Registro_Mascota>(); // Retorna una lista vacía en caso de error
+                return new List<Registro_Mascota>(); // Retorna una lista vacía en caso de error
             }
         }
 
@@ -183,7 +185,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
             }
         }
-        // verificador de medicamentos
+
+        // verificador de mascota
         private void MascotaPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (MascotaPicker.SelectedIndex != -1)

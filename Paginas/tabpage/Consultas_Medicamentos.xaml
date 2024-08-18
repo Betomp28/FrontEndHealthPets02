@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.tabpage.Consultas_Medicamentos"
+             Title="Consultas_Medicamentos">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Picker x:Name="MascotaPicker"
+                 Title="Seleccione una mascota"
+                 ItemsSource="{Binding Mascotas}"
+                 ItemDisplayBinding="{Binding Nombre}"
+                 SelectedIndexChanged="MascotaPicker_SelectedIndexChanged" />
+
+            <BoxView HeightRequest="2" Color="Gray" Margin="0,20,0,0"/>
+
+            <ListView x:Name="MedicamentosListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Nombre}"
+                                  Detail="{Binding Descripcion}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

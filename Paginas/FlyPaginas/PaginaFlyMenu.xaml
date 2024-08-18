@@ -4,6 +4,7 @@
              x:Class="FrontEndHealthPets.Paginas.PaginaFlyMenu"
              xmlns:local="clr-namespace:FrontEndHealthPets.Paginas.FlyPaginas"
              xmlns:loca1="clr-namespace:FrontEndHealthPets.Datos"
+             xmlns:local1="clr-namespace:FrontEndHealthPets.Paginas.tabpage"
              Title="PaginaFlyMenu"
              Padding="0,40,0,0" 
              IconImageSource="hanburguer.png">
@@ -40,6 +41,9 @@
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
                                            Icono="inyeccion.png"
                                            TargetType="{x:Type local:VacunasPage}" />
+                <loca1:Pagina_Flyout_Items Titulo="Consultas"
+                                           Icono="veterinary.png"
+                                           TargetType="{x:Type local1:Consultas_Principal}" />
                
             </x:Array>
 
