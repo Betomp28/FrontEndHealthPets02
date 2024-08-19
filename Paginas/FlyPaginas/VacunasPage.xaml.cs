@@ -12,14 +12,12 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
         private async void OnAddVaccineClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AgregarVacunasPage());
+            await Navigation.PushAsync(new AgregarVacunas());
         }
 
         private void OnConsultVaccineClicked(object sender, EventArgs e)
         {
-            // Código para consultar vacunas
-            // Por ejemplo, podrías mostrar una alerta o navegar a otra página que muestre las vacunas existentes
-            DisplayAlert("Consultar Vacunas", "Aquí se mostrarán las vacunas existentes.", "OK");
+           Navigation.PushAsync(new Asignar_Mascota_Vacuna());
         }
     }
 }
