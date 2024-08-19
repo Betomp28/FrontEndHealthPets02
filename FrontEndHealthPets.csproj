@@ -95,18 +95,16 @@
 	  <MauiXaml Update="Paginas\FlyPaginas\Agregar_Medicamentos_Mascota.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\Asignar_Baheiro_Mascota.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\Baheiros.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		  </MauiXaml>
-
-	  <MauiXaml Update="Paginas\FlyPaginas\AgregarBañoPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\AgregarVacunasPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\BañosPage.xaml">
-
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\Medicamentos.xaml">

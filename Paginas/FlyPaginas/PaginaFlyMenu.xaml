@@ -29,7 +29,7 @@
                 
                 <loca1:Pagina_Flyout_Items  Titulo="Baños"
                                             Icono="banos.png"
-                                            TargetType="{x:Type local:BañosPage}" />
+                                            TargetType="{x:Type local:Baheiros}" />
                 
                 <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
                                             Icono="clinica.png"

@@ -21,9 +21,7 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-           
-            
-         
+       
      try
     {
          // Validación de campos de inicio de sesión
@@ -87,8 +85,7 @@ namespace FrontEndHealthPets
              {
                  await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
              }
-            
-            
+        
         }
 
 
