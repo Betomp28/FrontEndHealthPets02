@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace FrontEndHealthPets.Entidades
 {
-    public class Res_Baheiro_Mascotas: Res_Base
+    public class Res_Lista_Vacunas_Mascotas:Res_Base
     {
+
+       public List<Vacunas_Mascotas> ListarVacunasMascotas = new List<Vacunas_Mascotas>();
 
     }
 }

@@ -7,6 +7,12 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
+using ClosedXML.Excel;
+using System.IO;
+using System.Linq;
+
+
+
 namespace FrontEndHealthPets.Paginas.tabpage
 {
     public partial class Consultas_Medicamentos : ContentPage
@@ -148,7 +154,7 @@ namespace FrontEndHealthPets.Paginas.tabpage
                     await DisplayAlert("Error", $"Error en la API: {result.Error ?? "Desconocido"}", "OK");
                 }
                 // Forzar la actualización del ListView (opcional)
-               
+
             }
             catch (HttpRequestException ex)
             {
@@ -159,5 +165,55 @@ namespace FrontEndHealthPets.Paginas.tabpage
                 await DisplayAlert("Error", $"Ocurrió un error: {ex.Message}", "OK");
             }
         }
+
+        private async void BtGuardarLista_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ruta del archivo (puedes cambiarla a una ruta específica si es necesario)
+                var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Medicamentos.xlsx");
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Medicamentos");
+
+                    // Agregar encabezados
+                    worksheet.Cell(1, 1).Value = "Nombre Medicamento";
+                    worksheet.Cell(1, 2).Value = "Categoría";
+                    worksheet.Cell(1, 3).Value = "Modo de Administración";
+                    worksheet.Cell(1, 4).Value = "Fecha Inicio";
+                    worksheet.Cell(1, 5).Value = "Fecha Fin";
+                    worksheet.Cell(1, 6).Value = "Notas";
+
+                    // Agregar datos
+                    var row = 2;
+                    foreach (var medicamento in MedicamentosMascotas)
+                    {
+                        worksheet.Cell(row, 1).Value = medicamento.Nombre_Medicamento;
+                        worksheet.Cell(row, 2).Value = medicamento.categoria;
+                        worksheet.Cell(row, 3).Value = medicamento.Modo_De_Administracion;
+                        // Formatear fechas como DateOnly
+                        worksheet.Cell(row, 4).Value = medicamento.Fecha_Inicio;
+                        worksheet.Cell(row, 4).Style.NumberFormat.Format = "dd/MM/yyyy"; // Establecer formato
+
+                        worksheet.Cell(row, 5).Value = medicamento.Fecha_Fin;
+                        worksheet.Cell(row, 5).Style.NumberFormat.Format = "dd/MM/yyyy"; // Establecer formato
+                        worksheet.Cell(row, 6).Value = medicamento.Notas ?? "No hay notas disponibles";
+                        row++;
+                    }
+
+                    // Guardar el archivo
+                    workbook.SaveAs(filePath);
+                }
+
+                await DisplayAlert("Éxito", "Archivo Excel guardado correctamente.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo guardar el archivo: {ex.Message}", "OK");
+            }
+        }
     }
 }
+
+      

@@ -13,6 +13,8 @@ namespace FrontEndHealthPets.Entidades
         public string Nombre_Mascota { get; set; }
         public int Id_Vacuna { get; set; }
         public string Nombre_Vacuna { get; set; }
+
+        public string Descripcion { get; set; }
         
         public int Dosis { get; set; }
         public DateTime? Fecha_y_Hora_Aplicacion { get; set; }

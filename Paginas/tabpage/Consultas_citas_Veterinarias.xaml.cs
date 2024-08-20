@@ -6,4 +6,14 @@ public partial class Consultas_citas_Veterinarias : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void MascotaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void BtGuardarLista_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
