@@ -17,7 +17,7 @@
                 WidthRequest="200"
                 Clicked="OnAddVaccineClicked" />
 
-        <Button Text="Consultar Vacunas"
+        <Button Text="Asignar vacuna a una mascota"
                 BackgroundColor="Purple"
                 TextColor="White"
                 FontSize="Medium"

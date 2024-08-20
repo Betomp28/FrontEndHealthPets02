@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
@@ -57,15 +57,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\banos.png" />
-	  <None Remove="Resources\Images\clinica.png" />
-	  <None Remove="Resources\Images\fondo_medicamento.jpg" />
-	  <None Remove="Resources\Images\inyeccion.png" />
-	  <None Remove="Resources\Images\medicamentos.png" />
-	  <None Remove="Resources\Images\refugio-de-animales.png" />
+		<!-- Removed Images -->
+		<None Remove="Resources\Images\banos.png" />
+		<None Remove="Resources\Images\clinica.png" />
+		<None Remove="Resources\Images\dog.png" />
+		<None Remove="Resources\Images\fondo_medicamento.jpg" />
+		<None Remove="Resources\Images\inyeccion.png" />
+		<None Remove="Resources\Images\medicalappointment.png" />
+		<None Remove="Resources\Images\medicamentos.png" />
+		<None Remove="Resources\Images\pillsbottle.png" />
+		<None Remove="Resources\Images\refugio-de-animales.png" />
+		<None Remove="Resources\Images\vaccine.png" />
+		<None Remove="Resources\Images\veterinary.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="ClosedXML" Version="0.104.0-preview2" />
+		<PackageReference Include="CustomSelectFileDlg" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.6.24327.7" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
@@ -74,60 +82,89 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Paginas\FlyPaginas\PagFlyPrincipal.xaml.cs">
-	    <DependentUpon>PagFlyPrincipal.xaml</DependentUpon>
-	  </Compile>
+		<Compile Update="Paginas\FlyPaginas\PagFlyPrincipal.xaml.cs">
+			<DependentUpon>PagFlyPrincipal.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
-	
-        <ItemGroup>
-	  <MauiXaml Update="Paginas\Doctor.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\AgregarMedicamento.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\Agregar_Medicamentos_Mascota.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		  </MauiXaml>
+	<ItemGroup>
+		<MauiXaml Update="Paginas\Doctor.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\AgregarMedicamento.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\Agregar_Medicamentos_Mascota.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\AgregarBañoPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\AgregarVacunas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\Asignar_Baheiro_Mascota.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\Asignar_Mascota_Vacuna.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\Baheiros.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\Medicamentos.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\MisMascotas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\PaginaFlyMenu.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\PagFlyPrincipal.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\RazasAnimales.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\FlyPaginas\VacunasPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\IngresarMascotas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\Registro.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\tabpage\Consultas_Baheiros.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\tabpage\Consultas_Medicamentos.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\tabpage\Consultas_Vacunas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\tabpage\Vacunas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
 
-	  <MauiXaml Update="Paginas\FlyPaginas\AgregarBañoPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\AgregarVacunasPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\BañosPage.xaml">
-
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\Medicamentos.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\MisMascotas.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\PaginaFlyMenu.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\PagFlyPrincipal.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\RazasAnimales.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\FlyPaginas\VacunasPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\IngresarMascotas.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Paginas\Registro.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+	<ItemGroup>
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\banos.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\clinica.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\dog.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\fondo_medicamento.jpg" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\inyeccion.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\medicalappointment.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\medicamentos.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\pillsbottle.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\refugio-de-animales.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\vaccine.png" />
+		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\veterinary.png" />
 	</ItemGroup>
 
 </Project>
