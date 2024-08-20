@@ -148,23 +148,25 @@
 		<MauiXaml Update="Paginas\tabpage\Consultas_Vacunas.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Paginas\tabpage\Vacunas.xaml">
+		<MauiXaml Update="Paginas\tabpage\Historial_Mascota.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\tabpage\Recetas.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Paginas\Trabajadores.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\banos.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\clinica.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\dog.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\fondo_medicamento.jpg" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\inyeccion.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\medicalappointment.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\medicamentos.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\pillsbottle.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\refugio-de-animales.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\vaccine.png" />
-		<None Update="Resources\Images\**\*.*" Remove="Resources\Images\veterinary.png" />
+		<None Include="Resources\Raw\foo.xml" />
+		<None Include="Resources\Raw\bar.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Resources\Raw\foo.xml" />
+		<Content Include="Resources\Raw\bar.json" />
 	</ItemGroup>
 
 </Project>
