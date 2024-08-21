@@ -1,12 +1,11 @@
 using FrontEndHealthPets.Entidades;
-using FrontEndHealthPets.Entidades.Entitys; // Puede ser redundante, revisa si esta importación es necesaria
+using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.response;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
+
+
 
 namespace FrontEndHealthPets.Paginas.FlyPaginas
 {
@@ -14,28 +13,38 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
     {
         private readonly HttpClient _httpClient;
 
-        private const string LaURL = "https://localhost:44348/api";
+        string LaURL = "https://localhost:44348/api";
         private ObservableCollection<Entidades.Medicamentos> Medicamentos { get; set; }
         private ObservableCollection<Registro_Mascota> Mascotas { get; set; }
 
         public Agregar_Medicamentos_Mascota()
         {
+
             InitializeComponent();
+
             _httpClient = new HttpClient(); // Inicializa HttpClient
+
 
             Medicamentos = new ObservableCollection<Entidades.Medicamentos>();
             Mascotas = new ObservableCollection<Registro_Mascota>();
 
+
+
             BindingContext = this;
 
+
             CargarMedicamentos();
+
             CargarMascotas();
 
             // Asociar el evento al TimePicker
             HoraDeIngestaTimePicker.PropertyChanged += HoraDeIngestaTimePicker_PropertyChanged;
-        }
 
-        // Forzar el TimePicker a que muestre la hora en formato de 24 horas
+        }
+        // cargar medicamentos
+
+
+        // forzar el timepicker a que muestre la hora en formato de 24 horas
         private void HoraDeIngestaTimePicker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Time")
@@ -44,19 +53,25 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             }
         }
 
+
         private async void CargarMedicamentos()
         {
+
             var medicamentos = await ObtenerMedicamentosAsync();
+
+
             Medicamentos.Clear(); // Limpia la colección antes de añadir nuevos medicamentos
             foreach (var medicamento in medicamentos)
             {
                 Medicamentos.Add(medicamento);
+
             }
 
             // Actualiza el ItemsSource del Picker explícitamente
             MedicamentoPicker.ItemsSource = Medicamentos;
         }
 
+        // CArgar mascotas metodo
         private async void CargarMascotas()
         {
             int id_usuario = (int)Sesion.id_usuario;
@@ -70,12 +85,12 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             {
                 Mascotas.Add(mascota);
             }
-
             // Actualiza el ItemsSource del Picker explícitamente
             MascotaPicker.ItemsSource = Mascotas;
         }
 
-        // Obtener lista de mascotas
+
+        //mobtener lista mascotas
         private async Task<List<Registro_Mascota>> ObtenerMascotasAsync(int id_usuario)
         {
             try
@@ -88,21 +103,28 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
                 var response = await _httpClient.SendAsync(request);
+
+
                 response.EnsureSuccessStatusCode(); // Lanza una excepción si la respuesta no es exitosa
+
 
                 // Leer la respuesta como una cadena
                 var jsonString = await response.Content.ReadAsStringAsync();
 
-                // Deserializar la cadena JSON a un objeto Res_Lista_mascotas
+
+                // Deserializar la cadena JSON a un objeto Res_LIstaMedicamentos
                 var result = JsonConvert.DeserializeObject<Res_Lista_mascotas>(jsonString);
 
-                // Verificar si el resultado es exitoso y retornar la lista de mascotas
+
+                // Verificar si el resultado es exitoso y retornar la lista de medicamentos
                 if (result.resultado)
                 {
+
                     return result.ListaMascotas;
                 }
                 else
                 {
+
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
                     return new List<Registro_Mascota>(); // Retorna una lista vacía en caso de error
                 }
@@ -110,35 +132,47 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             catch (HttpRequestException ex)
             {
                 // Manejo de errores de solicitud HTTP
-                await DisplayAlert("Error", $"No se pudo obtener la lista de mascotas: {ex.Message}", "OK");
+
+                await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
                 return new List<Registro_Mascota>(); // Retorna una lista vacía en caso de error
             }
         }
 
-        // Obtener lista de medicamentos
+        // obtener lista medicamentos
         private async Task<List<Entidades.Medicamentos>> ObtenerMedicamentosAsync()
         {
             try
             {
+
+
                 // Crear la solicitud sin encabezado Content-Type
                 var request = new HttpRequestMessage(HttpMethod.Get, LaURL + "/Lista_Medicamentos/Obtener_Lista_Medicamentos");
 
+
+                // Enviar la solicitud
                 var response = await _httpClient.SendAsync(request);
+
+
                 response.EnsureSuccessStatusCode(); // Lanza una excepción si la respuesta no es exitosa
+
 
                 // Leer la respuesta como una cadena
                 var jsonString = await response.Content.ReadAsStringAsync();
 
-                // Deserializar la cadena JSON a un objeto Res_ListaMedicamentos
-                var result = JsonConvert.DeserializeObject<Res_ListaMedicamentos>(jsonString);
+
+                // Deserializar la cadena JSON a un objeto Res_LIstaMedicamentos
+                var result = JsonConvert.DeserializeObject<Res_LIstaMedicamentos>(jsonString);
+
 
                 // Verificar si el resultado es exitoso y retornar la lista de medicamentos
                 if (result.resultado)
                 {
+
                     return result.ListarMedicamentos;
                 }
                 else
                 {
+
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
                     return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
                 }
@@ -146,12 +180,13 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             catch (HttpRequestException ex)
             {
                 // Manejo de errores de solicitud HTTP
+
                 await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
                 return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
             }
         }
 
-        // Verificador de medicamentos
+        // verificador de mascota
         private void MascotaPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (MascotaPicker.SelectedIndex != -1)
@@ -183,6 +218,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         {
             try
             {
+                
                 Debug.WriteLine("Iniciando BtaplicarMedicamento_Clicked");
                 Debug.WriteLine($"Hora seleccionada: {HoraDeIngestaTimePicker.Time}");
                 var medicamentoSeleccionado = (Entidades.Medicamentos)MedicamentoPicker.SelectedItem;
@@ -218,6 +254,13 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     Debug.WriteLine("Error: HoraDeIngestaTimePicker no está inicializado.");
                     return;
                 }
+                else
+                if (HoraDeIngestaTimePicker == null)
+                {
+                    await DisplayAlert("Error", "HoraDeIngestaTimePicker no está inicializado correctamente.", "Aceptar");
+                    Debug.WriteLine("Error: HoraDeIngestaTimePicker no está inicializado.");
+                    return;
+                }
                 else if (HoraDeIngestaTimePicker.Time == TimeSpan.Zero)
                 {
                     await DisplayAlert("Error", "Seleccione una hora de ingesta válida.", "Aceptar");
@@ -239,50 +282,70 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     return;
                 }
 
-                if (FechaDeInicioDatePicker.Date > FechaDeFinDatePicker.Date)
+                if (string.IsNullOrEmpty(NotasEditor.Text))
                 {
-                    await DisplayAlert("Error", "La fecha de fin debe ser posterior a la fecha de inicio.", "Aceptar");
-                    Debug.WriteLine("Error: La fecha de fin es anterior a la fecha de inicio.");
+                    await DisplayAlert("Error", "Ingrese notas", "Aceptar");
+                    Debug.WriteLine("Error: El campo de notas está vacío.");
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(NotasEditor.Text))
-                {
-                    await DisplayAlert("Error", "Ingrese las notas", "Aceptar");
-                    Debug.WriteLine("Error: No se ingresaron notas.");
-                    return;
-                }
+                Debug.WriteLine("Creando la solicitud Req_MedicamentosMascotas");
 
-                // Datos del medicamento a agregar
-                var medicamento = new MedicamentoAgregar
+                Req_MedicamentosMascotas req = new Req_MedicamentosMascotas
                 {
-                    IdMedicamento = medicamentoSeleccionado.Id_Medicamento,
-                    IdMascota = mascotaSeleccionada.Id_Mascota,
-                    ModoAdministracion = ModoDeAdministracionPicker.SelectedItem.ToString(),
-                    HoraIngesta = HoraDeIngestaTimePicker.Time,
-                    FechaInicio = FechaDeInicioDatePicker.Date,
-                    FechaFin = FechaDeFinDatePicker.Date,
-                    Notas = NotasEditor.Text
+                    medicamentosMascotas = new MedicamentosMascotas
+                    {
+                        Id_Mascota = mascotaSeleccionada.Id_Mascota, // Utiliza la mascota seleccionada
+                        id_medicamento = medicamentoSeleccionado.Id_Medicamento, // Utiliza el medicamento seleccionado
+                        Modo_De_Administracion = ModoDeAdministracionPicker.SelectedItem.ToString(),
+                        Fecha_Inicio = FechaDeInicioDatePicker.Date,
+                        Fecha_Fin = FechaDeFinDatePicker.Date,
+                        Hora_De_Ingesta = HoraDeIngestaTimePicker.Time,
+                        Notas = NotasEditor.Text
+                    }
                 };
 
-                var jsonMedicamento = JsonConvert.SerializeObject(medicamento);
-                var content = new StringContent(jsonMedicamento, System.Text.Encoding.UTF8, "application/json");
+                Debug.WriteLine("Serializando la solicitud a JSON");
 
-                var response = await _httpClient.PostAsync(LaURL + "/AplicarMedicamento/AgregarMedicamento", content);
+                var jsoncontent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
+                HttpClient httpClient = new HttpClient();
 
-                if (response.IsSuccessStatusCode)
+                Debug.WriteLine("Enviando la solicitud al servidor");
+
+                var response = await httpClient.PostAsync(LaURL + "/Ingresar_Medicamentos_Mascotas/Ingresar_Medicamentos_Mascotas", jsoncontent);
+
+                if (response.IsSuccessStatusCode) // saber si el API está vivo
                 {
-                    await DisplayAlert("Éxito", "Medicamento agregado exitosamente", "Aceptar");
+                    Debug.WriteLine("Respuesta exitosa del servidor");
+
+                    var responsecontent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Contenido de la respuesta: {responsecontent}");
+
+                    Res_MedicamentosMascotas res = JsonConvert.DeserializeObject<Res_MedicamentosMascotas>(responsecontent);
+
+                    if (res.resultado)
+                    {
+                        Debug.WriteLine("El medicamento se registró correctamente");
+
+                        await DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
+                        await Navigation.PushAsync(new MainPage());
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Error en el backend: {res.Error}");
+                        await DisplayAlert("Error", res.Error, "Aceptar");
+                    }
                 }
                 else
                 {
-                    await DisplayAlert("Error", "No se pudo agregar el medicamento", "Aceptar");
+                    Debug.WriteLine("Error de conexión: no se pudo conectar al servidor");
+                    await DisplayAlert("Error de conexión", "Ocurrió un error de conexión", "Aceptar");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Ocurrió un error al agregar el medicamento: {ex.Message}", "Aceptar");
-                Debug.WriteLine($"Error: {ex.Message}");
+                Debug.WriteLine($"Excepción: {ex.Message}");
+                await DisplayAlert("Error", ex.Message, "Aceptar");
             }
         }
     }
