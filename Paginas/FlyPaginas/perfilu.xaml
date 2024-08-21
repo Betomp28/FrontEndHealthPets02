@@ -70,6 +70,16 @@
                             FontSize="Medium"
                             Text="Registrarse"
                             Clicked="btRegresar_Clicked" />
+
+    
+                        
+                        <StackLayout Padding="20">
+                            <Label Text="Ingrese el correo electrónico para eliminar el usuario:" TextColor="Black" />
+                            <Entry x:Name="CorreoEntry" Placeholder="Correo electrónico" />
+                            <Button x:Name="bteliminar" Text="Eliminar" Clicked="bteliminar_Clicked_1" BackgroundColor="Purple" TextColor="White" />
+                            
+                        </StackLayout>
+
                     </VerticalStackLayout>
                 </VerticalStackLayout>
             </ScrollView>
