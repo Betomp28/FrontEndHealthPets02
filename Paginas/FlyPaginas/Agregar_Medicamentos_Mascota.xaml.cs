@@ -60,14 +60,14 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             var medicamentos = await ObtenerMedicamentosAsync();
 
 
-            Medicamentos.Clear(); // Limpia la colecciÛn antes de aÒadir nuevos medicamentos
+            Medicamentos.Clear(); // Limpia la colecci√≥n antes de a√±adir nuevos medicamentos
             foreach (var medicamento in medicamentos)
             {
                 Medicamentos.Add(medicamento);
 
             }
 
-            // Actualiza el ItemsSource del Picker explÌcitamente
+            // Actualiza el ItemsSource del Picker expl√≠citamente
             MedicamentoPicker.ItemsSource = Medicamentos;
         }
 
@@ -76,7 +76,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         {
             int id_usuario = (int)Sesion.id_usuario;
 
-            // Imprime el ID del usuario en la salida de depuraciÛn
+            // Imprime el ID del usuario en la salida de depuraci√≥n
             Debug.WriteLine($"ID del usuario: {id_usuario}");
 
             var mascotas = await ObtenerMascotasAsync(id_usuario);
@@ -85,7 +85,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             {
                 Mascotas.Add(mascota);
             }
-            // Actualiza el ItemsSource del Picker explÌcitamente
+            // Actualiza el ItemsSource del Picker expl√≠citamente
             MascotaPicker.ItemsSource = Mascotas;
         }
 
@@ -98,14 +98,14 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 Debug.WriteLine($"ID del usuario: {id_usuario}");
                 Debug.WriteLine($"URL de solicitud: {LaURL}/Lista_Mascotas/Obtener_Lista_Mascotas?id_usuario={id_usuario}");
 
-                // Crear la solicitud con el ID de usuario como par·metro de consulta
+                // Crear la solicitud con el ID de usuario como par√°metro de consulta
                 var requestUrl = $"{LaURL}/Lista_Mascotas/Obtener_Lista_Mascotas?id_usuario={id_usuario}";
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
                 var response = await _httpClient.SendAsync(request);
 
 
-                response.EnsureSuccessStatusCode(); // Lanza una excepciÛn si la respuesta no es exitosa
+                response.EnsureSuccessStatusCode(); // Lanza una excepci√≥n si la respuesta no es exitosa
 
 
                 // Leer la respuesta como una cadena
@@ -126,7 +126,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 {
 
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
-                    return new List<Registro_Mascota>(); // Retorna una lista vacÌa en caso de error
+                    return new List<Registro_Mascota>(); // Retorna una lista vac√≠a en caso de error
                 }
             }
             catch (HttpRequestException ex)
@@ -134,7 +134,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 // Manejo de errores de solicitud HTTP
 
                 await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
-                return new List<Registro_Mascota>(); // Retorna una lista vacÌa en caso de error
+                return new List<Registro_Mascota>(); // Retorna una lista vac√≠a en caso de error
             }
         }
 
@@ -153,7 +153,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 var response = await _httpClient.SendAsync(request);
 
 
-                response.EnsureSuccessStatusCode(); // Lanza una excepciÛn si la respuesta no es exitosa
+                response.EnsureSuccessStatusCode(); // Lanza una excepci√≥n si la respuesta no es exitosa
 
 
                 // Leer la respuesta como una cadena
@@ -174,7 +174,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 {
 
                     await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
-                    return new List<Entidades.Medicamentos>(); // Retorna una lista vacÌa en caso de error
+                    return new List<Entidades.Medicamentos>(); // Retorna una lista vac√≠a en caso de error
                 }
             }
             catch (HttpRequestException ex)
@@ -182,7 +182,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 // Manejo de errores de solicitud HTTP
 
                 await DisplayAlert("Error", $"No se pudo obtener la lista de medicamentos: {ex.Message}", "OK");
-                return new List<Entidades.Medicamentos>(); // Retorna una lista vacÌa en caso de error
+                return new List<Entidades.Medicamentos>(); // Retorna una lista vac√≠a en caso de error
             }
         }
 
@@ -230,54 +230,54 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 if (MedicamentoPicker.SelectedIndex == -1)
                 {
                     await DisplayAlert("Error", "Seleccione un medicamento", "Aceptar");
-                    Debug.WriteLine("Error: No se seleccionÛ ning˙n medicamento.");
+                    Debug.WriteLine("Error: No se seleccion√≥ ning√∫n medicamento.");
                     return;
                 }
 
                 if (MascotaPicker.SelectedIndex == -1)
                 {
                     await DisplayAlert("Error", "Seleccione una mascota", "Aceptar");
-                    Debug.WriteLine("Error: No se seleccionÛ ninguna mascota.");
+                    Debug.WriteLine("Error: No se seleccion√≥ ninguna mascota.");
                     return;
                 }
 
                 if (ModoDeAdministracionPicker.SelectedItem == null)
                 {
-                    await DisplayAlert("Error", "Seleccione un modo de administraciÛn", "Aceptar");
-                    Debug.WriteLine("Error: No se seleccionÛ un modo de administraciÛn.");
+                    await DisplayAlert("Error", "Seleccione un modo de administraci√≥n", "Aceptar");
+                    Debug.WriteLine("Error: No se seleccion√≥ un modo de administraci√≥n.");
                     return;
                 }
 
                 if (HoraDeIngestaTimePicker == null)
                 {
-                    await DisplayAlert("Error", "HoraDeIngestaTimePicker no est· inicializado correctamente.", "Aceptar");
-                    Debug.WriteLine("Error: HoraDeIngestaTimePicker no est· inicializado.");
+                    await DisplayAlert("Error", "HoraDeIngestaTimePicker no est√° inicializado correctamente.", "Aceptar");
+                    Debug.WriteLine("Error: HoraDeIngestaTimePicker no est√° inicializado.");
                     return;
                 }
                 else
                 if (HoraDeIngestaTimePicker == null)
                 {
-                    await DisplayAlert("Error", "HoraDeIngestaTimePicker no est· inicializado correctamente.", "Aceptar");
-                    Debug.WriteLine("Error: HoraDeIngestaTimePicker no est· inicializado.");
+                    await DisplayAlert("Error", "HoraDeIngestaTimePicker no est√° inicializado correctamente.", "Aceptar");
+                    Debug.WriteLine("Error: HoraDeIngestaTimePicker no est√° inicializado.");
                     return;
                 }
                 else if (HoraDeIngestaTimePicker.Time == TimeSpan.Zero)
                 {
-                    await DisplayAlert("Error", "Seleccione una hora de ingesta v·lida.", "Aceptar");
+                    await DisplayAlert("Error", "Seleccione una hora de ingesta v√°lida.", "Aceptar");
                     Debug.WriteLine($"Hora seleccionada: {HoraDeIngestaTimePicker.Time}");
                     return;
                 }
 
                 if (FechaDeInicioDatePicker.Date < DateTime.Today)
                 {
-                    await DisplayAlert("Error", "Seleccione una fecha de inicio v·lida", "Aceptar");
+                    await DisplayAlert("Error", "Seleccione una fecha de inicio v√°lida", "Aceptar");
                     Debug.WriteLine("Error: La fecha de inicio es anterior a la fecha actual.");
                     return;
                 }
 
                 if (FechaDeFinDatePicker.Date < DateTime.Today)
                 {
-                    await DisplayAlert("Error", "Seleccione una fecha de fin v·lida", "Aceptar");
+                    await DisplayAlert("Error", "Seleccione una fecha de fin v√°lida", "Aceptar");
                     Debug.WriteLine("Error: La fecha de fin es anterior a la fecha actual.");
                     return;
                 }
@@ -285,7 +285,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 if (string.IsNullOrEmpty(NotasEditor.Text))
                 {
                     await DisplayAlert("Error", "Ingrese notas", "Aceptar");
-                    Debug.WriteLine("Error: El campo de notas est· vacÌo.");
+                    Debug.WriteLine("Error: El campo de notas est√° vac√≠o.");
                     return;
                 }
 
@@ -314,7 +314,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
                 var response = await httpClient.PostAsync(LaURL + "/Ingresar_Medicamentos_Mascotas/Ingresar_Medicamentos_Mascotas", jsoncontent);
 
-                if (response.IsSuccessStatusCode) // saber si el API est· vivo
+                if (response.IsSuccessStatusCode) // saber si el API est√° vivo
                 {
                     Debug.WriteLine("Respuesta exitosa del servidor");
 
@@ -325,7 +325,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
 
                     if (res.resultado)
                     {
-                        Debug.WriteLine("El medicamento se registrÛ correctamente");
+                        Debug.WriteLine("El medicamento se registr√≥ correctamente");
 
                         await DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
                         await Navigation.PushAsync(new MainPage());
@@ -338,15 +338,16 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 }
                 else
                 {
-                    Debug.WriteLine("Error de conexiÛn: no se pudo conectar al servidor");
-                    await DisplayAlert("Error de conexiÛn", "OcurriÛ un error de conexiÛn", "Aceptar");
+                    Debug.WriteLine("Error de conexi√≥n: no se pudo conectar al servidor");
+                    await DisplayAlert("Error de conexi√≥n", "Ocurri√≥ un error de conexi√≥n", "Aceptar");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"ExcepciÛn: {ex.Message}");
+                Debug.WriteLine($"Excepci√≥n: {ex.Message}");
                 await DisplayAlert("Error", ex.Message, "Aceptar");
             }
         }
     }
 }
+
