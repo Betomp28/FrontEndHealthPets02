@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
              xmlns:local="clr-namespace:FrontEndHealthPets.Modelos"
-             Title="MisMascotas">
+             Title="Mis Mascotas">
     <ContentPage.BindingContext>
         <local:MascotasViewModel />
     </ContentPage.BindingContext>
@@ -46,7 +46,10 @@
                     </Grid>
                 </Grid>
 
-                <ListView ItemsSource="{Binding PerfilMascotas}">
+                <!-- Lista de Mascotas -->
+                <ListView ItemsSource="{Binding PerfilMascotas}"
+                          SelectedItem="{Binding SelectedMascota}"
+                          SelectionMode="None">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -59,6 +62,11 @@
                                     <StackLayout Grid.Column="1" VerticalOptions="Center">
                                         <Label Text="{Binding Name}" FontSize="Medium" />
                                         <Label Text="{Binding Description}" FontSize="Small" TextColor="Gray" />
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                        <Button Text="Ver Detalles" 
+                                                Command="{Binding Path=BindingContext.VerDetallesCommand, Source={x:Reference Name=ListViewMascotas}}"
+                                                CommandParameter="{Binding .}"/>
                                     </StackLayout>
                                 </Grid>
                             </ViewCell>

@@ -112,6 +112,9 @@
 	  <MauiXaml Update="Paginas\FlyPaginas\ClinicaVeterinaria.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		  </MauiXaml>
+	  <MauiXaml Update="Paginas\FlyPaginas\DetallesMascotaPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\Medicamentos.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
