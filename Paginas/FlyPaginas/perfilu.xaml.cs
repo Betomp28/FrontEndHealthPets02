@@ -134,10 +134,10 @@ public partial class perfilu : ContentPage
                 System.Diagnostics.Debug.WriteLine($"JSON enviado: {await jsonContent.ReadAsStringAsync()}");
 
                 // Depuración: URL usada para la solicitud DELETE
-                System.Diagnostics.Debug.WriteLine($"URL utilizada: {LaURL}/api/Eliminar_Usuario/EliminarUsuario?Id_Usuario={correoElectronico}");
+                System.Diagnostics.Debug.WriteLine($"URL utilizada: {LaURL}/Eliminar_Usuario/EliminarUsuario?Id_Usuario={correoElectronico}");
 
                 // Enviar la solicitud DELETE al endpoint
-                var response = await httpClient.DeleteAsync($"{LaURL}/api/Eliminar_Usuario/EliminarUsuario?Id_Usuario={correoElectronico}");
+                var response = await httpClient.DeleteAsync($"{LaURL}/Eliminar_Usuario/EliminarUsuario?correoElectronico={correoElectronico}");
 
                 // Depuración: Verifica el código de estado de la respuesta
                 System.Diagnostics.Debug.WriteLine($"Código de estado de la respuesta: {response.StatusCode}");
