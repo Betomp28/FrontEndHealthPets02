@@ -29,9 +29,7 @@
                 
                 <loca1:Pagina_Flyout_Items  Titulo="Baños"
                                             Icono="banos.png"
-
                                             TargetType="{x:Type local:Baheiros}" />
-
                 
                 <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
                                             Icono="clinica.png"
@@ -43,11 +41,9 @@
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
                                            Icono="inyeccion.png"
                                            TargetType="{x:Type local:VacunasPage}" />
-
                 <loca1:Pagina_Flyout_Items Titulo="Consultas"
                                            Icono="veterinary.png"
                                            TargetType="{x:Type local1:Consultas_Principal}" />
-
                
             </x:Array>
 
