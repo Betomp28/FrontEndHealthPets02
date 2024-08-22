@@ -233,6 +233,11 @@ public partial class perfilu : ContentPage
                     using var httpClient = new HttpClient();
                     Debug.WriteLine("Enviando la solicitud PUT...");
 
+                    // Añadir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token está guardado en Sesion
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    Debug.WriteLine($"Bearer Token: {token}");
+
                     var response = await httpClient.PutAsJsonAsync(requestUrl, req);
                     Debug.WriteLine($"Response Status Code: {response.StatusCode}");
 
