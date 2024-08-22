@@ -72,7 +72,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="ClosedXML" Version="0.104.0-preview2" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
 		<PackageReference Include="CustomSelectFileDlg" Version="1.0.0" />
+		<PackageReference Include="Intents" Version="1.0.6340.19472" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.6.24327.7" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />

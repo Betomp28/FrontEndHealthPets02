@@ -61,24 +61,20 @@
                                 </StackLayout>
                             </StackLayout>
                         </Grid>
-                        <Button Margin="0,20,0,0"
-                            x:Name="btRegresar"
-                            BackgroundColor="Purple"
-                            BorderColor="White"
-                            FontAttributes="Bold"
-                            TextColor="White"    
-                            FontSize="Medium"
-                            Text="Registrarse"
-                            Clicked="btRegresar_Clicked" />
-
+                       
     
                         
                         <StackLayout Padding="20">
                             <Label Text="Ingrese el correo electrónico para eliminar el usuario:" TextColor="Black" />
                             <Entry x:Name="CorreoEntry" TextColor="Aqua" Placeholder="Correo electrónico" />
                             <Button x:Name="bteliminar" Text="Eliminar" Clicked="bteliminar_Clicked_1" BackgroundColor="Purple" TextColor="White" />
-                            
                         </StackLayout>
+                        <Button 
+                                x:Name="Btcerrarsesion"
+                                Text="Cerrar Sesión" 
+                                BackgroundColor="Purple" 
+                               TextColor="White" 
+                                Clicked="Btcerrarsesion_Clicked" />
 
                     </VerticalStackLayout>
                 </VerticalStackLayout>
