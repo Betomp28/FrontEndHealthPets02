@@ -3,91 +3,97 @@
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
              xmlns:local="clr-namespace:FrontEndHealthPets.Modelos"
              Title="Mis Mascotas">
-    <ContentPage.BindingContext>
-        <local:MascotasViewModel />
-    </ContentPage.BindingContext>
-    <ScrollView>
-        <Frame 
-              Margin="20"
-              BackgroundColor="White" 
-              BorderColor="Purple">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
-                <!-- Sección: Encabezado "Mis Mascotas" -->
-                <Grid Grid.Row="0" Grid.Column="0" Padding="10">
-                    <Grid BackgroundColor="#f8fafb" Padding="4" Margin="0,0,0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Label 
-                 Grid.Column="0" 
-                 Text="Mis Mascotas" 
-                 FontSize="Large" 
-                 FontAttributes="Bold" 
-                 HorizontalTextAlignment="Center"
-                 VerticalOptions="Center" />
-                        <Button 
-                 Grid.Column="1" 
-                 ImageSource="Gear" 
-                 WidthRequest="24" 
-                 HeightRequest="24" 
-                 HorizontalOptions="End" 
-                 VerticalOptions="Center"/>
-                    </Grid>
-                </Grid>
+    <ContentPage.Resources>
+        <!-- Define estilo para los encabezados -->
+        <Style x:Key="HeaderStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="BackgroundColor" Value="Purple" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+    </ContentPage.Resources>
 
-                <!-- Lista de Mascotas -->
-                <ListView ItemsSource="{Binding PerfilMascotas}"
-                          SelectedItem="{Binding SelectedMascota}"
-                          SelectionMode="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid Padding="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0" Source="{Binding ImageSource}" WidthRequest="40" HeightRequest="40" VerticalOptions="Center" />
-                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
-                                        <Label Text="{Binding Name}" FontSize="Medium" />
-                                        <Label Text="{Binding Description}" FontSize="Small" TextColor="Gray" />
-                                    </StackLayout>
-                                    <StackLayout Grid.Column="2" VerticalOptions="Center">
-                                        <Button Text="Ver Detalles" 
-                                                Command="{Binding Path=BindingContext.VerDetallesCommand, Source={x:Reference Name=ListViewMascotas}}"
-                                                CommandParameter="{Binding .}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Header Row -->
+            <RowDefinition Height="*" />
+            <!-- Content Rows -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <!-- For Alignment -->
+            <ColumnDefinition Width="Auto" />
+            <!-- For Add Button -->
+        </Grid.ColumnDefinitions>
 
-                <!-- Sección: Botón "Agregar Nueva Mascota" al final -->
-                <Grid Grid.Row="3" Grid.Column="0" Padding="10" VerticalOptions="EndAndExpand">
-                    <Grid Padding="4" Margin="0,0,0,2">
-                        <Button 
-                  x:Name="btNuevaMascota"        
-                 Text="Agregar Nueva Mascota" 
-                 BackgroundColor="#368ce2" 
-                 TextColor="#f8fafb" 
-                 FontSize="Medium" 
-                 HorizontalOptions="FillAndExpand" 
-                 Clicked="btNuevaMascota_Clicked" />
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Frame>
-    </ScrollView>
+        <!-- Agregar Nueva Mascota Button -->
+        <Button Grid.Row="0" Grid.Column="1"
+                Text="Agregar Nueva Mascota"
+                BackgroundColor="#368ce2"
+                TextColor="White"
+                Clicked="btNuevaMascota_Clicked" />
+
+        <!-- Header Row -->
+        <Grid Grid.Row="0" Grid.Column="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource HeaderStyle}" Text="Imagen" />
+            <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource HeaderStyle}" Text="Nombre" />
+            <Label Grid.Row="0" Grid.Column="2" Style="{StaticResource HeaderStyle}" Text="Especie" />
+            <Label Grid.Row="0" Grid.Column="3" Style="{StaticResource HeaderStyle}" Text="Raza" />
+            <Label Grid.Row="0" Grid.Column="4" Style="{StaticResource HeaderStyle}" Text="Fecha de Nacimiento" />
+            <Label Grid.Row="0" Grid.Column="5" Style="{StaticResource HeaderStyle}" Text="Detalles" />
+        </Grid>
+
+        <!-- Data Rows -->
+        <ListView Grid.Row="1" Grid.Column="0"
+                  ItemsSource="{Binding PerfilMascotas}"
+                  SelectedItem="{Binding SelectedMascota}"
+                  SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <!-- Column for Image -->
+                                <ColumnDefinition Width="*" />
+                                <!-- Column for Name -->
+                                <ColumnDefinition Width="*" />
+                                <!-- Column for Species -->
+                                <ColumnDefinition Width="*" />
+                                <!-- Column for Breed -->
+                                <ColumnDefinition Width="*" />
+                                <!-- Column for Date of Birth -->
+                                <ColumnDefinition Width="Auto" />
+                                <!-- Column for Details Button -->
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="{Binding ImageSource}" WidthRequest="40" HeightRequest="40" />
+                            <Label Grid.Column="1" Text="{Binding Name}" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding Especie}" VerticalOptions="Center" />
+                            <Label Grid.Column="3" Text="{Binding Raza}" VerticalOptions="Center" />
+                            <Label Grid.Column="4" Text="{Binding Fecha_Nacimiento, StringFormat='{0:dd/MM/yyyy}'}" VerticalOptions="Center" />
+                            <Button Grid.Column="5" Text="Ver Detalles" Command="{Binding Path=BindingContext.VerDetallesCommand, Source={x:Reference ListViewMascotas}}" CommandParameter="{Binding .}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>

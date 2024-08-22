@@ -29,7 +29,6 @@ namespace FrontEndHealthPets.Modelos
             VerDetallesCommand = new Command<PerfilMascota>(OnVerDetalles);
         }
 
-        // Método para agregar un nuevo perfil de mascota
         public void AgregarPerfilMascota(PerfilMascota nuevoPerfil)
         {
             PerfilMascotas.Add(nuevoPerfil);
@@ -39,12 +38,10 @@ namespace FrontEndHealthPets.Modelos
         {
             if (mascota != null)
             {
-                // Navega a la página de detalles de la mascota
                 await Application.Current.MainPage.Navigation.PushAsync(new DetallesMascotaPage(mascota));
             }
         }
 
-        // Implementación de INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

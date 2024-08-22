@@ -6,49 +6,58 @@
              xmlns:loca1="clr-namespace:FrontEndHealthPets.Datos"
              xmlns:local1="clr-namespace:FrontEndHealthPets.Paginas.tabpage"
              Title="PaginaFlyMenu"
-             Padding="0,40,0,0" 
+             Padding="0,40,0,0"
              IconImageSource="hanburguer.png">
 
+    <!-- Fondo degradado de morado a azul -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#8A2BE2" Offset="0.0" />
+            <!-- Morado (BlueViolet) -->
+            <GradientStop Color="#00BFFF" Offset="1.0" />
+            <!-- Azul (DeepSkyBlue) -->
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
     <CollectionView x:Name="collectionView"
-                 x:FieldModifier="public"
-                 SelectionMode="Single">
+                    x:FieldModifier="public"
+                    SelectionMode="Single">
         <CollectionView.ItemsSource>
             <x:Array Type="{x:Type loca1:Pagina_Flyout_Items}">
-             
-                <loca1:Pagina_Flyout_Items  Titulo="Busqueda de Mascotas"
+                <loca1:Pagina_Flyout_Items Titulo="Busqueda de Mascotas"
                                             Icono="contacto.png"
                                             TargetType="{x:Type local:RazasAnimales}" />
-                
-                <loca1:Pagina_Flyout_Items  Titulo="Perfil Usuario"
+
+                <loca1:Pagina_Flyout_Items Titulo="Perfil Usuario"
                                             Icono="contacto.png"
                                             TargetType="{x:Type local:perfilu}" />
-                 
-                <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
+
+                <loca1:Pagina_Flyout_Items Titulo="Mis Mascotas"
                                             Icono="mascotas.png"
                                             TargetType="{x:Type local:MisMascotas}" />
-                
-                <loca1:Pagina_Flyout_Items  Titulo="Baños"
+
+                <loca1:Pagina_Flyout_Items Titulo="Baños"
                                             Icono="banos.png"
                                             TargetType="{x:Type local:Baheiros}" />
-                
-                <loca1:Pagina_Flyout_Items  Titulo="Clinica Veterinaria"
+
+                <loca1:Pagina_Flyout_Items Titulo="Clinica Veterinaria"
                                             Icono="clinica.png"
                                             TargetType="{x:Type local:ClinicaVeterinaria}" />
-                <loca1:Pagina_Flyout_Items  Titulo="Medicamentos"
+
+                <loca1:Pagina_Flyout_Items Titulo="Medicamentos"
                                             Icono="medicamentos.png"
                                             TargetType="{x:Type local:Medicamentos}" />
 
                 <loca1:Pagina_Flyout_Items Titulo="Vacunas"
-                                           Icono="inyeccion.png"
-                                           TargetType="{x:Type local:VacunasPage}" />
-                <loca1:Pagina_Flyout_Items Titulo="Consultas"
-                                           Icono="veterinary.png"
-                                           TargetType="{x:Type local1:Consultas_Principal}" />
-               
-            </x:Array>
+                                            Icono="inyeccion.png"
+                                            TargetType="{x:Type local:VacunasPage}" />
 
-            
+                <loca1:Pagina_Flyout_Items Titulo="Consultas"
+                                            Icono="veterinary.png"
+                                            TargetType="{x:Type local1:Consultas_Principal}" />
+            </x:Array>
         </CollectionView.ItemsSource>
+
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <Grid Padding="5,10">
@@ -58,11 +67,13 @@
                     </Grid.ColumnDefinitions>
                     <Image Source="{Binding Icono}" />
                     <Label Grid.Column="1"
-                        Margin="20,0"
-                        Text="{Binding Titulo}"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        VerticalOptions="Center" />
+                           Margin="20,0"
+                           Text="{Binding Titulo}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           TextColor="White" />
+                    <!-- Color del texto en blanco -->
                 </Grid>
             </DataTemplate>
         </CollectionView.ItemTemplate>

@@ -4,14 +4,14 @@
              x:Class="FrontEndHealthPets.Paginas.PagFlyPrincipal"
              xmlns:local="clr-namespace:FrontEndHealthPets.Paginas.FlyPaginas"
              xmlns:loca2="clr-namespace:FrontEndHealthPets.Paginas"
-             Title="PagFly"  >
+             Title="PagFly">
 
-    <FlyoutPage.Flyout >
+    <FlyoutPage.Flyout>
         <loca2:PaginaFlyMenu x:Name="flyoutPage" />
     </FlyoutPage.Flyout>
 
     <FlyoutPage.Detail>
-        <NavigationPage>
+        <NavigationPage BarBackgroundColor="Purple" BarTextColor="White">
             <x:Arguments>
                 <local:RazasAnimales/>
             </x:Arguments>
