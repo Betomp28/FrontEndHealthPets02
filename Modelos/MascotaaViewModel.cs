@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using FrontEndHealthPets.Modelos;
+using Microsoft.Maui.Controls;
+using FrontEndHealthPets.Paginas.FlyPaginas;
 
 namespace FrontEndHealthPets.Modelos
 {
@@ -19,83 +21,30 @@ namespace FrontEndHealthPets.Modelos
             }
         }
 
+        public ICommand VerDetallesCommand { get; }
+
         public MascotasViewModel()
         {
             PerfilMascotas = new ObservableCollection<PerfilMascota>();
+            VerDetallesCommand = new Command<PerfilMascota>(OnVerDetalles);
         }
 
+        // Método para agregar un nuevo perfil de mascota
         public void AgregarPerfilMascota(PerfilMascota nuevoPerfil)
         {
             PerfilMascotas.Add(nuevoPerfil);
         }
 
-        private int id_Mascota;
-        private Int64 id_Usuario;
-        private string nombre;
-        private string especie;
-        private string raza;
-        private DateTime fecha_Nacimiento;
-
-        public int Id_Mascota
+        private async void OnVerDetalles(PerfilMascota mascota)
         {
-            get => id_Mascota;
-            set
+            if (mascota != null)
             {
-                id_Mascota = value;
-                OnPropertyChanged(nameof(Id_Mascota));
+                // Navega a la página de detalles de la mascota
+                await Application.Current.MainPage.Navigation.PushAsync(new DetallesMascotaPage(mascota));
             }
         }
 
-        public Int64 Id_Usuario
-        {
-            get => id_Usuario;
-            set
-            {
-                id_Usuario = value;
-                OnPropertyChanged(nameof(Id_Usuario));
-            }
-        }
-
-        public string Nombre
-        {
-            get => nombre;
-            set
-            {
-                nombre = value;
-                OnPropertyChanged(nameof(Nombre));
-            }
-        }
-
-        public string Especie
-        {
-            get => especie;
-            set
-            {
-                especie = value;
-                OnPropertyChanged(nameof(Especie));
-            }
-        }
-
-        public string Raza
-        {
-            get => raza;
-            set
-            {
-                raza = value;
-                OnPropertyChanged(nameof(Raza));
-            }
-        }
-
-        public DateTime Fecha_Nacimiento
-        {
-            get => fecha_Nacimiento;
-            set
-            {
-                fecha_Nacimiento = value;
-                OnPropertyChanged(nameof(Fecha_Nacimiento));
-            }
-        }
-
+        // Implementación de INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
