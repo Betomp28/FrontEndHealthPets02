@@ -16,6 +16,7 @@ public partial class IngresarMascotas : ContentPage
     public IngresarMascotas()
     {
         InitializeComponent();
+        BindingContext = new MascotasViewModel(); // Asignar el ViewModel si no lo has hecho ya
     }
 
     private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
@@ -123,7 +124,7 @@ public partial class IngresarMascotas : ContentPage
                 {
                     await DisplayActionSheet("Registro", "Mascota Registrada", "Aceptar");
 
-                    // Crear nuevo perfil de mascota
+                    // Crear un nuevo perfil de mascota
                     var nuevoPerfil = new PerfilMascota
                     {
                         Name = req.Registro_Mascota.Nombre,
@@ -131,10 +132,19 @@ public partial class IngresarMascotas : ContentPage
                         ImageSource = ImageSource.FromStream(() => new MemoryStream(imagenSeleccionadaMemoryStream.ToArray()))
                     };
 
-                    var viewModel = BindingContext as MascotasViewModel;
-                    viewModel?.AgregarPerfilMascota(nuevoPerfil);
+                    Debug.WriteLine("Perfil de mascota creado. Nombre: " + nuevoPerfil.Name + ", Descripción: " + nuevoPerfil.Description);
 
-                    // Subir la foto de perfil
+                    var viewModel = BindingContext as MascotasViewModel;
+                    if (viewModel != null)
+                    {
+                        viewModel.AgregarPerfilMascota(nuevoPerfil);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("BindingContext es nulo, no se pudo agregar el perfil de la mascota.");
+                    }
+
+                    // Verificar si hay imagen seleccionada
                     if (imagenSeleccionadaMemoryStream != null)
                     {
                         Debug.WriteLine("Imagen seleccionada, procediendo a subirla.");
@@ -147,9 +157,9 @@ public partial class IngresarMascotas : ContentPage
                             return;
                         }
 
-                        Debug.WriteLine("Imagen convertida a bytes.");
-                        Debug.WriteLine("Tamaño de la imagen en bytes: " + imagenBytes.Length);
+                        Debug.WriteLine("Imagen convertida a bytes. Tamaño de la imagen en bytes: " + imagenBytes.Length);
 
+                        // Preparar solicitud de foto
                         var reqFoto = new Req_FotosMascota
                         {
                             FotosMascotas = new FotosMascota
@@ -159,7 +169,10 @@ public partial class IngresarMascotas : ContentPage
                                 Descripcion = "Foto de perfil"
                             }
                         };
+                        //asta aui 
+                        Debug.WriteLine("Solicitud de foto preparada. ID de la mascota: " + reqFoto.FotosMascotas.Id_Mascota);
 
+                        // Enviar la foto al servidor
                         var resultadoFoto = await EnviarFotoAlServidor(reqFoto);
                         Debug.WriteLine("Resultado de la subida de la foto: " + resultadoFoto.resultado);
 
@@ -173,7 +186,9 @@ public partial class IngresarMascotas : ContentPage
                         Debug.WriteLine("No se seleccionó una imagen.");
                     }
 
-                    await Navigation.PushAsync(new MisMascotas());
+                    // Navegar a la página MisMascotas
+                    Debug.WriteLine("Navegando a la página MisMascotas.");
+                    await Navigation.PushAsync(new MisMascotas { BindingContext = this.BindingContext });
                 }
                 else
                 {
