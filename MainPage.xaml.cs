@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Views;
+using DocumentFormat.OpenXml.Drawing;
 using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.Response;
@@ -7,6 +9,14 @@ using FrontEndHealthPets.Paginas.tabpage;
 
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
+using System.Net.Http;
+using FrontEndHealthPets.Entidades;
+using FrontEndHealthPets.Entidades.entitys;
+
+
 
 namespace FrontEndHealthPets
 {
@@ -21,7 +31,7 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-            
+
             try
             {
                 // Validación de campos de inicio de sesión
@@ -88,21 +98,134 @@ namespace FrontEndHealthPets
 
         }
 
-
-
-
-
-
-
-
-        private void btregistrarse_Clicked(object sender, EventArgs e)
+        public class RecuperarPasswordPopup : Popup
         {
-            Navigation.PushAsync(new Registro());
+            private static readonly HttpClient httpClient = new HttpClient();
+            private string laURL;
+
+            public RecuperarPasswordPopup(string url)
+            {
+                laURL = url;
+
+                var emailEntry = new Entry { Placeholder = "Ingrese su correo electrónico", Keyboard = Keyboard.Email };
+                var nuevaContrasenaEntry = new Entry { Placeholder = "Ingrese nueva contraseña", IsPassword = true };
+                var confirmarContrasenaEntry = new Entry { Placeholder = "Confirme su contraseña", IsPassword = true };
+                var enviarButton = new Button { Text = "Enviar", BackgroundColor = Colors.Purple, TextColor = Colors.White };
+
+                enviarButton.Clicked += async (sender, e) =>
+                {
+                    var email = emailEntry.Text;
+                    var nuevaContrasena = nuevaContrasenaEntry.Text;
+                    var confirmarContrasena = confirmarContrasenaEntry.Text;
+
+                    if (string.IsNullOrEmpty(email))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "El correo electrónico es obligatorio.", "OK");
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(nuevaContrasena) || string.IsNullOrEmpty(confirmarContrasena))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "Las contraseñas son obligatorias.", "OK");
+                        return;
+                    }
+
+                    if (nuevaContrasena != confirmarContrasena)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "Las contraseñas no coinciden.", "OK");
+                        return;
+                    }
+
+                    Req_RecuperarPassword req = new Req_RecuperarPassword
+                    {
+                        recuperarPassword = new RecuperarPassword
+                        {
+                            CorreoElectronico = email,
+                            NuevoPassword = nuevaContrasena,
+                            ConfirmarPassword = confirmarContrasena
+                        }
+                    };
+
+                    try
+                    {
+                        var requestUrl = $"{laURL}/Nueva_Password/RecuperarPassword";
+                        Debug.WriteLine($"Request URL: {requestUrl}");
+
+                        if (string.IsNullOrEmpty(laURL))
+                        {
+                            Debug.WriteLine("Error: La URL está vacía o no es válida.");
+                            await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
+                            return;
+                        }
+
+                       
+                       
+
+                        var jsonContent = JsonConvert.SerializeObject(req);
+                        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                        Debug.WriteLine("Enviando la solicitud PUT...");
+                        var response = await httpClient.PutAsync(requestUrl, content);
+                        Debug.WriteLine($"Response Status Code: {response.StatusCode}");
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            Debug.WriteLine($"Error: La solicitud falló con el código de estado {response.StatusCode}");
+                            var errorContent = await response.Content.ReadAsStringAsync();
+                            Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
+                            await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
+                            return;
+                        }
+
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine($"Response JSON: {jsonString}");
+
+                        await Application.Current.MainPage.DisplayAlert("Éxito", "Datos actualizados correctamente.", "OK");
+                        Close();
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Debug.WriteLine($"Error de deserialización: {jsonEx.Message}");
+                        await Application.Current.MainPage.DisplayAlert("Error", "Hubo un problema al procesar la respuesta del servidor.", "OK");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Excepción inesperada: {ex.Message}");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
+                    }
+                };
+
+                Content = new StackLayout
+                {
+                    Padding = 20,
+                    Spacing = 15,
+                    Children =
+            {
+                emailEntry,
+                nuevaContrasenaEntry,
+                confirmarContrasenaEntry,
+                enviarButton
+            },
+                    WidthRequest = 300,
+                    HeightRequest = 400
+                };
+            }
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
-        {
 
+
+
+
+        private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+        {
+            var popup = new RecuperarPasswordPopup(laURL); // Usa la URL definida en MainPage
+            await Application.Current.MainPage.ShowPopupAsync(popup);
+        }
+
+        private async void btregistrarse_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Registro());
         }
     }
 }
+    
