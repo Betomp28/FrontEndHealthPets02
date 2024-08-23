@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.DetallesMascotaPage"
              Title="Detalles de la Mascota">
-    <StackLayout Padding="10">
+ <StackLayout Padding="10">
         <!-- Imagen de la mascota -->
         <Image Source="{Binding Mascota.ImageSource}" 
                HeightRequest="200" 
@@ -30,4 +30,5 @@
                FontSize="Medium" 
                HorizontalOptions="Center" />
     </StackLayout>
+
 </ContentPage>

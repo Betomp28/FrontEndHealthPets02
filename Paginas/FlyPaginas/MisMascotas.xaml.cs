@@ -22,5 +22,5 @@ public partial class MisMascotas : ContentPage
     private void btNuevaMascota_Clicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new IngresarMascotas());
-    }
+    }
 }

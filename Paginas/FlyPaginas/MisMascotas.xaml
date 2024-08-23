@@ -4,7 +4,6 @@
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
              xmlns:local="clr-namespace:FrontEndHealthPets.Modelos"
              Title="Mis Mascotas">
-
     <ContentPage.Resources>
         <Style x:Key="HeaderStyle" TargetType="Label">
             <Setter Property="FontSize" Value="16" />
