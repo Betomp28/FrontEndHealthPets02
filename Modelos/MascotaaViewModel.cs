@@ -4,12 +4,22 @@ using System.Windows.Input;
 using FrontEndHealthPets.Modelos;
 using Microsoft.Maui.Controls;
 using FrontEndHealthPets.Paginas.FlyPaginas;
+using System.Diagnostics;
+using System.Net.Http;
+using Newtonsoft.Json;
+using FrontEndHealthPets.Entidades;
+using FrontEndHealthPets.Entidades.response;
+using FrontEndHealthPets.Entidades.Entitys;
+
+
 
 namespace FrontEndHealthPets.Modelos
 {
     public class MascotasViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<PerfilMascota> perfilMascotas;
+        private readonly HttpClient _httpClient;
+        private const string ApiUrl = "https://localhost:44348/api";
 
         public ObservableCollection<PerfilMascota> PerfilMascotas
         {
@@ -27,11 +37,72 @@ namespace FrontEndHealthPets.Modelos
         {
             PerfilMascotas = new ObservableCollection<PerfilMascota>();
             VerDetallesCommand = new Command<PerfilMascota>(OnVerDetalles);
+
+            _httpClient = new HttpClient(); // Inicializa HttpClient
+
+            // Cargar las mascotas al iniciar el ViewModel
+            CargarMascotasRegistradas();
         }
 
-        public void AgregarPerfilMascota(PerfilMascota nuevoPerfil)
+        public async void CargarMascotasRegistradas()
         {
-            PerfilMascotas.Add(nuevoPerfil);
+            try
+            {
+                int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesión
+                var mascotas = await ObtenerMascotasDelUsuarioAsync(id_usuario);
+
+                foreach (var mascota in mascotas)
+                {
+                    // Convierte el objeto de respuesta a PerfilMascota y agrégalo a la colección
+                    var perfilMascota = new PerfilMascota
+                    {
+                        Name = mascota.Nombre,
+                        Especie = mascota.especie,
+                        Raza = mascota.raza,
+                        Fecha_Nacimiento = mascota.Fecha_Nacimiento,
+                       // ImageSource = ImageSource.FromStream(() => new MemoryStream(mascota.foto)) // Si tienes una imagen en formato byte[]
+                    };
+                    PerfilMascotas.Add(perfilMascota);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al cargar las mascotas: {ex.Message}");
+            }
+        }
+
+        private async Task<List<Registro_Mascota>> ObtenerMascotasDelUsuarioAsync(int id_usuario)
+        {
+            try
+            {
+                var requestUrl = $"{ApiUrl}/Lista_Mascotas/Obtener_Lista_Mascotas?id_usuario={id_usuario}";
+                var response = await _httpClient.GetAsync(requestUrl);
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<Res_Lista_mascotas>(jsonString);
+
+                if (result.resultado)
+                {
+                    return result.ListaMascotas;
+                }
+                else
+                {
+                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    return new List<Registro_Mascota>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"HttpRequestException: {ex.Message}");
+                return new List<Registro_Mascota>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception: {ex.Message}");
+                return new List<Registro_Mascota>();
+            }
         }
 
         private async void OnVerDetalles(PerfilMascota mascota)
