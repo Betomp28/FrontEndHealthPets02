@@ -71,19 +71,19 @@ public partial class IngresarMascotas : ContentPage
             if (string.IsNullOrEmpty(Nombre.Text))
             {
                 Debug.WriteLine("Error: Nombre vacío");
-                DisplayAlert("Error", "Nombre vacío", "Aceptar");
+                await DisplayAlert("Error", "Nombre vacío", "Aceptar");
                 return;
             }
             else if (string.IsNullOrEmpty(Especie.Text))
             {
                 Debug.WriteLine("Error: Especie vacía");
-                DisplayAlert("Error", "Especie vacía", "Aceptar");
+                await DisplayAlert("Error", "Especie vacía", "Aceptar");
                 return;
             }
             else if (string.IsNullOrEmpty(Raza.Text))
             {
                 Debug.WriteLine("Error: Raza vacía");
-                DisplayAlert("Error", "Raza vacía", "Aceptar");
+                await DisplayAlert("Error", "Por favor ingrese la raza de la mascota", "Aceptar");
                 return;
             }
             else if (fechaNacimiento == DateTime.MinValue)
@@ -124,26 +124,6 @@ public partial class IngresarMascotas : ContentPage
                 {
                     await DisplayActionSheet("Registro", "Mascota Registrada", "Aceptar");
 
-                    // Crear un nuevo perfil de mascota
-                    var nuevoPerfil = new PerfilMascota
-                    {
-                        Name = req.Registro_Mascota.Nombre,
-                        Description = req.Registro_Mascota.raza + " - " + req.Registro_Mascota.especie,
-                        ImageSource = ImageSource.FromStream(() => new MemoryStream(imagenSeleccionadaMemoryStream.ToArray()))
-                    };
-
-                    Debug.WriteLine("Perfil de mascota creado. Nombre: " + nuevoPerfil.Name + ", Descripción: " + nuevoPerfil.Description);
-
-                    var viewModel = BindingContext as MascotasViewModel;
-                    if (viewModel != null)
-                    {
-                        viewModel.AgregarPerfilMascota(nuevoPerfil);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("BindingContext es nulo, no se pudo agregar el perfil de la mascota.");
-                    }
-
                     // Verificar si hay imagen seleccionada
                     if (imagenSeleccionadaMemoryStream != null)
                     {
@@ -169,7 +149,6 @@ public partial class IngresarMascotas : ContentPage
                                 Descripcion = "Foto de perfil"
                             }
                         };
-                        //asta aui 
                         Debug.WriteLine("Solicitud de foto preparada. ID de la mascota: " + reqFoto.FotosMascotas.Id_Mascota);
 
                         // Enviar la foto al servidor
@@ -209,8 +188,7 @@ public partial class IngresarMascotas : ContentPage
         }
     }
 
-
-    private async Task<Res_FotosMascotas> EnviarFotoAlServidor(Req_FotosMascota req)
+        private async Task<Res_FotosMascotas> EnviarFotoAlServidor(Req_FotosMascota req)
     {
         var jsoncontent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
         Debug.WriteLine("Enviando foto al servidor.");

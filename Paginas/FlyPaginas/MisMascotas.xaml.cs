@@ -1,17 +1,29 @@
 using FrontEndHealthPets.Modelos;
+using Microsoft.Maui.Controls;
 
 namespace FrontEndHealthPets.Paginas.FlyPaginas;
 
 public partial class MisMascotas : ContentPage
 {
-	public MisMascotas()
-	{
-		InitializeComponent();
-        BindingContext = new MascotasViewModel(); // Establecer el BindingContext
+    private MascotasViewModel ViewModel => (MascotasViewModel)BindingContext;
+
+    public MisMascotas()
+    {
+        InitializeComponent();
+        BindingContext = new MascotasViewModel(); // Establece el BindingContext
     }
 
-    private void btNuevaMascota_Clicked(object sender, EventArgs e)
+    protected override  void OnAppearing()
     {
-		Navigation.PushAsync(new IngresarMascotas());
+        base.OnAppearing();
+        // Llama al método para cargar las mascotas
+         ViewModel.CargarMascotasRegistradas();
+    }
+
+
+
+    private async void btNuevaMascota_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new IngresarMascotas());
     }
 }
