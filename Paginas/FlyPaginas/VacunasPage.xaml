@@ -5,19 +5,25 @@
              Title="Vacunas">
 
     <ContentPage.BackgroundImageSource>
-        <FileImageSource File="fondomascota2.jpg" />
+        <FileImageSource File="fondovacuna.jpeg" />
     </ContentPage.BackgroundImageSource>
 
     <StackLayout VerticalOptions="Center">
+        <Label Text="Vacunas"
+                FontSize="Large"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="White" />
+        
         <Button Text="Agregar Vacuna"
                 BackgroundColor="#128ba7"  
-            TextColor="White"
+                TextColor="White"
                 FontAttributes="Bold"
-            FontSize="Medium"
+                FontSize="Medium"
                 CornerRadius="20"
                 HorizontalOptions="Center"
                 WidthRequest="250"
-            Clicked="OnAddVaccineClicked" />
+                Clicked="OnAddVaccineClicked" />
 
             <Button Text="Asignar vacuna a mascota"
                 BackgroundColor="#128ba7"  
