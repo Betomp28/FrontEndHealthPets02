@@ -5,22 +5,25 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas;
 
 public partial class MisMascotas : ContentPage
 {
+    private MascotasViewModel ViewModel => (MascotasViewModel)BindingContext;
+
     public MisMascotas()
     {
         InitializeComponent();
-        BindingContext = new MascotasViewModel(); // Establecer el BindingContext
+        BindingContext = new MascotasViewModel(); // Establece el BindingContext
     }
 
-    private async void MascotaSeleccionada(object sender, SelectedItemChangedEventArgs e)
+    protected override  void OnAppearing()
     {
-        if (e.SelectedItem is PerfilMascota mascotaSeleccionada)
-        {
-            await Navigation.PushAsync(new DetallesMascotaPage(mascotaSeleccionada));
-        }
+        base.OnAppearing();
+        // Llama al método para cargar las mascotas
+         ViewModel.CargarMascotasRegistradas();
     }
 
-    private void btNuevaMascota_Clicked(object sender, EventArgs e)
+
+
+    private async void btNuevaMascota_Clicked(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new IngresarMascotas());
-    }
+        await Navigation.PushAsync(new IngresarMascotas());
+    }
 }
