@@ -21,7 +21,6 @@ namespace FrontEndHealthPets
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new PagFlyPrincipal());
             try
             {
                 // Validación de campos de inicio de sesión

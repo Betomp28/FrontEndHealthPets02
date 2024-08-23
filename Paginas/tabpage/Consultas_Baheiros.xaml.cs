@@ -76,8 +76,8 @@ namespace FrontEndHealthPets.Paginas.tabpage
                 }
                 else
                 {
-                    Debug.WriteLine($"Error en la API: {result.Error}");
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
+                    Debug.WriteLine($"Error en la API: {result.error}");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
                     return new List<Registro_Mascota>();
                 }
             }
@@ -147,8 +147,8 @@ namespace FrontEndHealthPets.Paginas.tabpage
                 }
                 else
                 {
-                    Debug.WriteLine($"API result failed with error: {result.Error ?? "Desconocido"}");
-                    await DisplayAlert("Error", $"Error en la API: {result.Error ?? "Desconocido"}", "OK");
+                    Debug.WriteLine($"API result failed with error: {result.error ?? "Desconocido"}");
+                    await DisplayAlert("Error", $"Error en la API: {result.error ?? "Desconocido"}", "OK");
                 }
             }
             catch (HttpRequestException ex)

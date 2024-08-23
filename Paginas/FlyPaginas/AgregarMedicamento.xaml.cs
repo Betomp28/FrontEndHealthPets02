@@ -78,7 +78,7 @@ public partial class AgregarMedicamento : ContentPage
                 }
                 else
                 {
-                    DisplayAlert("Error", res.Error, "Aceptar");// Error en backend", "Login incorrecto!", "Aceptar" agregar luego
+                    DisplayAlert("Error", res.error, "Aceptar");// Error en backend", "Login incorrecto!", "Aceptar" agregar luego
 
                 }
             }

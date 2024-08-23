@@ -178,7 +178,7 @@ public partial class IngresarMascotas : ContentPage
 
                         if (!resultadoFoto.resultado)
                         {
-                            await DisplayAlert("Error", resultadoFoto.Error, "Aceptar");
+                            await DisplayAlert("Error", resultadoFoto.error, "Aceptar");
                         }
                     }
                     else
@@ -192,8 +192,8 @@ public partial class IngresarMascotas : ContentPage
                 }
                 else
                 {
-                    Debug.WriteLine("Error al registrar la mascota: " + res.Error);
-                    await DisplayAlert("Error", res.Error, "Aceptar");
+                    Debug.WriteLine("Error al registrar la mascota: " + res.error);
+                    await DisplayAlert("Error", res.error, "Aceptar");
                 }
             }
             else
@@ -227,7 +227,7 @@ public partial class IngresarMascotas : ContentPage
         else
         {
             Debug.WriteLine("Error al enviar la foto al servidor.");
-            return new Res_FotosMascotas { resultado = false, Error = "Error en el servidor" };
+            return new Res_FotosMascotas { resultado = false, error = "Error en el servidor" };
         }
     }
 

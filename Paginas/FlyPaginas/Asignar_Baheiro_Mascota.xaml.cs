@@ -94,8 +94,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 }
                 else
                 {
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
-                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
+                    Debug.WriteLine($"Error en la API: {result.error}");
                     return new List<Registro_Mascota>();
                 }
             }
@@ -131,8 +131,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 }
                 else
                 {
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
-                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
+                    Debug.WriteLine($"Error en la API: {result.error}");
                     return new List<Baheiro>();
                 }
             }
@@ -257,8 +257,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     }
                     else
                     {
-                        Debug.WriteLine($"Error en el backend: {res.Error}");
-                        await DisplayAlert("Error", res.Error, "Aceptar");
+                        Debug.WriteLine($"Error en el backend: {res.error}");
+                        await DisplayAlert("Error", res.error, "Aceptar");
                     }
                 }
                 else

@@ -9,10 +9,9 @@ namespace FrontEndHealthPets.Entidades.Response
     public  class Res_Base
     {
 
-        public bool resultado { get; set; }
+        public Boolean resultado { get; set; }
+        public string error { get; set; }
 
-        public string Error { get; set; }
 
-        
     }
 }

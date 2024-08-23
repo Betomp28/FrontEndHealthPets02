@@ -157,8 +157,8 @@ public partial class perfilu : ContentPage
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"Error al eliminar usuario: {res.Error}");
-                        await DisplayAlert("Error", res.Error ?? "No se pudo eliminar el usuario", "Aceptar");
+                        System.Diagnostics.Debug.WriteLine($"Error al eliminar usuario: {res.error}");
+                        await DisplayAlert("Error", res.error ?? "No se pudo eliminar el usuario", "Aceptar");
                     }
                 }
                 else if (response.StatusCode == HttpStatusCode.Unauthorized)
