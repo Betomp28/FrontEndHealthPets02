@@ -48,12 +48,12 @@ namespace FrontEndHealthPets.Modelos
         {
             try
             {
-                int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesión
+                int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesiÃ³n
                 var mascotas = await ObtenerMascotasDelUsuarioAsync(id_usuario);
 
                 foreach (var mascota in mascotas)
                 {
-                    // Convierte el objeto de respuesta a PerfilMascota y agrégalo a la colección
+                    // Convierte el objeto de respuesta a PerfilMascota y agrÃ©galo a la colecciÃ³n
                     var perfilMascota = new PerfilMascota
                     {
                         Name = mascota.Nombre,
