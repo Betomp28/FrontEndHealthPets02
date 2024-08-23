@@ -24,13 +24,13 @@ public partial class ClinicaVeterinaria : ContentPage
 
     private async void BtMostrarCita_Clicked(object sender, EventArgs e)
     {
-        try
-        {
-            await Navigation.PushAsync(new MostrarCitas());
-        }
-        catch (Exception ex)
-        {
-        }
+        //try
+        //{
+        //    await Navigation.PushAsync(new MostrarCitas());
+        //}
+        //catch (Exception ex)
+        //{
+        //}
     }
 
 }

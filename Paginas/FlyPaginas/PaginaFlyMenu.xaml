@@ -12,9 +12,9 @@
     <!-- Fondo degradado de morado a azul -->
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#8A2BE2" Offset="0.0" />
+            <GradientStop Color="#66335e" Offset="0.0" />
             <!-- Morado (BlueViolet) -->
-            <GradientStop Color="#00BFFF" Offset="1.0" />
+            <GradientStop Color="#128ba6" Offset="1.0" />
             <!-- Azul (DeepSkyBlue) -->
         </LinearGradientBrush>
     </ContentPage.Background>
