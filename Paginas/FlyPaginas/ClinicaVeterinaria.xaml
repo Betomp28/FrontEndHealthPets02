@@ -6,6 +6,10 @@
     Title="ClinicaVeterinaria"
     BackgroundColor="Purple">
 
+    <ContentPage.BackgroundImageSource>
+        <FileImageSource File="fondomascota2.jpeg" />
+    </ContentPage.BackgroundImageSource>
+
     <Frame 
         HeightRequest="400" 
         WidthRequest="600">
@@ -75,7 +79,7 @@
                 Grid.Column="0" 
                 Text="Agregar" 
                 Clicked="Agregar_Clicked" 
-                BackgroundColor="Purple" 
+                BackgroundColor="#128ba7" 
                 TextColor="White" 
                 Margin="45" 
                 Grid.Row="4" />

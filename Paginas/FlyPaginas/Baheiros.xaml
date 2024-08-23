@@ -5,7 +5,7 @@
              Title="Baños">
     
     <ContentPage.BackgroundImageSource>
-        <FileImageSource File="fondomascota2.jpg" />
+        <FileImageSource File="fondobanos.jpg" />
     </ContentPage.BackgroundImageSource>
 
     <Grid>
