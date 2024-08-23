@@ -2,8 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.DetallesMascotaPage"
              Title="Detalles de la Mascota">
-
-    <StackLayout Padding="10">
+ <StackLayout Padding="10">
         <!-- Imagen de la mascota -->
         <Image Source="{Binding Mascota.ImageSource}" 
                HeightRequest="200" 
@@ -30,6 +29,6 @@
         <Label Text="{Binding Mascota.Fecha_Nacimiento, StringFormat='Fecha de Nacimiento: {0:dd/MM/yyyy}'}" 
                FontSize="Medium" 
                HorizontalOptions="Center" />
-
     </StackLayout>
+
 </ContentPage>

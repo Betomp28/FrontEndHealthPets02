@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.FlyPaginas.Baheiros"
-             Title="Baheiros">
+             Title="Baños">
+    
+    <ContentPage.BackgroundImageSource>
+        <FileImageSource File="fondomascota2.jpg" />
+    </ContentPage.BackgroundImageSource>
+
     <Grid>
-        <!-- Imagen de fondo -->
-        <Image Source="fondomascota.jpg"
-            Aspect="AspectFill"
-            VerticalOptions="FillAndExpand"
-            HorizontalOptions="FillAndExpand" />
 
         <!-- Contenido principal -->
         <ScrollView>
@@ -27,8 +27,9 @@
                 <Button 
                      x:Name="BTAsignarBaheiro"
                      Text="Asignar Nuevo Baño"
-                     BackgroundColor="Purple"
+                     BackgroundColor="#128ba7"
                      TextColor="White"
+                    FontAttributes="Bold"
                      FontSize="Medium"
                      CornerRadius="20"
                      HorizontalOptions="Center"
