@@ -28,8 +28,8 @@ public partial class perfilu : ContentPage
         {
             Nombre = Sesion.nombre,
             Apellido = Sesion.apellidos,
-            CorreoElectronico = Sesion.Correo_Electronico, // Aseg˙rate de tener este dato almacenado en la sesiÛn si lo necesitas
-            Password = Sesion.Password // Aseg˙rate de tener este dato almacenado en la sesiÛn si lo necesitas
+            CorreoElectronico = Sesion.Correo_Electronico, // Aseg√∫rate de tener este dato almacenado en la sesi√≥n si lo necesitas
+            Password = Sesion.Password // Aseg√∫rate de tener este dato almacenado en la sesi√≥n si lo necesitas
         };
 
 
@@ -48,11 +48,11 @@ public partial class perfilu : ContentPage
     {
         try
         {
-            // Abre la galerÌa para seleccionar una imagen
+            // Abre la galer√≠a para seleccionar una imagen
             var result = await FilePicker.Default.PickAsync(new PickOptions
             {
                 PickerTitle = "Selecciona una foto de perfil",
-                FileTypes = FilePickerFileType.Images // Filtra solo im·genes
+                FileTypes = FilePickerFileType.Images // Filtra solo im√°genes
             });
 
             if (result != null)
@@ -75,7 +75,7 @@ public partial class perfilu : ContentPage
 
     private async void BtActualizarNombre_Clicked(object sender, EventArgs e)
     {
-        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquÌ
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aqu√≠
         if (viewModel != null)
         {
             var popup = new EditarDatosPopup(viewModel, "Nombre");
@@ -85,7 +85,7 @@ public partial class perfilu : ContentPage
 
     private async void BtActualizarApeliido_Clicked(object sender, EventArgs e)
     {
-        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquÌ
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aqu√≠
         if (viewModel != null)
         {
             var popup = new EditarDatosPopup(viewModel, "Apellidos");
@@ -96,7 +96,7 @@ public partial class perfilu : ContentPage
 
     private async void BtActualizarCooreo_Clicked(object sender, EventArgs e)
     {
-        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquÌ
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aqu√≠
         if (viewModel != null)
         {
             var popup = new EditarDatosPopup(viewModel, "Correo");
@@ -108,7 +108,7 @@ public partial class perfilu : ContentPage
 
     private async void BtActualizarPassword_Clicked(object sender, EventArgs e)
     {
-        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquÌ
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aqu√≠
         if (viewModel != null)
         {
             var popup = new EditarDatosPopup(viewModel, "Password");
@@ -145,19 +145,19 @@ public partial class perfilu : ContentPage
                     break;
 
                 case "Correo":
-                    labelText = "Actualizar Correo ElectrÛnico";
-                    placeholder1 = "Correo ElectrÛnico";
-                    placeholder2 = "Confirmar Correo ElectrÛnico";
+                    labelText = "Actualizar Correo Electr√≥nico";
+                    placeholder1 = "Correo Electr√≥nico";
+                    placeholder2 = "Confirmar Correo Electr√≥nico";
                     break;
 
                 case "Password":
-                    labelText = "Actualizar ContraseÒa";
-                    placeholder1 = "Nueva ContraseÒa";
-                    placeholder2 = "Confirmar ContraseÒa";
+                    labelText = "Actualizar Contrase√±a";
+                    placeholder1 = "Nueva Contrase√±a";
+                    placeholder2 = "Confirmar Contrase√±a";
                     break;
 
                 default:
-                    throw new ArgumentException("Tipo de ediciÛn no reconocido");
+                    throw new ArgumentException("Tipo de edici√≥n no reconocido");
             }
 
             entry1.Placeholder = placeholder1;
@@ -211,23 +211,23 @@ public partial class perfilu : ContentPage
 
                 try
                 {
-                    // Construir la URL con el par·metro de consulta
+                    // Construir la URL con el par√°metro de consulta
                     var requestUrl = $"{LaURL}/Usuarios/ActualizarUsuario/{Sesion.id_usuario}?Id_Usuario={Sesion.id_usuario}";
                     Debug.WriteLine($"Request URL: {requestUrl}");
 
-                    // Verificar si la URL es v·lida
+                    // Verificar si la URL es v√°lida
                     if (string.IsNullOrEmpty(LaURL))
                     {
-                        Debug.WriteLine("Error: La URL est· vacÌa o no es v·lida.");
-                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es v·lida.", "OK");
+                        Debug.WriteLine("Error: La URL est√° vac√≠a o no es v√°lida.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es v√°lida.", "OK");
                         return;
                     }
 
-                    // Verificar si el ID de usuario es v·lido
+                    // Verificar si el ID de usuario es v√°lido
                     if (Sesion.id_usuario == null)
                     {
                         Debug.WriteLine("Error: El ID de usuario es nulo.");
-                        await Application.Current.MainPage.DisplayAlert("Error", "El ID de usuario no es v·lido.", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Error", "El ID de usuario no es v√°lido.", "OK");
                         return;
                     }
 
@@ -235,21 +235,21 @@ public partial class perfilu : ContentPage
                     using var httpClient = new HttpClient();
                     Debug.WriteLine("Enviando la solicitud PUT...");
 
-                    // AÒadir el token Bearer a los encabezados
-                    string token = Sesion.token; // Asumiendo que el token est· guardado en Sesion
+                    // A√±adir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token est√° guardado en Sesion
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     Debug.WriteLine($"Bearer Token: {token}");
 
                     var response = await httpClient.PutAsJsonAsync(requestUrl, req);
                     Debug.WriteLine($"Response Status Code: {response.StatusCode}");
 
-                    // Verificar el cÛdigo de estado de la respuesta
+                    // Verificar el c√≥digo de estado de la respuesta
                     if (!response.IsSuccessStatusCode)
                     {
-                        Debug.WriteLine($"Error: La solicitud fallÛ con el cÛdigo de estado {response.StatusCode}");
+                        Debug.WriteLine($"Error: La solicitud fall√≥ con el c√≥digo de estado {response.StatusCode}");
                         var errorContent = await response.Content.ReadAsStringAsync();
                         Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
-                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la informaciÛn. CÛdigo de estado: {response.StatusCode}", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la informaci√≥n. C√≥digo de estado: {response.StatusCode}", "OK");
                         return;
                     }
 
@@ -263,7 +263,7 @@ public partial class perfilu : ContentPage
                     try
                     {
                         var result = JsonConvert.DeserializeObject<Res_Actualizar_Usuario>(jsonString);
-                        Debug.WriteLine($"Resultado de deserializaciÛn: {JsonConvert.SerializeObject(result)}");
+                        Debug.WriteLine($"Resultado de deserializaci√≥n: {JsonConvert.SerializeObject(result)}");
 
                         // Actualizar el ViewModel y la Sesion con los nuevos valores
                         switch (_tipoEdicion)
@@ -289,13 +289,13 @@ public partial class perfilu : ContentPage
                                 break;
                         }
 
-                        // Mostrar confirmaciÛn de Èxito
-                        await Application.Current.MainPage.DisplayAlert("…xito", "Datos actualizados correctamente.", "OK");
+                        // Mostrar confirmaci√≥n de √©xito
+                        await Application.Current.MainPage.DisplayAlert("√âxito", "Datos actualizados correctamente.", "OK");
                         Close();
                     }
                     catch (JsonException jsonEx)
                     {
-                        Debug.WriteLine($"Error de deserializaciÛn: {jsonEx.Message}");
+                        Debug.WriteLine($"Error de deserializaci√≥n: {jsonEx.Message}");
                         await Application.Current.MainPage.DisplayAlert("Error", "Hubo un problema al procesar la respuesta del servidor.", "OK");
                     }
                 }
@@ -307,8 +307,8 @@ public partial class perfilu : ContentPage
                 }
                 catch (Exception ex)
                 {
-                    // Manejo de cualquier otro tipo de excepciÛn
-                    Debug.WriteLine($"ExcepciÛn inesperada: {ex.Message}");
+                    // Manejo de cualquier otro tipo de excepci√≥n
+                    Debug.WriteLine($"Excepci√≥n inesperada: {ex.Message}");
                     await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
                 }
             };
@@ -329,11 +329,11 @@ public partial class perfilu : ContentPage
         Sesion.cerrarSesion();
 
 
-        // Navegar de vuelta a la p·gina de inicio de sesiÛn
+        // Navegar de vuelta a la p√°gina de inicio de sesi√≥n
         await Navigation.PushAsync(new MainPage());
 
-        // Mostrar un mensaje de confirmaciÛn
-        await DisplayAlert("Cerrar sesiÛn", "Has cerrado sesiÛn correctamente.", "OK");
+        // Mostrar un mensaje de confirmaci√≥n
+        await DisplayAlert("Cerrar sesi√≥n", "Has cerrado sesi√≥n correctamente.", "OK");
     }
 
 
@@ -349,7 +349,7 @@ public partial class perfilu : ContentPage
 
             var emailEntry = new Entry
             {
-                Placeholder = "Ingrese su correo electrÛnico",
+                Placeholder = "Ingrese su correo electr√≥nico",
                 Keyboard = Keyboard.Email,
                 TextColor = Colors.Black
             };
@@ -367,33 +367,33 @@ public partial class perfilu : ContentPage
 
                 if (string.IsNullOrEmpty(email))
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "El correo electrÛnico es obligatorio.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "El correo electr√≥nico es obligatorio.", "OK");
                     return;
                 }
 
                 if (Sesion.id_usuario == null || Sesion.id_usuario <= 0)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "No se encontrÛ un ID de usuario v·lido en la sesiÛn.", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se encontr√≥ un ID de usuario v√°lido en la sesi√≥n.", "OK");
                     return;
                 }
 
                 // Eliminar la solicitud de cuerpo (req) para DELETE
-                Debug.WriteLine($"Id_Usuario: {Sesion.id_usuario}, Correo ElectrÛnico: {email}");
+                Debug.WriteLine($"Id_Usuario: {Sesion.id_usuario}, Correo Electr√≥nico: {email}");
 
                 try
                 {
                     if (string.IsNullOrEmpty(laURL))
                     {
-                        Debug.WriteLine("Error: La URL est· vacÌa o no es v·lida.");
-                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es v·lida.", "OK");
+                        Debug.WriteLine("Error: La URL est√° vac√≠a o no es v√°lida.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es v√°lida.", "OK");
                         return;
                     }
 
                     var requestUrl = $"{laURL}/Usuarios/EliminarUsuario/{Sesion.id_usuario}?idUsuario={Sesion.id_usuario}&correoElectronico={Uri.EscapeDataString(email)}";
                     Debug.WriteLine($"Request URL: {requestUrl}");
 
-                    // AÒadir el token Bearer a los encabezados
-                    string token = Sesion.token; // Asumiendo que el token est· guardado en Sesion
+                    // A√±adir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token est√° guardado en Sesion
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     Debug.WriteLine($"Bearer Token: {token}");
                     Debug.WriteLine($"Authorization Header: {httpClient.DefaultRequestHeaders.Authorization}");
@@ -404,10 +404,10 @@ public partial class perfilu : ContentPage
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        Debug.WriteLine($"Error: La solicitud fallÛ con el cÛdigo de estado {response.StatusCode}");
+                        Debug.WriteLine($"Error: La solicitud fall√≥ con el c√≥digo de estado {response.StatusCode}");
                         var errorContent = await response.Content.ReadAsStringAsync();
                         Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
-                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la informaciÛn. CÛdigo de estado: {response.StatusCode}", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la informaci√≥n. C√≥digo de estado: {response.StatusCode}", "OK");
                         return;
                     }
 
@@ -416,13 +416,13 @@ public partial class perfilu : ContentPage
                     Debug.WriteLine($"Response JSON: {jsonString}");
 
                     // Mostrar el contenido de la respuesta en una alerta
-                    await Application.Current.MainPage.DisplayAlert("…xito", jsonString, "OK");
+                    await Application.Current.MainPage.DisplayAlert("√âxito", jsonString, "OK");
 
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"ExcepciÛn inesperada: {ex.Message}");
+                    Debug.WriteLine($"Excepci√≥n inesperada: {ex.Message}");
                     await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
                 }
             };
@@ -448,6 +448,11 @@ public partial class perfilu : ContentPage
         await Application.Current.MainPage.ShowPopupAsync(popup);
     }
 }
+
+
+
+
+
 
 
 

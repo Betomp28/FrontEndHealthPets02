@@ -125,7 +125,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 else
                 {
 
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
                     return new List<Registro_Mascota>(); // Retorna una lista vacía en caso de error
                 }
             }
@@ -173,7 +173,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 else
                 {
 
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
                     return new List<Entidades.Medicamentos>(); // Retorna una lista vacía en caso de error
                 }
             }
@@ -332,8 +332,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     }
                     else
                     {
-                        Debug.WriteLine($"Error en el backend: {res.Error}");
-                        await DisplayAlert("Error", res.Error, "Aceptar");
+                        Debug.WriteLine($"Error en el backend: {res.error}");
+                        await DisplayAlert("Error", res.error, "Aceptar");
                     }
                 }
                 else

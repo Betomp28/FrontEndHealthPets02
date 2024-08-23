@@ -92,7 +92,7 @@
 
 	
         <ItemGroup>
-	  <MauiXaml Update="Paginas\Doctor.xaml">
+	  <MauiXaml Update="Paginas\FlyPaginas\AgregarCita.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Paginas\FlyPaginas\AgregarMedicamento.xaml">

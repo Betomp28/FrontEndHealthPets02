@@ -3,89 +3,42 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="FrontEndHealthPets.Paginas.FlyPaginas.ClinicaVeterinaria"
-    Title="ClinicaVeterinaria"
-    BackgroundColor="Purple">
+    Title="ClinicaVeterinaria">
 
-    <ContentPage.BackgroundImageSource>
-        <FileImageSource File="fondomascota2.jpeg" />
-    </ContentPage.BackgroundImageSource>
+    <Grid>
+        <!-- Imagen de fondo -->
+        <Image Source="fondo_medicamento"
+         Aspect="AspectFill"
+         VerticalOptions="FillAndExpand"
+         HorizontalOptions="FillAndExpand" />
 
-    <Frame 
-        HeightRequest="400" 
-        WidthRequest="600">
+        <!-- Contenido principal -->
+        <ScrollView>
+            <StackLayout Padding="20"
+                   VerticalOptions="CenterAndExpand"
+                   Spacing="10">
+                <!-- Espaciado entre los botones -->
+                <!-- Título -->
+                <Label Text="Citas"
+                 FontSize="Large"
+                 FontAttributes="Bold"
+                 HorizontalOptions="Center"
+                 TextColor="Purple" />
 
-        <Grid>
+                <Button 
+                 x:Name="BtGuardarCita"
+                 Text="Agregar nueva cita"
+                 BackgroundColor="Purple"
+                 TextColor="White"
+                 FontSize="Medium"
+                 CornerRadius="20"
+                 HorizontalOptions="Center"
+                 WidthRequest="200"
+                 Clicked="BtGuardarCita_Clicked"/>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Picker 
-                x:Name="pickerClinicas" 
-                Title="Selecciona una clinica" 
-                SelectedIndexChanged="PickerClinicas_SelectedIndexChanged" 
-                Grid.Row="0" 
-                WidthRequest="400">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Clínica Veterinaria San Francisco</x:String>
-                        <x:String>Clínica Veterinaria Los Ángeles</x:String>
-                        <x:String>Clínica Veterinaria El Bosque</x:String>
-                        <x:String>Clínica Veterinaria La Pradera</x:String>
-                        <x:String>Clínica Veterinaria El Roble</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-
-            <Picker 
-                x:Name="pickerDoctor" 
-                Title="Selecciona un doctor" 
-                SelectedIndexChanged="PickerDoctor_SelectedIndexChanged" 
-                Grid.Row="1" 
-                WidthRequest="400">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Dr. Juan Pérez</x:String>
-                        <x:String>Dr. Carlos Gómez</x:String>
-                        <x:String>Dr. Luis Rodríguez</x:String>
-                        <x:String>Dr. Alejandro Martínez</x:String>
-                        <x:String>Dr. Manuel Sánchez</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-
-            <Label 
-                x:Name="lblDireccion" 
-                Text="Dirección: " 
-                FontSize="Small" 
-                Grid.Row="2" 
-                Margin="0,15,0,0" 
-                HorizontalOptions="Center" />
-
-            <Label 
-                x:Name="lblTelefono" 
-                Text="Teléfono: " 
-                FontSize="Small" 
-                Grid.Row="3" 
-                Margin="0,15,0,0" 
-                HorizontalOptions="Center" />
-
-            <Button 
-                Grid.Column="0" 
-                Text="Agregar" 
-                Clicked="Agregar_Clicked" 
-                BackgroundColor="#128ba7" 
-                TextColor="White" 
-                Margin="45" 
-                Grid.Row="4" />
-
-        </Grid>
-
-    </Frame>
+               
+            </StackLayout>
+        </ScrollView>
+    </Grid>
 
 </ContentPage>

@@ -77,8 +77,8 @@ namespace FrontEndHealthPets.Paginas.tabpage
                 }
                 else
                 {
-                    Debug.WriteLine($"Error en la API: {result.Error}");
-                    await DisplayAlert("Error", $"Error en la API: {result.Error}", "OK");
+                    Debug.WriteLine($"Error en la API: {result.error}");
+                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
                     return new List<Registro_Mascota>();
                 }
             }
@@ -151,7 +151,7 @@ namespace FrontEndHealthPets.Paginas.tabpage
                 }
                 else
                 {
-                    await DisplayAlert("Error", $"Error en la API: {result.Error ?? "Desconocido"}", "OK");
+                    await DisplayAlert("Error", $"Error en la API: {result.error ?? "Desconocido"}", "OK");
                 }
                 // Forzar la actualización del ListView (opcional)
 
