@@ -9,6 +9,7 @@ namespace FrontEndHealthPets.Entidades.entitys
     public class eliminar_usuario
     {
 
+        public int Id_Usuario { get; set; }
         public String correoElectronico { get; set; }
 
     }

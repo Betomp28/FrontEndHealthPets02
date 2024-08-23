@@ -3,19 +3,27 @@ using FrontEndHealthPets.Modelos;
 using System.Diagnostics;
 using Microsoft.Maui.Storage;
 using Microsoft.Maui.Controls;
-namespace FrontEndHealthPets.Paginas.FlyPaginas;
 using System.Net.Http.Headers;
-
+using CommunityToolkit.Maui.Views;
 using FrontEndHealthPets.Entidades;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Json;
+using FrontEndHealthPets.Entidades.Request;
+using FrontEndHealthPets.Entidades.response;
+using FrontEndHealthPets.Entidades.entitys;
+
+
+namespace FrontEndHealthPets.Paginas.FlyPaginas;
 public partial class perfilu : ContentPage
 {
-    string LaURL = "https://localhost:44348/api";
+    private readonly HttpClient _httpClient;
+    public static string LaURL { get; } = "https://localhost:44348/api";
     private UsuarioViewModel viewModel;
     public perfilu()
     {
         InitializeComponent();
+        _httpClient = new HttpClient();
         viewModel = new UsuarioViewModel
         {
             Nombre = Sesion.nombre,
@@ -65,133 +73,382 @@ public partial class perfilu : ContentPage
 
     }
 
-    private void BtActualizarNombre_Clicked(object sender, EventArgs e)
+    private async void BtActualizarNombre_Clicked(object sender, EventArgs e)
     {
-
-    }
-
-    private void BtActualizarApeliido_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void BtActualizarCooreo_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-    private void BtActualizarPassword_Clicked(object sender, EventArgs e)
-    {
-
-    }
-
-
-
-
-    private async void bteliminar_Clicked_1(object sender, EventArgs e)
-    {
-        try
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquí
+        if (viewModel != null)
         {
-            // Depuración: Comienza el método
-            System.Diagnostics.Debug.WriteLine("Método bteliminar_Clicked_1 iniciado");
+            var popup = new EditarDatosPopup(viewModel, "Nombre");
+            await this.ShowPopupAsync(popup);
+        }
+    }
 
-            // Configuración de la solicitud
-            using (HttpClient httpClient = new HttpClient())
+    private async void BtActualizarApeliido_Clicked(object sender, EventArgs e)
+    {
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquí
+        if (viewModel != null)
+        {
+            var popup = new EditarDatosPopup(viewModel, "Apellidos");
+            await this.ShowPopupAsync(popup);
+        }
+    }
+
+
+    private async void BtActualizarCooreo_Clicked(object sender, EventArgs e)
+    {
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquí
+        if (viewModel != null)
+        {
+            var popup = new EditarDatosPopup(viewModel, "Correo");
+            await this.ShowPopupAsync(popup);
+        }
+    }
+
+
+
+    private async void BtActualizarPassword_Clicked(object sender, EventArgs e)
+    {
+        var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquí
+        if (viewModel != null)
+        {
+            var popup = new EditarDatosPopup(viewModel, "Password");
+            await this.ShowPopupAsync(popup);
+        }
+    }
+
+    public class EditarDatosPopup : Popup
+    {
+        private readonly UsuarioViewModel _viewModel;
+        private readonly string _tipoEdicion;
+
+        public EditarDatosPopup(UsuarioViewModel viewModel, string tipoEdicion)
+        {
+            _viewModel = viewModel;
+            _tipoEdicion = tipoEdicion;
+
+            var entry1 = new Entry { IsPassword = _tipoEdicion == "Password" };
+            var entry2 = new Entry { IsPassword = _tipoEdicion == "Password" };
+
+            var button = new Button { Text = "Aceptar", BackgroundColor = Colors.Purple, TextColor = Colors.White };
+
+            string labelText, placeholder1, placeholder2 = null;
+            switch (_tipoEdicion)
             {
-                // Supongamos que tienes un Entry en tu XAML con x:Name="CorreoEntry"
-                string correoElectronico = CorreoEntry.Text;
+                case "Nombre":
+                    labelText = "Actualizar Nombre";
+                    placeholder1 = "Nombre";
+                    break;
 
-                // Depuración: Verifica el valor del correo electrónico
-                System.Diagnostics.Debug.WriteLine($"Correo electrónico ingresado: {correoElectronico}");
+                case "Apellidos":
+                    labelText = "Actualizar Apellidos";
+                    placeholder1 = "Apellidos";
+                    break;
 
-                if (string.IsNullOrWhiteSpace(correoElectronico))
+                case "Correo":
+                    labelText = "Actualizar Correo Electrónico";
+                    placeholder1 = "Correo Electrónico";
+                    placeholder2 = "Confirmar Correo Electrónico";
+                    break;
+
+                case "Password":
+                    labelText = "Actualizar Contraseña";
+                    placeholder1 = "Nueva Contraseña";
+                    placeholder2 = "Confirmar Contraseña";
+                    break;
+
+                default:
+                    throw new ArgumentException("Tipo de edición no reconocido");
+            }
+
+            entry1.Placeholder = placeholder1;
+            entry2.Placeholder = placeholder2;
+
+            Content = new StackLayout
+            {
+                Padding = new Thickness(20),
+                Children =
+            {
+                new Label { Text = labelText, FontSize = 20, FontAttributes = FontAttributes.Bold },
+                entry1,
+                entry2,
+                button
+            }
+            };
+
+            button.Clicked += async (sender, e) =>
+            {
+                var valor1 = entry1.Text;
+                var valor2 = entry2.Text;
+
+                if (string.IsNullOrEmpty(valor1) || (placeholder2 != null && string.IsNullOrEmpty(valor2)))
                 {
-                    await DisplayAlert("Error", "Por favor, ingresa un correo electrónico.", "Aceptar");
-                    System.Diagnostics.Debug.WriteLine("Correo electrónico no proporcionado, se cancela la operación.");
+                    await Application.Current.MainPage.DisplayAlert("Error", "Todos los campos son obligatorios.", "OK");
                     return;
                 }
 
-                // Agregar el token JWT en el encabezado Authorization
-                System.Diagnostics.Debug.WriteLine($"Token JWT usado: {Sesion.token}");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Sesion.token);
-
-                // Crear el objeto de solicitud
-                Req_EliminarUsuario req = new Req_EliminarUsuario
+                if (placeholder2 != null && valor1 != valor2)
                 {
-                    eliminar_usuario = new Req_EliminarUsuario.EliminarUsuarioDetails
-                    {
-                        correoElectronico = correoElectronico
-                    }
-                };
+                    await Application.Current.MainPage.DisplayAlert("Error", "Los valores no coinciden.", "OK");
+                    return;
+                }
+                // Preparar el objeto a enviar
+                Req_Actualizar_Usuario req = new Req_Actualizar_Usuario();
 
-                // Depuración: Verifica el objeto de solicitud
-                System.Diagnostics.Debug.WriteLine($"Objeto de solicitud: {JsonConvert.SerializeObject(req)}");
 
-                // Serializar el objeto a JSON
-                var jsonContent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
 
-                // Depuración: Verifica el JSON que se va a enviar
-                System.Diagnostics.Debug.WriteLine($"JSON enviado: {await jsonContent.ReadAsStringAsync()}");
+                req.Id_Usuario = (int)Sesion.id_usuario;
+                req.Nombre = _tipoEdicion == "Nombre" ? valor1 : null;
+                req.Apellidos = _tipoEdicion == "Apellidos" ? valor1 : null;
+                req.Correo_Electronico = _tipoEdicion == "Correo" ? valor1 : null;
+                req.Confirmacion_Correo_Electronico = _tipoEdicion == "Correo" ? valor2 : null;
+                req.Password = _tipoEdicion == "Password" ? valor1 : null;
+                req.Confirmar_Password = _tipoEdicion == "Password" ? valor2 : null;
 
-                // Depuración: URL usada para la solicitud DELETE
-                System.Diagnostics.Debug.WriteLine($"URL utilizada: {LaURL}/Eliminar_Usuario/EliminarUsuario?Id_Usuario={correoElectronico}");
 
-                // Enviar la solicitud DELETE al endpoint
-                var response = await httpClient.DeleteAsync($"{LaURL}/Eliminar_Usuario/EliminarUsuario?correoElectronico={correoElectronico}");
+                Debug.WriteLine($"Sesion.id_usuario: {Sesion.id_usuario}");
 
-                // Depuración: Verifica el código de estado de la respuesta
-                System.Diagnostics.Debug.WriteLine($"Código de estado de la respuesta: {response.StatusCode}");
 
-                // Manejar la respuesta
-                if (response.IsSuccessStatusCode)
+
+                try
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine($"Contenido de la respuesta: {responseContent}");
+                    // Construir la URL con el parámetro de consulta
+                    var requestUrl = $"{LaURL}/Usuarios/ActualizarUsuario/{Sesion.id_usuario}?Id_Usuario={Sesion.id_usuario}";
+                    Debug.WriteLine($"Request URL: {requestUrl}");
 
-                    Res_EliminarUsuario res = JsonConvert.DeserializeObject<Res_EliminarUsuario>(responseContent);
-
-                    if (res.resultado)
+                    // Verificar si la URL es válida
+                    if (string.IsNullOrEmpty(LaURL))
                     {
-                        System.Diagnostics.Debug.WriteLine("Usuario eliminado correctamente.");
-                        await DisplayAlert("Éxito", "Usuario eliminado correctamente", "Aceptar");
+                        Debug.WriteLine("Error: La URL está vacía o no es válida.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
+                        return;
                     }
-                    else
+
+                    // Verificar si el ID de usuario es válido
+                    if (Sesion.id_usuario == null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Error al eliminar usuario: {res.Error}");
-                        await DisplayAlert("Error", res.Error ?? "No se pudo eliminar el usuario", "Aceptar");
+                        Debug.WriteLine("Error: El ID de usuario es nulo.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "El ID de usuario no es válido.", "OK");
+                        return;
+                    }
+
+                    // Realizar la solicitud PUT
+                    using var httpClient = new HttpClient();
+                    Debug.WriteLine("Enviando la solicitud PUT...");
+
+                    // Añadir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token está guardado en Sesion
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    Debug.WriteLine($"Bearer Token: {token}");
+
+                    var response = await httpClient.PutAsJsonAsync(requestUrl, req);
+                    Debug.WriteLine($"Response Status Code: {response.StatusCode}");
+
+                    // Verificar el código de estado de la respuesta
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine($"Error: La solicitud falló con el código de estado {response.StatusCode}");
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
+                        return;
+                    }
+
+                    response.EnsureSuccessStatusCode();
+
+                    // Leer y depurar el contenido de la respuesta
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Response JSON: {jsonString}");
+
+                    // Intentar deserializar la respuesta JSON
+                    try
+                    {
+                        var result = JsonConvert.DeserializeObject<Res_Actualizar_Usuario>(jsonString);
+                        Debug.WriteLine($"Resultado de deserialización: {JsonConvert.SerializeObject(result)}");
+
+                        // Actualizar el ViewModel y la Sesion con los nuevos valores
+                        switch (_tipoEdicion)
+                        {
+                            case "Nombre":
+                                _viewModel.Nombre = valor1;
+                                Sesion.nombre = _viewModel.Nombre;
+                                break;
+
+                            case "Apellidos":
+                                _viewModel.Apellido = valor1;
+                                Sesion.apellidos = _viewModel.Apellido;
+                                break;
+
+                            case "Correo":
+                                _viewModel.CorreoElectronico = valor1;
+                                Sesion.Correo_Electronico = _viewModel.CorreoElectronico;
+                                break;
+
+                            case "Password":
+                                _viewModel.Password = valor1;
+                                Sesion.Password = _viewModel.Password;
+                                break;
+                        }
+
+                        // Mostrar confirmación de éxito
+                        await Application.Current.MainPage.DisplayAlert("Éxito", "Datos actualizados correctamente.", "OK");
+                        Close();
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Debug.WriteLine($"Error de deserialización: {jsonEx.Message}");
+                        await Application.Current.MainPage.DisplayAlert("Error", "Hubo un problema al procesar la respuesta del servidor.", "OK");
                     }
                 }
-                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                catch (HttpRequestException ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error de autorización: Token inválido o expirado.");
-                    await DisplayAlert("Autorización fallida", "El token no es válido o ha expirado", "Aceptar");
+                    // Manejo de errores de la solicitud
+                    Debug.WriteLine($"Error de solicitud HTTP: {ex.Message}");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al actualizar los datos: {ex.Message}", "OK");
                 }
-                else
+                catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error de conexión: Ocurrió un error de conexión.");
-                    await DisplayAlert("Error de conexión", "Ocurrió un error de conexión", "Aceptar");
+                    // Manejo de cualquier otro tipo de excepción
+                    Debug.WriteLine($"Excepción inesperada: {ex.Message}");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
                 }
-            }
-        }
-        catch (HttpRequestException httpEx)
-        {
-            // Depuración: Error específico de la solicitud HTTP
-            System.Diagnostics.Debug.WriteLine($"Error HTTP: {httpEx.Message}");
-            await DisplayAlert("Error HTTP", "Ocurrió un problema al enviar la solicitud: " + httpEx.Message, "Aceptar");
-        }
-        catch (Exception ex)
-        {
-            // Depuración: Error genérico
-            System.Diagnostics.Debug.WriteLine($"Error general: {ex.Message}");
-            await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
-        }
-        finally
-        {
-            // Depuración: Finaliza el método
-            System.Diagnostics.Debug.WriteLine("Método bteliminar_Clicked_1 finalizado");
+            };
         }
     }
+
+
+
+
+    private void Btcerrarsesion_Clicked(object sender, EventArgs e)
+    {
+        CerrarSesion();
+    }
+
+    private async void CerrarSesion()
+    {
+
+        Sesion.cerrarSesion();
+
+
+        // Navegar de vuelta a la página de inicio de sesión
+        await Navigation.PushAsync(new MainPage());
+
+        // Mostrar un mensaje de confirmación
+        await DisplayAlert("Cerrar sesión", "Has cerrado sesión correctamente.", "OK");
+    }
+
+
+
+    public class EliminarsesionPopup : Popup
+    {
+        private static readonly HttpClient httpClient = new HttpClient();
+        private string laURL;
+
+        public EliminarsesionPopup(string url)
+        {
+            laURL = url;
+
+            var emailEntry = new Entry
+            {
+                Placeholder = "Ingrese su correo electrónico",
+                Keyboard = Keyboard.Email,
+                TextColor = Colors.Black
+            };
+
+            var enviarButton = new Button
+            {
+                Text = "Eliminar",
+                BackgroundColor = Colors.Purple,
+                TextColor = Colors.White
+            };
+
+            enviarButton.Clicked += async (sender, e) =>
+            {
+                var email = emailEntry.Text;
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "El correo electrónico es obligatorio.", "OK");
+                    return;
+                }
+
+                if (Sesion.id_usuario == null || Sesion.id_usuario <= 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se encontró un ID de usuario válido en la sesión.", "OK");
+                    return;
+                }
+
+                // Eliminar la solicitud de cuerpo (req) para DELETE
+                Debug.WriteLine($"Id_Usuario: {Sesion.id_usuario}, Correo Electrónico: {email}");
+
+                try
+                {
+                    if (string.IsNullOrEmpty(laURL))
+                    {
+                        Debug.WriteLine("Error: La URL está vacía o no es válida.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
+                        return;
+                    }
+
+                    var requestUrl = $"{laURL}/Usuarios/EliminarUsuario/{Sesion.id_usuario}?idUsuario={Sesion.id_usuario}&correoElectronico={Uri.EscapeDataString(email)}";
+                    Debug.WriteLine($"Request URL: {requestUrl}");
+
+                    // Añadir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token está guardado en Sesion
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    Debug.WriteLine($"Bearer Token: {token}");
+                    Debug.WriteLine($"Authorization Header: {httpClient.DefaultRequestHeaders.Authorization}");
+
+                    Debug.WriteLine("Enviando la solicitud DELETE...");
+                    var response = await httpClient.DeleteAsync(requestUrl);
+                    Debug.WriteLine($"Response Status Code: {response.StatusCode}");
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine($"Error: La solicitud falló con el código de estado {response.StatusCode}");
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
+                        return;
+                    }
+
+                    // Leer el contenido de la respuesta
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Response JSON: {jsonString}");
+
+                    // Mostrar el contenido de la respuesta en una alerta
+                    await Application.Current.MainPage.DisplayAlert("Éxito", jsonString, "OK");
+
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Excepción inesperada: {ex.Message}");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
+                }
+            };
+
+            Content = new StackLayout
+            {
+                Padding = 20,
+                Spacing = 15,
+                Children =
+            {
+                emailEntry,
+                enviarButton
+            },
+                WidthRequest = 300,
+                HeightRequest = 200
+            };
+        }
+    }
+
+    private async void bteliminar_Clicked(object sender, EventArgs e)
+    {
+        var popup = new EliminarsesionPopup(LaURL); // Usa la URL definida en MainPage
+        await Application.Current.MainPage.ShowPopupAsync(popup);
+    }
 }
+
 
 
 
