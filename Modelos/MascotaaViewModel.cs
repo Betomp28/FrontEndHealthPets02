@@ -48,19 +48,20 @@ namespace FrontEndHealthPets.Modelos
         {
             try
             {
-                int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesión
+                int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesiÃ³n
                 var mascotas = await ObtenerMascotasDelUsuarioAsync(id_usuario);
 
                 foreach (var mascota in mascotas)
                 {
-                    // Convierte el objeto de respuesta a PerfilMascota y agrégalo a la colección
+                    // Convierte el objeto de respuesta a PerfilMascota y agrÃ©galo a la colecciÃ³n
                     var perfilMascota = new PerfilMascota
                     {
                         Name = mascota.Nombre,
                         Especie = mascota.especie,
                         Raza = mascota.raza,
                         Fecha_Nacimiento = mascota.Fecha_Nacimiento,
-                       // ImageSource = ImageSource.FromStream(() => new MemoryStream(mascota.foto)) // Si tienes una imagen en formato byte[]
+                        // Obtiene las fotos de la mascota
+                        ImageSource = await ObtenerImagenDeMascotaAsync(mascota.Id_Mascota) 
                     };
                     PerfilMascotas.Add(perfilMascota);
                 }
@@ -70,7 +71,25 @@ namespace FrontEndHealthPets.Modelos
                 Debug.WriteLine($"Error al cargar las mascotas: {ex.Message}");
             }
         }
+        private async Task<ImageSource> ObtenerImagenDeMascotaAsync(int id_mascota)
+        {
+            try
+            {
+                var fotos = await ObtenerFotosDeMascotaAsync(id_mascota);
+                var fotoPrincipal = fotos.FirstOrDefault(); // Asumiendo que quieres la primera foto
 
+                if (fotoPrincipal != null)
+                {
+                    return ImageSource.FromStream(() => new MemoryStream(fotoPrincipal.Foto));
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al obtener la imagen de la mascota: {ex.Message}");
+                return null;
+            }
+        }
         private async Task<List<Registro_Mascota>> ObtenerMascotasDelUsuarioAsync(int id_usuario)
         {
             try
@@ -118,6 +137,52 @@ namespace FrontEndHealthPets.Modelos
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        
         }
+
+
+        /// <summary>
+        /// ////////////////////
+        /// </summary>
+        /// <param </param>
+        /// <returns></returns>
+
+        private async Task<List<FotosMascota>> ObtenerFotosDeMascotaAsync(int id_mascota)
+        {
+            try
+            {
+                var requestUrl = $"{ApiUrl}/Lista_Fotos_Mascotas/Obtener_Lista_Fotos_Mascotas?id_mascota={id_mascota}";
+                var response = await _httpClient.GetAsync(requestUrl);
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<Res_Lista_Fotos>(jsonString);
+
+                if (result.resultado)
+                {
+                    return result.Lista_Fotos; // Suponiendo que `ListaFotos` es una lista de `FotosMascota`
+                }
+                else
+                {
+                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    return new List<FotosMascota>();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Debug.WriteLine($"HttpRequestException: {ex.Message}");
+                return new List<FotosMascota>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception: {ex.Message}");
+                return new List<FotosMascota>();
+            }
+        }
+
+
     }
+
+
 }

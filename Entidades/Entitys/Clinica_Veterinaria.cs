@@ -8,6 +8,7 @@ namespace FrontEndHealthPets.Entidades.Entitys
 {
     public class Clinica_Veterinaria
     {
+        public int Id_Clinica { get; set; }
         public string Nombre_Clinica { get; set; }
         public string Nombre_Doctor { get; set; }
         public string Direccion { get; set; }
