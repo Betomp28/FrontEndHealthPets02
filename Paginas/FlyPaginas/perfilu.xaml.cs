@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.response;
+using FrontEndHealthPets.Entidades.entitys;
 
 
 namespace FrontEndHealthPets.Paginas.FlyPaginas;
@@ -22,6 +23,7 @@ public partial class perfilu : ContentPage
     public perfilu()
     {
         InitializeComponent();
+        _httpClient = new HttpClient();
         viewModel = new UsuarioViewModel
         {
             Nombre = Sesion.nombre,
@@ -91,7 +93,7 @@ public partial class perfilu : ContentPage
         }
     }
 
-  
+
     private async void BtActualizarCooreo_Clicked(object sender, EventArgs e)
     {
         var viewModel = (UsuarioViewModel)this.BindingContext; // Usa UsuarioViewModel aquí
@@ -192,9 +194,9 @@ public partial class perfilu : ContentPage
                 // Preparar el objeto a enviar
                 Req_Actualizar_Usuario req = new Req_Actualizar_Usuario();
 
-                
 
-                req.Id_Usuario = (int) Sesion.id_usuario;
+
+                req.Id_Usuario = (int)Sesion.id_usuario;
                 req.Nombre = _tipoEdicion == "Nombre" ? valor1 : null;
                 req.Apellidos = _tipoEdicion == "Apellidos" ? valor1 : null;
                 req.Correo_Electronico = _tipoEdicion == "Correo" ? valor1 : null;
@@ -202,8 +204,8 @@ public partial class perfilu : ContentPage
                 req.Password = _tipoEdicion == "Password" ? valor1 : null;
                 req.Confirmar_Password = _tipoEdicion == "Password" ? valor2 : null;
 
- 
-                  Debug.WriteLine($"Sesion.id_usuario: {Sesion.id_usuario}");
+
+                Debug.WriteLine($"Sesion.id_usuario: {Sesion.id_usuario}");
 
 
 
@@ -314,120 +316,18 @@ public partial class perfilu : ContentPage
     }
 
 
-    private async void bteliminar_Clicked_1(object sender, EventArgs e)
-    {
-        try
-        {
-            // Depuración: Comienza el método
-            System.Diagnostics.Debug.WriteLine("Método bteliminar_Clicked_1 iniciado");
 
-            // Configuración de la solicitud
-            
-            {
-                // Supongamos que tienes un Entry en tu XAML con x:Name="CorreoEntry"
-                string correoElectronico = CorreoEntry.Text;
-
-                // Depuración: Verifica el valor del correo electrónico
-                System.Diagnostics.Debug.WriteLine($"Correo electrónico ingresado: {correoElectronico}");
-
-                if (string.IsNullOrWhiteSpace(correoElectronico))
-                {
-                    await DisplayAlert("Error", "Por favor, ingresa un correo electrónico.", "Aceptar");
-                    System.Diagnostics.Debug.WriteLine("Correo electrónico no proporcionado, se cancela la operación.");
-                    return;
-                }
-
-                // Agregar el token JWT en el encabezado Authorization
-                System.Diagnostics.Debug.WriteLine($"Token JWT usado: {Sesion.token}");
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Sesion.token);
-
-                // Crear el objeto de solicitud
-                Req_EliminarUsuario req = new Req_EliminarUsuario
-                {
-                    eliminar_usuario = new Req_EliminarUsuario.EliminarUsuarioDetails
-                    {
-                        correoElectronico = correoElectronico
-                    }
-                };
-
-                // Depuración: Verifica el objeto de solicitud
-                System.Diagnostics.Debug.WriteLine($"Objeto de solicitud: {JsonConvert.SerializeObject(req)}");
-
-                // Serializar el objeto a JSON
-                var jsonContent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
-
-                // Depuración: Verifica el JSON que se va a enviar
-                System.Diagnostics.Debug.WriteLine($"JSON enviado: {await jsonContent.ReadAsStringAsync()}");
-
-                // Depuración: URL usada para la solicitud DELETE
-                System.Diagnostics.Debug.WriteLine($"URL utilizada: {LaURL}/Eliminar_Usuario/EliminarUsuario?Id_Usuario={correoElectronico}");
-
-                // Enviar la solicitud DELETE al endpoint
-                var response = await _httpClient.DeleteAsync($"{LaURL}/Eliminar_Usuario/EliminarUsuario?correoElectronico={correoElectronico}");
-
-                // Depuración: Verifica el código de estado de la respuesta
-                System.Diagnostics.Debug.WriteLine($"Código de estado de la respuesta: {response.StatusCode}");
-
-                // Manejar la respuesta
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine($"Contenido de la respuesta: {responseContent}");
-
-                    Res_EliminarUsuario res = JsonConvert.DeserializeObject<Res_EliminarUsuario>(responseContent);
-
-                    if (res.resultado)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Usuario eliminado correctamente.");
-                        await DisplayAlert("Éxito", "Usuario eliminado correctamente", "Aceptar");
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Error al eliminar usuario: {res.Error}");
-                        await DisplayAlert("Error", res.Error ?? "No se pudo eliminar el usuario", "Aceptar");
-                    }
-                }
-                else if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    System.Diagnostics.Debug.WriteLine("Error de autorización: Token inválido o expirado.");
-                    await DisplayAlert("Autorización fallida", "El token no es válido o ha expirado", "Aceptar");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("Error de conexión: Ocurrió un error de conexión.");
-                    await DisplayAlert("Error de conexión", "Ocurrió un error de conexión", "Aceptar");
-                }
-            }
-        }
-        catch (HttpRequestException httpEx)
-        {
-            // Depuración: Error específico de la solicitud HTTP
-            System.Diagnostics.Debug.WriteLine($"Error HTTP: {httpEx.Message}");
-            await DisplayAlert("Error HTTP", "Ocurrió un problema al enviar la solicitud: " + httpEx.Message, "Aceptar");
-        }
-        catch (Exception ex)
-        {
-            // Depuración: Error genérico
-            System.Diagnostics.Debug.WriteLine($"Error general: {ex.Message}");
-            await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
-        }
-        finally
-        {
-            // Depuración: Finaliza el método
-            System.Diagnostics.Debug.WriteLine("Método bteliminar_Clicked_1 finalizado");
-        }
-    }
 
     private void Btcerrarsesion_Clicked(object sender, EventArgs e)
     {
         CerrarSesion();
- }
+    }
 
     private async void CerrarSesion()
     {
-        
+
         Sesion.cerrarSesion();
-        
+
 
         // Navegar de vuelta a la página de inicio de sesión
         await Navigation.PushAsync(new MainPage());
@@ -435,7 +335,120 @@ public partial class perfilu : ContentPage
         // Mostrar un mensaje de confirmación
         await DisplayAlert("Cerrar sesión", "Has cerrado sesión correctamente.", "OK");
     }
+
+
+
+    public class EliminarsesionPopup : Popup
+    {
+        private static readonly HttpClient httpClient = new HttpClient();
+        private string laURL;
+
+        public EliminarsesionPopup(string url)
+        {
+            laURL = url;
+
+            var emailEntry = new Entry
+            {
+                Placeholder = "Ingrese su correo electrónico",
+                Keyboard = Keyboard.Email,
+                TextColor = Colors.Black
+            };
+
+            var enviarButton = new Button
+            {
+                Text = "Eliminar",
+                BackgroundColor = Colors.Purple,
+                TextColor = Colors.White
+            };
+
+            enviarButton.Clicked += async (sender, e) =>
+            {
+                var email = emailEntry.Text;
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "El correo electrónico es obligatorio.", "OK");
+                    return;
+                }
+
+                if (Sesion.id_usuario == null || Sesion.id_usuario <= 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se encontró un ID de usuario válido en la sesión.", "OK");
+                    return;
+                }
+
+                // Eliminar la solicitud de cuerpo (req) para DELETE
+                Debug.WriteLine($"Id_Usuario: {Sesion.id_usuario}, Correo Electrónico: {email}");
+
+                try
+                {
+                    if (string.IsNullOrEmpty(laURL))
+                    {
+                        Debug.WriteLine("Error: La URL está vacía o no es válida.");
+                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
+                        return;
+                    }
+
+                    var requestUrl = $"{laURL}/Usuarios/EliminarUsuario/{Sesion.id_usuario}?idUsuario={Sesion.id_usuario}&correoElectronico={Uri.EscapeDataString(email)}";
+                    Debug.WriteLine($"Request URL: {requestUrl}");
+
+                    // Añadir el token Bearer a los encabezados
+                    string token = Sesion.token; // Asumiendo que el token está guardado en Sesion
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    Debug.WriteLine($"Bearer Token: {token}");
+                    Debug.WriteLine($"Authorization Header: {httpClient.DefaultRequestHeaders.Authorization}");
+
+                    Debug.WriteLine("Enviando la solicitud DELETE...");
+                    var response = await httpClient.DeleteAsync(requestUrl);
+                    Debug.WriteLine($"Response Status Code: {response.StatusCode}");
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine($"Error: La solicitud falló con el código de estado {response.StatusCode}");
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
+                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
+                        return;
+                    }
+
+                    // Leer el contenido de la respuesta
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Response JSON: {jsonString}");
+
+                    // Mostrar el contenido de la respuesta en una alerta
+                    await Application.Current.MainPage.DisplayAlert("Éxito", jsonString, "OK");
+
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Excepción inesperada: {ex.Message}");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
+                }
+            };
+
+            Content = new StackLayout
+            {
+                Padding = 20,
+                Spacing = 15,
+                Children =
+            {
+                emailEntry,
+                enviarButton
+            },
+                WidthRequest = 300,
+                HeightRequest = 200
+            };
+        }
+    }
+
+    private async void bteliminar_Clicked(object sender, EventArgs e)
+    {
+        var popup = new EliminarsesionPopup(LaURL); // Usa la URL definida en MainPage
+        await Application.Current.MainPage.ShowPopupAsync(popup);
+    }
 }
+
 
 
 

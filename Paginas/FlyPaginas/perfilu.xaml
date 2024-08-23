@@ -61,13 +61,12 @@
                                 </StackLayout>
                             </StackLayout>
                         </Grid>
-                       
-    
-                        
+
+
+
                         <StackLayout Padding="20">
                             <Label Text="Ingrese el correo electrónico para eliminar el usuario:" TextColor="Black" />
-                            <Entry x:Name="CorreoEntry" TextColor="Aqua" Placeholder="Correo electrónico" />
-                            <Button x:Name="bteliminar" Text="Eliminar" Clicked="bteliminar_Clicked_1" BackgroundColor="Purple" TextColor="White" />
+                            <Button x:Name="bteliminar" Text="Eliminar" Clicked="bteliminar_Clicked" BackgroundColor="Purple" TextColor="White" />
                         </StackLayout>
                         <Button 
                                 x:Name="Btcerrarsesion"

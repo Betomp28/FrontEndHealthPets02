@@ -9,12 +9,8 @@ namespace FrontEndHealthPets.Entidades
 {
     public class Req_EliminarUsuario
     {
-        public EliminarUsuarioDetails eliminar_usuario { get; set; }
 
-        // Clase anidada para detalles de eliminación de usuario
-        public class EliminarUsuarioDetails
-        {
-            public string correoElectronico { get; set; }
+        public int Id_Usuario { get; set; }
+        public string correoElectronico { get; set; }
         }
     }
-}
