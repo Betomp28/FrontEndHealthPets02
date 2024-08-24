@@ -96,7 +96,7 @@ public partial class Consultas_citas_Veterinarias : ContentPage
             if (mascotaSeleccionada != null)
             {
                 
-                await CargarCitasVeteriaMascota(mascotaSeleccionada.Id_Mascota , id_doctor);
+                await CargarCitasVeteriaMascota(mascotaSeleccionada.Id_Mascota );
 
                 // Actualiza el ItemsSource del ListView para mostrar los datos de Citasclinicaveterinaria
                 CitasClinicamascotasListView.ItemsSource = CitaClinicasVeterinaria;
@@ -105,12 +105,12 @@ public partial class Consultas_citas_Veterinarias : ContentPage
     }
     //
     // Carga de medicamentos de la mascota
-    private async Task CargarCitasVeteriaMascota(int id_Mascota , int id_doctor)
+    private async Task CargarCitasVeteriaMascota(int id_Mascota )
     {
         try
         {
             // Método para obtener el id_doctor
-            var requestUrl = $"{LaURL}/Lista_Citas_Veterinarias/Obtener_Lista_Citas_Veterinarias?id_mascota={id_Mascota}&Id_Doctor={id_doctor}";
+            var requestUrl = $"{LaURL}/Lista_Citas_Veterinarias/Obtener_Lista_Citas_Veterinarias?id_mascota={id_Mascota}";
             Debug.WriteLine($"Request URL: {requestUrl}");
 
             var response = await _httpClient.GetAsync(requestUrl);
