@@ -19,7 +19,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         public ObservableCollection<Clinica_Veterinaria> listaClinicas;
         public ObservableCollection<Doctor> listaDoctores;
         public ObservableCollection<Registro_Mascota> Mascotas { get; set; }
-
+        private int _Id_Clinica_Veterinaria;
         public AgregarCita()
         {
             InitializeComponent();
@@ -28,12 +28,14 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             listaClinicas = new ObservableCollection<Clinica_Veterinaria>();
             listaDoctores = new ObservableCollection<Doctor>();
             Mascotas = new ObservableCollection<Registro_Mascota>();
-
-            BindingContext = this;
+            _Id_Clinica_Veterinaria = 0;
+             
+             BindingContext = this;
 
             Debug.WriteLine("Inicialización completa. Cargando datos...");
             CargarDatosClinicas();
-            CargarDatosDoctores();
+            
+            CargarDatosDoctores(_Id_Clinica_Veterinaria);
             CargarMascotas();
         }
 
@@ -55,15 +57,15 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         }
 
         // Método para cargar datos de doctores
-        private async void CargarDatosDoctores()
+        private async void CargarDatosDoctores(int Id_Clinica_Veterinaria)
         {
-            Debug.WriteLine("Cargando datos de doctores...");
-            var doctores = await ObtenerDoctoresAsync();
+            Debug.WriteLine($"Cargando datos de doctores para clínica ID: {Id_Clinica_Veterinaria}...");
+            var doctores = await ObtenerDoctoresPorClinicaAsync(Id_Clinica_Veterinaria);
 
             listaDoctores.Clear();
             foreach (var doctor in doctores)
             {
-                Debug.WriteLine($"ID Doctor: {doctor.Id_Doctor}, Nombre: {doctor.Nombre}, Teléfono: {doctor.Telefono}");
+                Debug.WriteLine($"ID Doctor: {doctor.Id_Doctor}, Nombre: {doctor.Nombre}");
                 listaDoctores.Add(doctor);
             }
 
@@ -145,6 +147,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     // Imprime la lista de clínicas para ver los datos deserializados
                     foreach (var clinica in result.Lista_Clinica_Veterinaria)
                     {
+
                         Debug.WriteLine($"ID Clínica deserializado: {clinica.Id_Clinica_Veterinaria}");
                     }
                     return result.Lista_Clinica_Veterinaria;
@@ -162,25 +165,27 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
             }
         }
 
-        private async Task<List<Doctor>> ObtenerDoctoresAsync()
+        private async Task<List<Doctor>> ObtenerDoctoresPorClinicaAsync(int Id_Clinica_Veterinaria)
         {
             try
             {
-                Debug.WriteLine($"URL de solicitud: {LaURL}/Lista_Doctores/Obtener_Lista_Doctores");
+                Debug.WriteLine($"URL de solicitud: {LaURL}/Lista_Doctores/Obtener_Doctores_Por_Clinica?idClinica={Id_Clinica_Veterinaria}");
 
-                var request = new HttpRequestMessage(HttpMethod.Get, LaURL + "/Lista_Doctores/Obtener_Lista_Doctores");
+                var requestUrl = $"{LaURL}/Lista_Clinica_Veterinaria/Obtener_Lista_Clinica_Veterinaria?Id_Clinica_Veterinaria={Id_Clinica_Veterinaria}";
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+
                 var response = await _httpClient.SendAsync(request);
                 Debug.WriteLine($"Código de estado de respuesta: {response.StatusCode}");
                 response.EnsureSuccessStatusCode();
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine($"Respuesta JSON: {jsonString}");
-                var result = JsonConvert.DeserializeObject<Res_Lista_Doctor>(jsonString);
+                var result = JsonConvert.DeserializeObject<Res_Lista_de_Doctores_Clinica>(jsonString);
 
                 if (result.resultado)
                 {
-                    Debug.WriteLine($"Número de doctores obtenidos: {result.ListaDoctor.Count}");
-                    return result.ListaDoctor;
+                    Debug.WriteLine($"Número de doctores obtenidos: {result.listaDoctoresporclinica.Count}");
+                    return result.listaDoctoresporclinica;
                 }
                 else
                 {
@@ -195,6 +200,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 return new List<Doctor>();
             }
         }
+        
 
         // Método para manejar selección de clínica
         private void PickerClinicas_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,6 +213,11 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     Debug.WriteLine($"ID Clínica Seleccionada: {clinicaSeleccionada.Id_Clinica_Veterinaria}");
                     lblDireccionClinica.Text = clinicaSeleccionada.Direccion ?? "Dirección no disponible";
                     lblTelefonoClinica.Text = clinicaSeleccionada.Telefono ?? "Teléfono no disponible";
+                    
+
+                    // Ahora que tienes el Id de la clínica seleccionada, puedes usarlo para cargar los doctores
+                    _Id_Clinica_Veterinaria = clinicaSeleccionada.Id_Clinica_Veterinaria;
+                    CargarDatosDoctores(_Id_Clinica_Veterinaria);
                 }
                 else
                 {
@@ -279,6 +290,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     {
                         Id_Mascota = mascotaSeleccionada.Id_Mascota,
                         Id_Clinica = clinicaSeleccionada.Id_Clinica_Veterinaria,
+                        id_doctor = doctorSeleccionado.Id_Doctor,
                         Fecha_y_hora_Cita = fechaYHoraCita,
                         Notas = notasEditor.Text,
                         Direccion = lblDireccionClinica.Text,

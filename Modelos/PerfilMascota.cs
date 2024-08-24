@@ -9,6 +9,7 @@ namespace FrontEndHealthPets.Modelos
 {
     public class PerfilMascota
     {
+        public int Id_Mascota { get; set; } // Propiedad Id_Mascota
         public string Name { get; set; }
         public string Description { get; set; }
         public ImageSource ImageSource { get; set; }

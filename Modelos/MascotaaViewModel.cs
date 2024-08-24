@@ -46,29 +46,45 @@ namespace FrontEndHealthPets.Modelos
 
         public async void CargarMascotasRegistradas()
         {
+            PerfilMascotas.Clear(); // Limpia la colección antes de agregar nuevas mascotas
             try
             {
                 int id_usuario = (int)Sesion.id_usuario; // Suponiendo que tienes el id_usuario almacenado en la sesión
                 var mascotas = await ObtenerMascotasDelUsuarioAsync(id_usuario);
 
+                // Crea un HashSet para almacenar los Id_Mascota únicos
+                HashSet<int> idMascotasUnicos = new HashSet<int>();
+
                 foreach (var mascota in mascotas)
                 {
-                    // Convierte el objeto de respuesta a PerfilMascota y agrégalo a la colección
-                    var perfilMascota = new PerfilMascota
+                    // Verifica si el Id_Mascota ya está en el HashSet
+                    if (!idMascotasUnicos.Contains(mascota.Id_Mascota))
                     {
-                        Name = mascota.Nombre,
-                        Especie = mascota.especie,
-                        Raza = mascota.raza,
-                        Fecha_Nacimiento = mascota.Fecha_Nacimiento,
-                        // Obtiene las fotos de la mascota
-                        ImageSource = await ObtenerImagenDeMascotaAsync(mascota.Id_Mascota) 
-                    };
-                    PerfilMascotas.Add(perfilMascota);
+                        // Agrega el Id_Mascota al HashSet
+                        idMascotasUnicos.Add(mascota.Id_Mascota);
+
+                        // Crea el perfil de la mascota y agrégalo a la colección
+                        var perfilMascota = new PerfilMascota
+                        {
+                            Id_Mascota = mascota.Id_Mascota,
+                            Name = mascota.Nombre,
+                            Especie = mascota.especie,
+                            Raza = mascota.raza,
+                            Fecha_Nacimiento = mascota.Fecha_Nacimiento,
+                            ImageSource = await ObtenerImagenDeMascotaAsync(mascota.Id_Mascota)
+                        };
+                        // Verifica si la mascota ya está en la colección antes de agregarla
+                        if (!PerfilMascotas.Any(pm => pm.Id_Mascota == perfilMascota.Id_Mascota))
+                        {
+                            PerfilMascotas.Add(perfilMascota);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error al cargar las mascotas: {ex.Message}");
+                // Manejo de excepciones
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
         private async Task<ImageSource> ObtenerImagenDeMascotaAsync(int id_mascota)
@@ -101,6 +117,7 @@ namespace FrontEndHealthPets.Modelos
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<Res_Lista_mascotas>(jsonString);
+                Debug.WriteLine("Respuesta JSON de la API: " + jsonString);
 
                 if (result.resultado)
                 {
