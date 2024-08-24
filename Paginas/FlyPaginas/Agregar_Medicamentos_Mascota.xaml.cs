@@ -327,8 +327,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     {
                         Debug.WriteLine("El medicamento se registró correctamente");
 
-                        await DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
-                        await Navigation.PushAsync(new MainPage());
+                        await DisplayAlert("Éxito", "El medicamento se registró correctamente", "Aceptar");
+                        await Navigation.PushAsync(new RazasAnimales());
                     }
                     else
                     {

@@ -62,8 +62,8 @@ public partial class AgregarVacunas : ContentPage
 
                 if (res.resultado)
                 {
-                    DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
-                    Navigation.PushAsync(new MainPage());
+                    await DisplayAlert("Exito", "Vacuna ingresada correctamente", "Aceptar");
+                    await Navigation.PushAsync(new VacunasPage());
 
                 }
                 else

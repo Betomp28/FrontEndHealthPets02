@@ -86,8 +86,8 @@ public partial class Registro : ContentPage
 
                 if (res.resultado)
                 {
-                    DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
-                    Navigation.PushAsync(new MainPage());
+                    await DisplayAlert("Exito", "Usuario ingresado correctamente", "Aceptar");
+                     Application.Current.MainPage = new NavigationPage(new MainPage());
 
                 }
                 else

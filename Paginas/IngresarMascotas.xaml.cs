@@ -122,7 +122,7 @@ public partial class IngresarMascotas : ContentPage
 
                 if (res.resultado)
                 {
-                    await DisplayActionSheet("Registro", "Mascota Registrada", "Aceptar");
+                    await DisplayAlert("Éxito", "Mascota registrada con éxito", "Aceptar");
 
                     // Verificar si hay imagen seleccionada
                     if (imagenSeleccionadaMemoryStream != null)
