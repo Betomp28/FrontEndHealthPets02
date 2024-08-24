@@ -71,6 +71,7 @@ namespace FrontEndHealthPets.Modelos
                             Especie = mascota.especie,
                             Raza = mascota.raza,
                             Fecha_Nacimiento = mascota.Fecha_Nacimiento,
+                            Fecha_Proximo_Baheiro = mascota.Fecha_Proximo_Baheiro,
                             ImageSource = await ObtenerImagenDeMascotaAsync(mascota.Id_Mascota)
                         };
                         // Verifica si la mascota ya está en la colección antes de agregarla
