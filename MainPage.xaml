@@ -47,7 +47,7 @@
                     </Grid>
                     <Button Margin="0,10,0,0"
                     x:Name="btiniciarsecion"
-                    BackgroundColor="Purple"
+                    BackgroundColor="#128ba7"
                     BorderColor="Black"
                     FontAttributes="Bold"
                     FontSize="Medium"
@@ -56,7 +56,7 @@
                     Clicked="btiniciarsecion_Clicked"/>
                     <Button Margin="0,10,0,0"
                     x:Name="btregistrarse"
-                    BackgroundColor="Purple"
+                    BackgroundColor="#128ba7"
                     BorderColor="Black"
                     FontAttributes="Bold"
                     FontSize="Medium"

@@ -5,12 +5,11 @@
     x:Class="FrontEndHealthPets.Paginas.FlyPaginas.ClinicaVeterinaria"
     Title="ClinicaVeterinaria">
 
+    <ContentPage.BackgroundImageSource>
+        <FileImageSource File="fondomascota2.jpg" />
+    </ContentPage.BackgroundImageSource>
+    
     <Grid>
-        <!-- Imagen de fondo -->
-        <Image Source="fondo_medicamento"
-         Aspect="AspectFill"
-         VerticalOptions="FillAndExpand"
-         HorizontalOptions="FillAndExpand" />
 
         <!-- Contenido principal -->
         <ScrollView>
@@ -23,12 +22,12 @@
                  FontSize="Large"
                  FontAttributes="Bold"
                  HorizontalOptions="Center"
-                 TextColor="Purple" />
+                 TextColor="White" />
 
                 <Button 
                  x:Name="BtGuardarCita"
                  Text="Agregar nueva cita"
-                 BackgroundColor="Purple"
+                 BackgroundColor="#128ba7"
                  TextColor="White"
                  FontSize="Medium"
                  CornerRadius="20"

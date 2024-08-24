@@ -108,7 +108,7 @@ namespace FrontEndHealthPets.Modelos
                 }
                 else
                 {
-                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    Debug.WriteLine($"Error en la API: {result.error}");
                     return new List<Registro_Mascota>();
                 }
             }
@@ -165,7 +165,7 @@ namespace FrontEndHealthPets.Modelos
                 }
                 else
                 {
-                    Debug.WriteLine($"Error en la API: {result.Error}");
+                    Debug.WriteLine($"Error en la API: {result.error}");
                     return new List<FotosMascota>();
                 }
             }
