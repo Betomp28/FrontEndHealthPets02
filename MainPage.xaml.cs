@@ -15,6 +15,8 @@ using System.Text;
 using System.Net.Http;
 using FrontEndHealthPets.Entidades;
 using FrontEndHealthPets.Entidades.entitys;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Maui.Graphics.Text;
 
 
 
@@ -107,13 +109,15 @@ namespace FrontEndHealthPets
             {
                 laURL = url;
 
-                var emailEntry = new Entry { Placeholder = "Ingrese su correo electrónico", Keyboard = Keyboard.Email };
-                var nuevaContrasenaEntry = new Entry { Placeholder = "Ingrese nueva contraseña", IsPassword = true };
-                var confirmarContrasenaEntry = new Entry { Placeholder = "Confirme su contraseña", IsPassword = true };
-                var enviarButton = new Button { Text = "Enviar", BackgroundColor = Colors.Purple, TextColor = Colors.White };
 
+                var emailEntry = new Entry { Placeholder = "Ingrese su correo electrónico", Keyboard = Keyboard.Email, TextColor = Colors.Black };
+                var nuevaContrasenaEntry = new Entry { Placeholder = "Ingrese nueva contraseña", IsPassword = true , TextColor = Colors.Black };
+                var confirmarContrasenaEntry = new Entry { Placeholder = "Confirme su contraseña", IsPassword = true , TextColor = Colors.Black };
+                var enviarButton = new Button { Text = "Enviar", BackgroundColor = Colors.Purple, TextColor = Colors.White };
+               
                 enviarButton.Clicked += async (sender, e) =>
                 {
+                    
                     var email = emailEntry.Text;
                     var nuevaContrasena = nuevaContrasenaEntry.Text;
                     var confirmarContrasena = confirmarContrasenaEntry.Text;
@@ -207,7 +211,7 @@ namespace FrontEndHealthPets
                 enviarButton
             },
                     WidthRequest = 300,
-                    HeightRequest = 400
+                    HeightRequest = 300
                 };
             }
         }

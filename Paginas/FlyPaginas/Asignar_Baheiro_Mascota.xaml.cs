@@ -252,7 +252,7 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     if (res.resultado)
                     {
                         Debug.WriteLine("El registro se realizó correctamente");
-                        await DisplayActionSheet("Registro", "Registro exitoso", "Aceptar");
+                        await DisplayAlert(" ", "Nuevo baño exitoso", "Aceptar");
                         await Navigation.PushAsync(new MainPage());
                     }
                     else

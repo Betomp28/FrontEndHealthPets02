@@ -25,11 +25,11 @@
         <CollectionView.ItemsSource>
             <x:Array Type="{x:Type loca1:Pagina_Flyout_Items}">
                 <loca1:Pagina_Flyout_Items Titulo="Busqueda de Mascotas"
-                                            Icono="contacto.png"
+                                            Icono="tarjeta.png"
                                             TargetType="{x:Type local:RazasAnimales}" />
 
                 <loca1:Pagina_Flyout_Items Titulo="Perfil Usuario"
-                                            Icono="contacto.png"
+                                            Icono="editar_perfil.png"
                                             TargetType="{x:Type local:perfilu}" />
 
                 <loca1:Pagina_Flyout_Items Titulo="Mis Mascotas"
