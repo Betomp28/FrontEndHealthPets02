@@ -103,7 +103,7 @@ public partial class Consultas_citas_Veterinarias : ContentPage
             }
         }
     }
-
+    //
     // Carga de medicamentos de la mascota
     private async Task CargarCitasVeteriaMascota(int id_Mascota , int id_doctor)
     {
