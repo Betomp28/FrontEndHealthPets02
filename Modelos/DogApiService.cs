@@ -48,23 +48,44 @@ namespace FrontEndHealthPets.Modelo
         {
             try
             {
+                Console.WriteLine($"Starting GetImagesAsync for breed: {breed}"); // Debugging: Inicia la solicitud
+
                 var response = await _httpClient.GetAsync($"https://dog.ceo/api/breed/{breed}/images/random");
+                Console.WriteLine($"HTTP Response Status Code: {response.StatusCode}"); // Debugging: Código de estado HTTP
+
                 response.EnsureSuccessStatusCode();
+                Console.WriteLine("Response ensured success."); // Debugging: Respuesta asegurada como exitosa
 
                 var json = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("JSON Response: " + json); // Debugging
+                Console.WriteLine("JSON Response: " + json); // Debugging: Respuesta JSON
 
-                var imageResponse = JsonConvert.DeserializeObject<ImageResponse>(json);
+                var imageResponse = JsonConvert.DeserializeObject<Res_ObtenerImages>(json);
+                Console.WriteLine("Deserialization result: " + (imageResponse != null ? "Success" : "Failure")); // Debugging: Resultado de la deserialización
 
-                return new Res_ObtenerImages
+                if (imageResponse == null)
                 {
-                    Images = imageResponse?.Message,
-                    Status = imageResponse?.Status
-                };
+                    Console.WriteLine("Res_ObtenerImages is null."); // Debugging: Si Res_ObtenerImages es null
+                }
+                else
+                {
+                    Console.WriteLine($"Image Response Image: {imageResponse.Image}"); // Debugging: Imágen obtenida
+                }
+
+                return imageResponse;
+            }
+            catch (JsonSerializationException jsonEx)
+            {
+                Console.WriteLine($"JSON Serialization Error: {jsonEx.Message}"); // Debugging: Error de serialización JSON
+                throw;
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.WriteLine($"HTTP Request Error: {httpEx.Message}"); // Debugging: Error en la solicitud HTTP
+                throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"General Error: {ex.Message}"); // Debugging: Error general
                 throw;
             }
         }

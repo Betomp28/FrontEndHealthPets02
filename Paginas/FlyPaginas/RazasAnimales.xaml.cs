@@ -4,6 +4,7 @@ using FrontEndHealthPets.Modelo;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,30 +58,33 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
         {
             try
             {
+                // Deshabilitar el botón mientras se hace la solicitud
+                buscarFotoButton.IsEnabled = false;
+
+                // Mostrar el indicador de carga
+                loadingIndicator.IsVisible = true;
+
                 // Obtener la raza seleccionada del Picker
                 var selectedBreed = dogSelector.SelectedItem as string;
 
-                if (selectedBreed != null)
+                if (!string.IsNullOrEmpty(selectedBreed))
                 {
-                    // Obtener las imágenes correspondientes a la raza seleccionada
+                    // Obtener la imagen correspondiente a la raza seleccionada
                     var response = await _dogApiService.GetImagesAsync(selectedBreed);
 
                     // Limpiar las imágenes anteriores
                     apiStackLayout.Children.Clear();
 
-                    if (response.Images != null && response.Images.Any())
+                    if (!string.IsNullOrEmpty(response?.Image))
                     {
-                        foreach (var imageUrl in response.Images)
+                        var image = new Image
                         {
-                            var image = new Image
-                            {
-                                Source = imageUrl,
-                                WidthRequest = 100,
-                                HeightRequest = 100,
-                                Margin = new Thickness(5)
-                            };
-                            apiStackLayout.Children.Add(image);
-                        }
+                            Source = response.Image,
+                            WidthRequest = 300,
+                            HeightRequest = 300,
+                            Margin = new Thickness(5)
+                        };
+                        apiStackLayout.Children.Add(image);
                     }
                     else
                     {
@@ -99,6 +103,12 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 // Manejar cualquier excepción que ocurra al intentar obtener imágenes de la raza seleccionada
                 Console.WriteLine($"Error: {ex.Message}");
                 await DisplayAlert("Error", "No se pudo procesar la raza seleccionada", "OK");
+            }
+            finally
+            {
+                // Rehabilitar el botón y ocultar el indicador de carga
+                buscarFotoButton.IsEnabled = true;
+                loadingIndicator.IsVisible = false;
             }
         }
     }
