@@ -22,16 +22,8 @@ public partial class ClinicaVeterinaria : ContentPage
         Navigation.PushAsync(new AgregarCita());
     }
 
-    private async void BtMostrarCita_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            await Navigation.PushAsync(new MostrarCitas());
-        }
-        catch (Exception ex)
-        {
-        }
+   
     }
 
-}
+
 

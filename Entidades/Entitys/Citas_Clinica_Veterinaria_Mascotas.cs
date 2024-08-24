@@ -18,6 +18,8 @@ namespace FrontEndHealthPets.Entidades
 
         public string Telefono { get; set; }
 
+        public int id_doctor { get; set; }
+
         public string Nombre_Doctor { get; set; }
         public DateTime? Fecha_y_hora_Cita { get; set; }
 

@@ -72,7 +72,7 @@
 
             <!-- Lista de Medicamentos -->
             <ListView x:Name="CitasClinicamascotasListView"
-     ItemsSource="{Binding CitasClinicaMascotas}"
+     ItemsSource="{Binding  CitaClinicasVeterinaria}"
      HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -123,9 +123,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="BtGuardarLista"
-       Text="Guardar como Excel"
-       Clicked="BtGuardarLista_Clicked" />
+           
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

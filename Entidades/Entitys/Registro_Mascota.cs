@@ -18,6 +18,8 @@ namespace FrontEndHealthPets.Entidades
 
         public DateTime Fecha_Nacimiento { get; set; }
 
+        public DateTime Fecha_Proximo_Baheiro { get; set; }
+
 
         //si
     }
