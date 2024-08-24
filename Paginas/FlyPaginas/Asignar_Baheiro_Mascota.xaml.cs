@@ -252,8 +252,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     if (res.resultado)
                     {
                         Debug.WriteLine("El registro se realizó correctamente");
-                        await DisplayAlert(" ", "Nuevo baño exitoso", "Aceptar");
-                        await Navigation.PushAsync(new MainPage());
+                        await DisplayAlert("Éxito", "Baño agregado correctamente", "Aceptar");
+                        await Navigation.PushAsync(new RazasAnimales());
                     }
                     else
                     {

@@ -72,8 +72,8 @@ public partial class AgregarMedicamento : ContentPage
 
                 if (res.resultado)
                 {
-                    DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
-                    Navigation.PushAsync(new MainPage());
+                    await DisplayAlert("Éxito", "Medicamento ingresado correctamente", "Aceptar");
+                    Navigation.PushAsync(new Medicamentos());
 
                 }
                 else

@@ -128,17 +128,18 @@ public partial class perfilu : ContentPage
             _tipoEdicion = tipoEdicion;
 
             var entry1 = new Entry { IsPassword = _tipoEdicion == "Password" };
-            var entry2 = new Entry { IsPassword = _tipoEdicion == "Password" };
+            Entry entry2 = null; // Define it as null and initialize later if needed.
 
             var button = new Button { Text = "Aceptar", BackgroundColor = Colors.Purple, TextColor = Colors.White };
 
             string labelText, placeholder1, placeholder2 = null;
+
+            // Adjust placeholders and label based on the type of edition.
             switch (_tipoEdicion)
             {
                 case "Nombre":
                     labelText = "Actualizar Nombre";
                     placeholder1 = "Nombre";
-                    
                     break;
 
                 case "Apellidos":
@@ -163,159 +164,149 @@ public partial class perfilu : ContentPage
             }
 
             entry1.Placeholder = placeholder1;
-            entry2.Placeholder = placeholder2;
 
-            Content = new StackLayout
+            var stackLayout = new StackLayout
             {
                 Padding = new Thickness(20),
                 Children =
             {
                 new Label { Text = labelText, FontSize = 20, FontAttributes = FontAttributes.Bold },
                 entry1,
-                entry2,
                 button
             }
             };
 
+            // Only add the second entry if it is needed.
+            if (placeholder2 != null)
+            {
+                entry2 = new Entry { IsPassword = _tipoEdicion == "Password" };
+                entry2.Placeholder = placeholder2;
+                stackLayout.Children.Insert(2, entry2);
+            }
+
+            Content = stackLayout;
+
+            // Button click logic
             button.Clicked += async (sender, e) =>
             {
                 var valor1 = entry1.Text;
-                var valor2 = entry2.Text;
+                var valor2 = entry2?.Text; // Use null propagation.
 
-                if (string.IsNullOrEmpty(valor1) || (placeholder2 != null && string.IsNullOrEmpty(valor2)))
+                // Add checks for required fields
+                if (string.IsNullOrEmpty(valor1) || (entry2 != null && string.IsNullOrEmpty(valor2)))
                 {
                     await Application.Current.MainPage.DisplayAlert("Error", "Todos los campos son obligatorios.", "OK");
                     return;
                 }
 
-                if (placeholder2 != null && valor1 != valor2)
+                if (entry2 != null && valor1 != valor2)
                 {
                     await Application.Current.MainPage.DisplayAlert("Error", "Los valores no coinciden.", "OK");
                     return;
                 }
-                // Preparar el objeto a enviar
-                Req_Actualizar_Usuario req = new Req_Actualizar_Usuario();
 
+                // Send the update request
+                await EnviarActualizacion(_tipoEdicion, valor1, valor2);
+            };
+        }
 
+        private async Task EnviarActualizacion(string tipoEdicion, string valor1, string valor2)
+        {
+            // Preparar el objeto a enviar
+            var req = new Req_Actualizar_Usuario
+            {
+                Id_Usuario = (int)Sesion.id_usuario,
+                Nombre = tipoEdicion == "Nombre" ? valor1 : null,
+                Apellidos = tipoEdicion == "Apellidos" ? valor1 : null,
+                Correo_Electronico = tipoEdicion == "Correo" ? valor1 : null,
+                Confirmacion_Correo_Electronico = tipoEdicion == "Correo" ? valor2 : null,
+                Password = tipoEdicion == "Password" ? valor1 : null,
+                Confirmar_Password = tipoEdicion == "Password" ? valor2 : null
+            };
 
-                req.Id_Usuario = (int)Sesion.id_usuario;
-                req.Nombre = _tipoEdicion == "Nombre" ? valor1 : null;
-                req.Apellidos = _tipoEdicion == "Apellidos" ? valor1 : null;
-                req.Correo_Electronico = _tipoEdicion == "Correo" ? valor1 : null;
-                req.Confirmacion_Correo_Electronico = _tipoEdicion == "Correo" ? valor2 : null;
-                req.Password = _tipoEdicion == "Password" ? valor1 : null;
-                req.Confirmar_Password = _tipoEdicion == "Password" ? valor2 : null;
+            try
+            {
+                // Construir la URL con el parámetro de consulta
+                var requestUrl = $"{LaURL}/Usuarios/ActualizarUsuario/{Sesion.id_usuario}?Id_Usuario={Sesion.id_usuario}";
 
+                // Verificar si la URL es válida
+                if (string.IsNullOrEmpty(LaURL))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
+                    return;
+                }
 
-                Debug.WriteLine($"Sesion.id_usuario: {Sesion.id_usuario}");
+                // Verificar si el ID de usuario es válido
+                if (Sesion.id_usuario == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "El ID de usuario no es válido.", "OK");
+                    return;
+                }
 
+                using var httpClient = new HttpClient();
 
+                // Añadir el token Bearer a los encabezados
+                string token = Sesion.token;
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await httpClient.PutAsJsonAsync(requestUrl, req);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
+                    return;
+                }
+
+                var jsonString = await response.Content.ReadAsStringAsync();
 
                 try
                 {
-                    // Construir la URL con el parámetro de consulta
-                    var requestUrl = $"{LaURL}/Usuarios/ActualizarUsuario/{Sesion.id_usuario}?Id_Usuario={Sesion.id_usuario}";
-                    Debug.WriteLine($"Request URL: {requestUrl}");
+                    var result = JsonConvert.DeserializeObject<Res_Actualizar_Usuario>(jsonString);
 
-                    // Verificar si la URL es válida
-                    if (string.IsNullOrEmpty(LaURL))
+                    // Actualizar el ViewModel y la Sesion con los nuevos valores
+                    switch (tipoEdicion)
                     {
-                        Debug.WriteLine("Error: La URL está vacía o no es válida.");
-                        await Application.Current.MainPage.DisplayAlert("Error", "La URL no es válida.", "OK");
-                        return;
+                        case "Nombre":
+                            _viewModel.Nombre = valor1;
+                            Sesion.nombre = _viewModel.Nombre;
+                            break;
+
+                        case "Apellidos":
+                            _viewModel.Apellido = valor1;
+                            Sesion.apellidos = _viewModel.Apellido;
+                            break;
+
+                        case "Correo":
+                            _viewModel.CorreoElectronico = valor1;
+                            Sesion.Correo_Electronico = _viewModel.CorreoElectronico;
+                            break;
+
+                        case "Password":
+                            _viewModel.Password = valor1;
+                            Sesion.Password = _viewModel.Password;
+                            break;
                     }
 
-                    // Verificar si el ID de usuario es válido
-                    if (Sesion.id_usuario == null)
-                    {
-                        Debug.WriteLine("Error: El ID de usuario es nulo.");
-                        await Application.Current.MainPage.DisplayAlert("Error", "El ID de usuario no es válido.", "OK");
-                        return;
-                    }
-
-                    // Realizar la solicitud PUT
-                    using var httpClient = new HttpClient();
-                    Debug.WriteLine("Enviando la solicitud PUT...");
-
-                    // Añadir el token Bearer a los encabezados
-                    string token = Sesion.token; // Asumiendo que el token está guardado en Sesion
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    Debug.WriteLine($"Bearer Token: {token}");
-
-                    var response = await httpClient.PutAsJsonAsync(requestUrl, req);
-                    Debug.WriteLine($"Response Status Code: {response.StatusCode}");
-
-                    // Verificar el código de estado de la respuesta
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Debug.WriteLine($"Error: La solicitud falló con el código de estado {response.StatusCode}");
-                        var errorContent = await response.Content.ReadAsStringAsync();
-                        Debug.WriteLine($"Contenido de la respuesta de error: {errorContent}");
-                        await Application.Current.MainPage.DisplayAlert("Error", $"No se pudo actualizar la información. Código de estado: {response.StatusCode}", "OK");
-                        return;
-                    }
-
-                    response.EnsureSuccessStatusCode();
-
-                    // Leer y depurar el contenido de la respuesta
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine($"Response JSON: {jsonString}");
-
-                    // Intentar deserializar la respuesta JSON
-                    try
-                    {
-                        var result = JsonConvert.DeserializeObject<Res_Actualizar_Usuario>(jsonString);
-                        Debug.WriteLine($"Resultado de deserialización: {JsonConvert.SerializeObject(result)}");
-
-                        // Actualizar el ViewModel y la Sesion con los nuevos valores
-                        switch (_tipoEdicion)
-                        {
-                            case "Nombre":
-                                _viewModel.Nombre = valor1;
-                                Sesion.nombre = _viewModel.Nombre;
-                                break;
-
-                            case "Apellidos":
-                                _viewModel.Apellido = valor1;
-                                Sesion.apellidos = _viewModel.Apellido;
-                                break;
-
-                            case "Correo":
-                                _viewModel.CorreoElectronico = valor1;
-                                Sesion.Correo_Electronico = _viewModel.CorreoElectronico;
-                                break;
-
-                            case "Password":
-                                _viewModel.Password = valor1;
-                                Sesion.Password = _viewModel.Password;
-                                break;
-                        }
-
-                        // Mostrar confirmación de éxito
-                        await Application.Current.MainPage.DisplayAlert("Éxito", "Datos actualizados correctamente.", "OK");
-                        Close();
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        Debug.WriteLine($"Error de deserialización: {jsonEx.Message}");
-                        await Application.Current.MainPage.DisplayAlert("Error", "Hubo un problema al procesar la respuesta del servidor.", "OK");
-                    }
+                    await Application.Current.MainPage.DisplayAlert("Éxito", "Datos actualizados correctamente.", "OK");
+                    Close();
                 }
-                catch (HttpRequestException ex)
+                catch (JsonException jsonEx)
                 {
-                    // Manejo de errores de la solicitud
-                    Debug.WriteLine($"Error de solicitud HTTP: {ex.Message}");
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al actualizar los datos: {ex.Message}", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", "Hubo un problema al procesar la respuesta del servidor.", "OK");
                 }
-                catch (Exception ex)
-                {
-                    // Manejo de cualquier otro tipo de excepción
-                    Debug.WriteLine($"Excepción inesperada: {ex.Message}");
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
-                }
-            };
+            }
+            catch (HttpRequestException ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al actualizar los datos: {ex.Message}", "OK");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error inesperado: {ex.Message}", "OK");
+            }
         }
     }
+
 
 
 
@@ -327,16 +318,17 @@ public partial class perfilu : ContentPage
 
     private async void CerrarSesion()
     {
+        // Cerrar la sesión y limpiar los datos de sesión.
+        Sesion.CerrarSesion();
 
-        Sesion.cerrarSesion();
+        // Reemplazar la MainPage con la página de inicio de sesión, lo que evita problemas de navegación.
+        Application.Current.MainPage = new NavigationPage(new MainPage());
 
-
-        // Navegar de vuelta a la página de inicio de sesión
-        await Navigation.PushAsync(new MainPage());
-
-        // Mostrar un mensaje de confirmación
-        await DisplayAlert("Cerrar sesión", "Has cerrado sesión correctamente.", "OK");
+        // Mostrar un mensaje de confirmación.
+        await Application.Current.MainPage.DisplayAlert("Cerrar sesión", "Has cerrado sesión correctamente.", "OK");
     }
+
+
 
 
 
@@ -446,9 +438,25 @@ public partial class perfilu : ContentPage
 
     private async void bteliminar_Clicked(object sender, EventArgs e)
     {
-        var popup = new EliminarsesionPopup(LaURL); // Usa la URL definida en MainPage
-        await Application.Current.MainPage.ShowPopupAsync(popup);
+        try
+        {
+            // Mostrar el popup
+            var popup = new EliminarsesionPopup(LaURL);
+            await Application.Current.MainPage.ShowPopupAsync(popup);
+
+           
+
+            // Redirigir a la página principal
+            Application.Current.MainPage = new NavigationPage(new MainPage());
+        }
+        catch (Exception ex)
+        {
+            // Manejar o registrar la excepción
+            Console.WriteLine($"Error mostrando popup: {ex.Message}");
+        }
     }
+
+
 }
 
 

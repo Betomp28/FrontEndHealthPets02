@@ -186,11 +186,12 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                 {
                     Debug.WriteLine($"Número de doctores obtenidos: {result.listaDoctoresporclinica.Count}");
                     return result.listaDoctoresporclinica;
+
                 }
                 else
                 {
-                    await DisplayAlert("Error", $"Error en la API: {result.error}", "OK");
                     return new List<Doctor>();
+
                 }
             }
             catch (HttpRequestException ex)
@@ -312,8 +313,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                     if (res.resultado)
                     {
                         Debug.WriteLine("Cita registrada exitosamente.");
-                        await DisplayActionSheet("Registro", "Usuario Registrado", "Aceptar");
-                        await Navigation.PushAsync(new MainPage());
+                        await DisplayAlert("Éxito", "Cita registrada exitosamente", "Aceptar");
+                        await Navigation.PushAsync(new RazasAnimales());
                     }
                     else
                     {

@@ -1,46 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FrontEndHealthPets.Entidades.Entitys
 {
-   public class Sesion
+    public static class Sesion
     {
         public static long Id_mascota { get; set; }
         public static long id_usuario { get; set; }
         public static string nombre { get; set; }
         public static string apellidos { get; set; }
-
         public static string Correo_Electronico { get; set; }
-
         public static string Password { get; set; }
-
         public static string token { get; set; }
 
-        public static bool validarSesion()
+        // Valida si la sesión está activa comprobando el token
+        public static bool ValidarSesion()
         {
-            if (String.IsNullOrEmpty(Sesion.token))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return !string.IsNullOrEmpty(token);  // Simplificación del método
         }
 
-        public static void cerrarSesion()
+        // Resetea todos los valores de la sesión
+        public static void CerrarSesion()
         {
-            Sesion.Id_mascota = 0;
-            Sesion.id_usuario = 0;
-            Sesion.nombre = String.Empty;
-            Sesion.apellidos = String.Empty;
-            Sesion.Correo_Electronico = String.Empty;
-            Sesion.Password = String.Empty;
-            Sesion.token = String.Empty;
-
+            Id_mascota = 0;
+            id_usuario = 0;
+            nombre = string.Empty;  // Cambiado a la forma más común en C#
+            apellidos = string.Empty;
+            Correo_Electronico = string.Empty;
+            Password = string.Empty;
+            token = string.Empty;
         }
-        }
+    }
 }

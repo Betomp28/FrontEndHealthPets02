@@ -243,8 +243,8 @@ namespace FrontEndHealthPets.Paginas.FlyPaginas
                         {
                             Debug.WriteLine("El medicamento se registró correctamente");
 
-                            await DisplayActionSheet("Registro", "vacuna mascota exitoso", "Aceptar");
-                            await Navigation.PushAsync(new MainPage());
+                            await DisplayAlert("Éxito", "Vacuna asignada correctamente", "Aceptar");
+                            await Navigation.PushAsync(new RazasAnimales());
                         }
                         else
                         {
