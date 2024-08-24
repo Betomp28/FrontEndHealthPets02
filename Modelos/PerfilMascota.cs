@@ -16,5 +16,7 @@ namespace FrontEndHealthPets.Modelos
         public string Especie { get; set; }
         public string Raza { get; set; }
         public DateTime Fecha_Nacimiento { get; set; }
+
+        public DateTime Fecha_Proximo_Baheiro { get; set; }
     }
 }
