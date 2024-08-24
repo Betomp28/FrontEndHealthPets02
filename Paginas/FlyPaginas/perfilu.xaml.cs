@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 using FrontEndHealthPets.Entidades.Request;
 using FrontEndHealthPets.Entidades.response;
 using FrontEndHealthPets.Entidades.entitys;
+using Microsoft.Maui.Graphics.Text;
 
 
 namespace FrontEndHealthPets.Paginas.FlyPaginas;
@@ -137,6 +138,7 @@ public partial class perfilu : ContentPage
                 case "Nombre":
                     labelText = "Actualizar Nombre";
                     placeholder1 = "Nombre";
+                    
                     break;
 
                 case "Apellidos":

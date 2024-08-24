@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using FrontEndHealthPets.Entidades;
 using FrontEndHealthPets.Entidades.Entitys;
 using FrontEndHealthPets.Entidades.response;
@@ -95,8 +96,8 @@ public partial class Consultas_citas_Veterinarias : ContentPage
 
             if (mascotaSeleccionada != null)
             {
-                
-                await CargarCitasVeteriaMascota(mascotaSeleccionada.Id_Mascota , id_doctor);
+
+                await CargarCitasVeteriaMascota(mascotaSeleccionada.Id_Mascota);
 
                 // Actualiza el ItemsSource del ListView para mostrar los datos de Citasclinicaveterinaria
                 CitasClinicamascotasListView.ItemsSource = CitaClinicasVeterinaria;
@@ -105,12 +106,12 @@ public partial class Consultas_citas_Veterinarias : ContentPage
     }
     //
     // Carga de medicamentos de la mascota
-    private async Task CargarCitasVeteriaMascota(int id_Mascota , int id_doctor)
+    private async Task CargarCitasVeteriaMascota(int id_Mascota)
     {
         try
         {
             // Método para obtener el id_doctor
-            var requestUrl = $"{LaURL}/Lista_Citas_Veterinarias/Obtener_Lista_Citas_Veterinarias?id_mascota={id_Mascota}&Id_Doctor={id_doctor}";
+            var requestUrl = $"{LaURL}/Lista_Citas_Veterinarias/Obtener_Lista_Citas_Veterinarias?id_mascota={id_Mascota}";
             Debug.WriteLine($"Request URL: {requestUrl}");
 
             var response = await _httpClient.GetAsync(requestUrl);
@@ -162,7 +163,53 @@ public partial class Consultas_citas_Veterinarias : ContentPage
             await DisplayAlert("Error", $"Ocurrió un error: {ex.Message}", "OK");
         }
     }
+
+    private async void BtGuardarLista_Clicked(object sender, EventArgs e)
+    {
+
+        try
+        {
+            // Ruta del archivo (puedes cambiarla a una ruta específica si es necesario)
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CitasVeterinarias.xlsx");
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Citas Veterinarias");
+
+                // Agregar encabezados
+                worksheet.Cell(1, 1).Value = "Nombre Clínica";
+                worksheet.Cell(1, 2).Value = "Dirección";
+                worksheet.Cell(1, 3).Value = "Teléfono";
+                worksheet.Cell(1, 4).Value = "Nombre Doctor";
+                worksheet.Cell(1, 5).Value = "Fecha y Hora Cita";
+                worksheet.Cell(1, 6).Value = "Notas";
+
+                // Agregar datos
+                var row = 2;
+                foreach (var cita in CitaClinicasVeterinaria)
+                {
+                    worksheet.Cell(row, 1).Value = cita.Nombre_Clinica;
+                    worksheet.Cell(row, 2).Value = cita.Direccion;
+                    worksheet.Cell(row, 3).Value = cita.Telefono;
+                    worksheet.Cell(row, 4).Value = cita.Nombre_Doctor;
+
+                    // Formatear fecha y hora
+                    worksheet.Cell(row, 5).Value = cita.Fecha_y_hora_Cita;
+                    worksheet.Cell(row, 5).Style.NumberFormat.Format = "dd/MM/yyyy HH:mm";
+
+                    worksheet.Cell(row, 6).Value = cita.Notas ?? "No hay notas disponibles";
+                    row++;
+                }
+
+                // Guardar el archivo
+                workbook.SaveAs(filePath);
+            }
+
+            await DisplayAlert("Éxito", "Archivo Excel guardado correctamente.", "OK");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"No se pudo guardar el archivo: {ex.Message}", "OK");
+        }
+    }
 }
-
-
-  
