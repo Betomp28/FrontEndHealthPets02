@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.ChatPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Mensajes"
+    BackgroundColor="#F5F5F5">
+
+    <Grid>
+        <!-- Conversations List View -->
+        <Grid IsVisible="{Binding IsInConversation, Converter={StaticResource InvertedBoolConverter}}" RowDefinitions="*, Auto">
+            <CollectionView
+                Grid.Row="0"
+                Margin="10"
+                ItemsSource="{Binding Conversaciones}"
+                SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="10"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="48"
+                            HorizontalOptions="Center"
+                            Text="💬" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Text="No tienes conversaciones"
+                            TextColor="#666" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Inicia una conversacion desde el perfil de un veterinario"
+                            TextColor="#999" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Conversacion">
+                        <Frame
+                            Margin="0,5"
+                            Padding="12"
+                            BackgroundColor="White"
+                            CornerRadius="10"
+                            HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ChatViewModel}}, Path=OpenConversacionCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto">
+                                <!-- Avatar -->
+                                <Frame
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Grid.Column="0"
+                                    Margin="0,0,12,0"
+                                    Padding="0"
+                                    BackgroundColor="#6B4EE6"
+                                    CornerRadius="25"
+                                    HasShadow="False"
+                                    HeightRequest="50"
+                                    WidthRequest="50">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="20"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding OtroParticipanteNombre, Converter={StaticResource FirstLetterConverter}}"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </Frame>
+
+                                <!-- Name & Status -->
+                                <HorizontalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding OtroParticipanteNombre}"
+                                        TextColor="#333"
+                                        VerticalOptions="Center" />
+                                    <Frame
+                                        Padding="4,2"
+                                        BackgroundColor="{Binding Estado, Converter={StaticResource ConversacionStatusColorConverter}}"
+                                        CornerRadius="4"
+                                        HasShadow="False"
+                                        IsVisible="{Binding Estado, Converter={StaticResource IsNotActiveConverter}}">
+                                        <Label
+                                            FontSize="9"
+                                            Text="{Binding Estado}"
+                                            TextColor="White" />
+                                    </Frame>
+                                </HorizontalStackLayout>
+
+                                <!-- Time -->
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    FontSize="11"
+                                    Text="{Binding UltimoMensaje, StringFormat='{0:HH:mm}'}"
+                                    TextColor="#888" />
+
+                                <!-- Last Message -->
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="12"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1"
+                                    Text="{Binding UltimoMensajeTexto}"
+                                    TextColor="#666" />
+
+                                <!-- Unread Badge -->
+                                <Frame
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Padding="6,2"
+                                    BackgroundColor="#6B4EE6"
+                                    CornerRadius="10"
+                                    HasShadow="False"
+                                    IsVisible="{Binding MensajesNoLeidos, Converter={StaticResource GreaterThanZeroConverter}}">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding MensajesNoLeidos}"
+                                        TextColor="White" />
+                                </Frame>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Refresh Button -->
+            <Button
+                Grid.Row="1"
+                Margin="10"
+                BackgroundColor="#6B4EE6"
+                Command="{Binding LoadConversacionesCommand}"
+                CornerRadius="25"
+                HeightRequest="50"
+                HorizontalOptions="End"
+                Text="Actualizar"
+                TextColor="White"
+                WidthRequest="120" />
+        </Grid>
+
+        <!-- Chat View -->
+        <Grid
+            IsVisible="{Binding IsInConversation}"
+            RowDefinitions="Auto, *, Auto">
+            <!-- Chat Header -->
+            <Frame
+                Grid.Row="0"
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="0"
+                HasShadow="True">
+                <Grid ColumnDefinitions="Auto, *, Auto, Auto">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        Command="{Binding BackToConversationsCommand}"
+                        Text="Atras"
+                        TextColor="#6B4EE6" />
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        HorizontalOptions="Center"
+                        Spacing="2">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="{Binding SelectedConversacion.OtroParticipanteNombre}"
+                            TextColor="#333" />
+                        <Label
+                            FontSize="10"
+                            HorizontalOptions="Center"
+                            Text="{Binding SelectedConversacion.Estado}"
+                            TextColor="#666" />
+                    </VerticalStackLayout>
+                    <!-- Video Call Button -->
+                    <Button
+                        Grid.Column="2"
+                        Margin="0,0,10,0"
+                        Padding="8"
+                        BackgroundColor="#6B4EE6"
+                        Command="{Binding StartVideoCallCommand}"
+                        CornerRadius="20"
+                        FontSize="16"
+                        HeightRequest="40"
+                        Text="Video"
+                        TextColor="White"
+                        WidthRequest="70"
+                        IsVisible="{Binding SelectedConversacion.Estado, Converter={StaticResource IsActiveConverter}}" />
+                    <Button
+                        Grid.Column="3"
+                        BackgroundColor="Transparent"
+                        Command="{Binding CloseConversacionCommand}"
+                        FontSize="12"
+                        Text="Cerrar"
+                        TextColor="#D32F2F" />
+                </Grid>
+            </Frame>
+
+            <!-- Messages -->
+            <CollectionView
+                Grid.Row="1"
+                Margin="10"
+                ItemsSource="{Binding Mensajes}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Mensaje">
+                        <Frame
+                            Margin="0,5"
+                            Padding="10"
+                            BackgroundColor="{Binding EsPropio, Converter={StaticResource MessageBubbleColorConverter}}"
+                            CornerRadius="10"
+                            HasShadow="False"
+                            HorizontalOptions="{Binding EsPropio, Converter={StaticResource MessageAlignmentConverter}}">
+                            <VerticalStackLayout MaximumWidthRequest="280" Spacing="4">
+                                <Label
+                                    FontSize="13"
+                                    Text="{Binding Contenido}"
+                                    TextColor="{Binding EsPropio, Converter={StaticResource MessageTextColorConverter}}" />
+                                <HorizontalStackLayout HorizontalOptions="End" Spacing="5">
+                                    <Label
+                                        FontSize="9"
+                                        Text="{Binding FechaEnvio, StringFormat='{0:HH:mm}'}"
+                                        TextColor="{Binding EsPropio, Converter={StaticResource MessageTimeColorConverter}}" />
+                                    <Label
+                                        FontSize="9"
+                                        IsVisible="{Binding EsPropio}"
+                                        Text="{Binding Leido, Converter={StaticResource ReadStatusConverter}}"
+                                        TextColor="{Binding EsPropio, Converter={StaticResource MessageTimeColorConverter}}" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Message Input -->
+            <Frame
+                Grid.Row="2"
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="0"
+                HasShadow="True">
+                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                    <Frame
+                        Grid.Column="0"
+                        Padding="5"
+                        BackgroundColor="#F0F0F0"
+                        CornerRadius="20"
+                        HasShadow="False">
+                        <Entry
+                            Placeholder="Escribe un mensaje..."
+                            Text="{Binding NewMessage}"
+                            VerticalOptions="Center" />
+                    </Frame>
+                    <Button
+                        Grid.Column="1"
+                        BackgroundColor="#6B4EE6"
+                        Command="{Binding SendMessageCommand}"
+                        CornerRadius="20"
+                        HeightRequest="45"
+                        Text="Enviar"
+                        TextColor="White"
+                        WidthRequest="80" />
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Loading -->
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Basic converters - you may need to create these in a Converters folder -->
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

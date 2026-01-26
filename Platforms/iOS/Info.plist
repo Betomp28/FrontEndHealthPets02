@@ -28,5 +28,10 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<!-- Video Call Permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>HealthPets necesita acceso a la camara para realizar videollamadas con veterinarios</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>HealthPets necesita acceso al microfono para realizar videollamadas con veterinarios</string>
 </dict>
 </plist>

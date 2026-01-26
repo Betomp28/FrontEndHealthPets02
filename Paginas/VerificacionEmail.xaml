@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VerificacionEmail"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Verificar Email"
+    BackgroundColor="#F8F9FA"
+    Shell.BackgroundColor="#6C63FF"
+    Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <Frame
+            Grid.Row="0"
+            Padding="0"
+            BackgroundColor="#6C63FF"
+            CornerRadius="0"
+            HasShadow="False">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#6C63FF" />
+                    <GradientStop Offset="0.5" Color="#5548D9" />
+                    <GradientStop Offset="1.0" Color="#7C4DFF" />
+                </LinearGradientBrush>
+            </Frame.Background>
+        </Frame>
+
+        <!--  Content  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout
+                Padding="30"
+                Spacing="20"
+                VerticalOptions="Center">
+
+                <!--  Email Icon  -->
+                <Frame
+                    Padding="0"
+                    BackgroundColor="#F0EFFF"
+                    CornerRadius="50"
+                    HasShadow="False"
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    WidthRequest="100">
+                    <Label
+                        FontSize="48"
+                        HorizontalOptions="Center"
+                        Text="📧"
+                        VerticalOptions="Center" />
+                </Frame>
+
+                <!--  Title  -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        Text="Verifica tu Email"
+                        TextColor="#2D3436" />
+
+                    <Label
+                        x:Name="EmailLabel"
+                        FontSize="15"
+                        HorizontalOptions="Center"
+                        Text="Enviamos un código de verificación a:"
+                        TextColor="#636E72" />
+
+                    <Label
+                        x:Name="UserEmailLabel"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="usuario@email.com"
+                        TextColor="#6C63FF" />
+                </VerticalStackLayout>
+
+                <!--  Verification Code Input  -->
+                <Frame
+                    Margin="0,20,0,0"
+                    Padding="24"
+                    BackgroundColor="White"
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.08"
+                            Radius="15"
+                            Offset="0,4" />
+                    </Frame.Shadow>
+
+                    <VerticalStackLayout Spacing="20">
+                        <Label
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="Ingresa el código de 6 dígitos"
+                            TextColor="#636E72" />
+
+                        <!--  Code Input Boxes  -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code1"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code2"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code3"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code4"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code5"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                            <Border
+                                BackgroundColor="White"
+                                HeightRequest="56"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="2"
+                                WidthRequest="48">
+                                <Entry
+                                    x:Name="Code6"
+                                    FontAttributes="Bold"
+                                    FontSize="24"
+                                    HorizontalTextAlignment="Center"
+                                    Keyboard="Numeric"
+                                    MaxLength="1"
+                                    TextChanged="OnCodeTextChanged"
+                                    TextColor="#2D3436" />
+                            </Border>
+                        </HorizontalStackLayout>
+
+                        <!--  Error Label  -->
+                        <Label
+                            x:Name="ErrorLabel"
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            IsVisible="False"
+                            Text=""
+                            TextColor="#FF5252" />
+
+                        <!--  Verify Button  -->
+                        <Button
+                            x:Name="btVerificar"
+                            BackgroundColor="#6C63FF"
+                            Clicked="btVerificar_Clicked"
+                            CornerRadius="12"
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            HeightRequest="55"
+                            Text="Verificar Email"
+                            TextColor="White">
+                            <Button.Shadow>
+                                <Shadow
+                                    Brush="#6C63FF"
+                                    Opacity="0.4"
+                                    Radius="15"
+                                    Offset="0,6" />
+                            </Button.Shadow>
+                        </Button>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Resend Code  -->
+                <VerticalStackLayout
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    Spacing="8">
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Text="¿No recibiste el código?"
+                        TextColor="#636E72" />
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                        <Label
+                            x:Name="ResendLabel"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Text="Reenviar código"
+                            TextColor="#6C63FF">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnResendTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label
+                            x:Name="TimerLabel"
+                            FontSize="14"
+                            IsVisible="True"
+                            Text="(60s)"
+                            TextColor="#B2BEC3" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!--  Back to Login  -->
+                <Label
+                    Margin="0,30,0,0"
+                    FontSize="14"
+                    HorizontalOptions="Center"
+                    Text="← Volver al login"
+                    TextColor="#636E72">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackToLoginTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Loading Overlay  -->
+        <Grid
+            x:Name="LoadingOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#80000000"
+            IsVisible="False">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="16"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    HeightRequest="50"
+                    IsRunning="True"
+                    WidthRequest="50"
+                    Color="White" />
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    Text="Verificando..."
+                    TextColor="White" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!--  Success Overlay  -->
+        <Grid
+            x:Name="SuccessOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#80000000"
+            IsVisible="False">
+            <Frame
+                Padding="40"
+                BackgroundColor="White"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="20">
+                    <Frame
+                        Padding="0"
+                        BackgroundColor="#E8F5E9"
+                        CornerRadius="40"
+                        HasShadow="False"
+                        HeightRequest="80"
+                        HorizontalOptions="Center"
+                        WidthRequest="80">
+                        <Label
+                            FontSize="40"
+                            HorizontalOptions="Center"
+                            Text="✓"
+                            TextColor="#4CAF50"
+                            VerticalOptions="Center" />
+                    </Frame>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="¡Email Verificado!"
+                        TextColor="#2D3436" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Text="Tu cuenta ha sido verificada exitosamente"
+                        TextColor="#636E72" />
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
+
+</ContentPage>

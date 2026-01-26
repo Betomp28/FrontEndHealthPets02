@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="HealthPets"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,50,20,20"
+            BackgroundColor="#6C63FF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <VerticalStackLayout Grid.Column="0" Spacing="4">
+                <Label
+                    x:Name="GreetingLabel"
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    Text="¡Hola! 👋"
+                    TextColor="White" />
+                <Label
+                    x:Name="UserNameLabel"
+                    FontSize="16"
+                    Opacity="0.9"
+                    Text="Usuario"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!--  Premium Badge / Settings  -->
+            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                <ImageButton
+                    Padding="6"
+                    BackgroundColor="#80FFFFFF"
+                    Clicked="Settings_Clicked"
+                    CornerRadius="16"
+                    HeightRequest="32"
+                    Source="gear.png"
+                    WidthRequest="32" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!--  Main Content  -->
+        <ScrollView Grid.Row="1" BackgroundColor="#F8F9FA">
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!--  Quick Stats Card  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="White"
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.1"
+                            Radius="10"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                        <!--  Pets Count  -->
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="🐾" />
+                            <Label
+                                x:Name="PetsCountLabel"
+                                FontAttributes="Bold"
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="0"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="Mascotas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+
+                        <BoxView
+                            Grid.Column="1"
+                            BackgroundColor="#F0F3F5"
+                            WidthRequest="1" />
+
+                        <!--  Upcoming Vaccines  -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="💉" />
+                            <Label
+                                x:Name="VaccinesCountLabel"
+                                FontAttributes="Bold"
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="0"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="Vacunas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+
+                        <BoxView
+                            Grid.Column="2"
+                            BackgroundColor="#F0F3F5"
+                            WidthRequest="1" />
+
+                        <!--  Upcoming Appointments  -->
+                        <VerticalStackLayout Grid.Column="2" Spacing="4">
+                            <Label
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="📅" />
+                            <Label
+                                x:Name="AppointmentsCountLabel"
+                                FontAttributes="Bold"
+                                FontSize="24"
+                                HorizontalOptions="Center"
+                                Text="0"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="Citas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <!--  My Pets Section  -->
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            FontSize="22"
+                            Text="Mis Mascotas"
+                            TextColor="#2D3436" />
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Text="Ver todas →"
+                            TextColor="#6C63FF"
+                            VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ViewAllPets_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <!--  Pets List  -->
+                    <CollectionView
+                        x:Name="PetsCollectionView"
+                        HeightRequest="200"
+                        SelectionChanged="Pet_Selected"
+                        SelectionMode="Single">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="12" Orientation="Horizontal" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <!--  Pet Card  -->
+                                <Frame
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    BorderColor="Transparent"
+                                    CornerRadius="16"
+                                    HasShadow="False"
+                                    WidthRequest="160">
+                                    <Frame.Shadow>
+                                        <Shadow
+                                            Brush="Black"
+                                            Opacity="0.1"
+                                            Radius="8"
+                                            Offset="0,2" />
+                                    </Frame.Shadow>
+
+                                    <VerticalStackLayout Padding="12" Spacing="10">
+                                        <!--  Pet Image  -->
+                                        <Frame
+                                            Padding="0"
+                                            BackgroundColor="#F0F3F5"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            HeightRequest="120">
+                                            <Image Aspect="AspectFill" Source="{Binding ProfileImage}" />
+                                        </Frame>
+
+                                        <!--  Pet Info  -->
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                LineBreakMode="TailTruncation"
+                                                Text="{Binding Name}"
+                                                TextColor="#2D3436" />
+                                            <Label
+                                                FontSize="12"
+                                                LineBreakMode="TailTruncation"
+                                                Text="{Binding Breed}"
+                                                TextColor="#636E72" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="{Binding AgeDisplay}"
+                                                TextColor="#B2BEC3" />
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!--  Empty State / Add First Pet  -->
+                    <Frame
+                        x:Name="EmptyPetsState"
+                        Padding="40,30"
+                        BackgroundColor="White"
+                        BorderColor="#DFE6E9"
+                        CornerRadius="16"
+                        HasShadow="False"
+                        IsVisible="False">
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="12">
+                            <Label
+                                FontSize="48"
+                                HorizontalOptions="Center"
+                                Text="🐶" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Aún no tienes mascotas"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                Text="¡Agrega tu primera mascota para empezar!"
+                                TextColor="#636E72" />
+                            <Button
+                                Margin="0,10,0,0"
+                                Padding="20,12"
+                                BackgroundColor="#6C63FF"
+                                Clicked="AddPet_Clicked"
+                                CornerRadius="12"
+                                FontAttributes="Bold"
+                                Text="Agregar Mascota"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!--  Quick Actions  -->
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Acciones Rápidas"
+                        TextColor="#2D3436" />
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="12"
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="12">
+                        <!--  Add Pet  -->
+                        <Frame
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Padding="16"
+                            BackgroundColor="#6C63FF"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="AddPet_Clicked" />
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout Spacing="6">
+                                <Label FontSize="28" Text="➕" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Agregar"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.9"
+                                    Text="Mascota"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!--  Add Vaccine  -->
+                        <Frame
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Padding="16"
+                            BackgroundColor="#00D9A5"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="AddVaccine_Clicked" />
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout Spacing="6">
+                                <Label FontSize="28" Text="💉" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Registrar"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.9"
+                                    Text="Vacuna"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!--  Add Appointment  -->
+                        <Frame
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Padding="16"
+                            BackgroundColor="#FF6584"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="AddAppointment_Clicked" />
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout Spacing="6">
+                                <Label FontSize="28" Text="📅" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Agendar"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.9"
+                                    Text="Cita"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!--  Medications  -->
+                        <Frame
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="16"
+                            BackgroundColor="#FF9800"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Medications_Clicked" />
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout Spacing="6">
+                                <Label FontSize="28" Text="💊" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Control"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.9"
+                                    Text="Medicamentos"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!--  Extra spacing  -->
+                <BoxView HeightRequest="20" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

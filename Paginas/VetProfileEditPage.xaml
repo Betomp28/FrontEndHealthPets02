@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VetProfileEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Mi Perfil Veterinario"
+    BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!--  Profile Image  -->
+            <Frame
+                Padding="0"
+                BackgroundColor="White"
+                CornerRadius="75"
+                HasShadow="True"
+                HeightRequest="150"
+                HorizontalOptions="Center"
+                WidthRequest="150">
+                <Grid>
+                    <Image Aspect="AspectFill" Source="{Binding ProfileImageUrl, TargetNullValue='vet_placeholder.png'}" />
+                    <Button
+                        BackgroundColor="#6B4EE6AA"
+                        Command="{Binding SelectPhotoCommand}"
+                        CornerRadius="75"
+                        HeightRequest="150"
+                        Text="📷 Cambiar"
+                        TextColor="White"
+                        WidthRequest="150" />
+                </Grid>
+            </Frame>
+
+            <!--  Name  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontSize="12"
+                        Text="Nombre"
+                        TextColor="#666" />
+                    <Entry
+                        Placeholder="Dr. Juan Pérez"
+                        Text="{Binding Name}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Specialty  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontSize="12"
+                        Text="Especialidad"
+                        TextColor="#666" />
+                    <Entry
+                        Placeholder="Medicina General"
+                        Text="{Binding Specialty}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Description  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontSize="12"
+                        Text="Descripción"
+                        TextColor="#666" />
+                    <Editor
+                        AutoSize="TextChanges"
+                        HeightRequest="100"
+                        Placeholder="Describe tu experiencia..."
+                        Text="{Binding Description}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Phone  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontSize="12"
+                        Text="Teléfono"
+                        TextColor="#666" />
+                    <Entry
+                        Keyboard="Telephone"
+                        Placeholder="+506 8888-8888"
+                        Text="{Binding Phone}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Consultation Price  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="White"
+                CornerRadius="10">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontSize="12"
+                        Text="Precio de Consulta (₡)"
+                        TextColor="#666" />
+                    <Entry
+                        Keyboard="Numeric"
+                        Placeholder="25000"
+                        Text="{Binding ConsultationPrice}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Save Button  -->
+            <Button
+                BackgroundColor="#6B4EE6"
+                Command="{Binding SaveCommand}"
+                CornerRadius="10"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                Text="Guardar Cambios"
+                TextColor="White" />
+
+            <!--  Manage Schedule Button  -->
+            <Button
+                BackgroundColor="#4CAF50"
+                Command="{Binding GoToScheduleCommand}"
+                CornerRadius="10"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                Text="Gestionar Horarios"
+                TextColor="White" />
+
+            <ActivityIndicator
+                HorizontalOptions="Center"
+                IsRunning="{Binding IsLoading}"
+                IsVisible="{Binding IsLoading}"
+                Color="#6B4EE6" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VaccinationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Control de Vacunas"
+    BackgroundColor="#F5F5F5">
+
+    <!--  BindingContext is set via Constructor Injection in code-behind  -->
+
+    <!--  Toolbar Item for Adding Vaccine  -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddVaccineCommand}" Text="Agregar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!--  Pet Selector Header  -->
+        <Border
+            Grid.Row="0"
+            Margin="10,10,10,0"
+            Padding="10"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 10">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.1"
+                    Radius="3"
+                    Offset="0,2" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label
+                        FontSize="12"
+                        Text="Mascota Seleccionada:"
+                        TextColor="#888" />
+                    <Picker
+                        Title="Seleccionar Mascota"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        ItemDisplayBinding="{Binding Name}"
+                        ItemsSource="{Binding Pets}"
+                        SelectedItem="{Binding SelectedPet}"
+                        TextColor="#333"
+                        TitleColor="#999" />
+                </VerticalStackLayout>
+                <Label
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    Text="▼"
+                    TextColor="#666"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!--  Main Content  -->
+        <CollectionView
+            Grid.Row="1"
+            Margin="10"
+            ItemsSource="{Binding Vaccines}"
+            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+            SelectionChangedCommand="{Binding NavigateToDetailsCommand}"
+            SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}"
+            SelectionMode="Single">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Vaccine">
+                    <Border
+                        Padding="15"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.1"
+                                Radius="5"
+                                Offset="0,2" />
+                        </Border.Shadow>
+
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto">
+
+                            <!--  Status Indicator Strip  -->
+                            <BoxView
+                                Grid.RowSpan="3"
+                                CornerRadius="2"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Fill"
+                                WidthRequest="5">
+                                <BoxView.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="BoxView"
+                                        Value="Overdue">
+                                        <Setter Property="Color" Value="#FF5252" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="BoxView"
+                                        Value="Completed">
+                                        <Setter Property="Color" Value="#4CAF50" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="BoxView"
+                                        Value="Upcoming">
+                                        <Setter Property="Color" Value="#FFC107" />
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+
+                            <!--  Vaccine Name  -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="15,0,0,0"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="{Binding Name}"
+                                TextColor="#333" />
+
+                            <!--  Status Label (Icon-like)  -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="Label"
+                                        Value="Overdue">
+                                        <Setter Property="Text" Value="⚠️ VENCIDA" />
+                                        <Setter Property="TextColor" Value="#FF5252" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="Label"
+                                        Value="Completed">
+                                        <Setter Property="Text" Value="✅ AL DÍA" />
+                                        <Setter Property="TextColor" Value="#4CAF50" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="Label"
+                                        Value="Upcoming">
+                                        <Setter Property="Text" Value="📅 PRÓXIMA" />
+                                        <Setter Property="TextColor" Value="#FFC107" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <!--  Dates Info  -->
+                            <StackLayout
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="15,5,0,0"
+                                Orientation="Horizontal"
+                                Spacing="20">
+                                <VerticalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        Text="Aplicada:"
+                                        TextColor="#888" />
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding DateAdministered, StringFormat='{0:dd/MM/yyyy}'}"
+                                        TextColor="#555" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout>
+                                    <Label
+                                        FontSize="10"
+                                        Text="Próxima Dosis:"
+                                        TextColor="#888" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding NextDueDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                        TextColor="#555" />
+                                </VerticalStackLayout>
+                            </StackLayout>
+
+                        </Grid>
+
+                        <!--  Visual State Manager for Selection  -->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal" />
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#F0F0F0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Floating Action Button (Alternative to Toolbar)  -->
+        <Button
+            Grid.Row="1"
+            Margin="20"
+            BackgroundColor="{StaticResource Primary}"
+            Command="{Binding AddVaccineCommand}"
+            CornerRadius="30"
+            FontSize="30"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            Shadow="{Shadow Brush=Black,
+                            Offset='0,5',
+                            Radius=5,
+                            Opacity=0.3}"
+            Text="+"
+            TextColor="White"
+            VerticalOptions="End"
+            WidthRequest="60" />
+    </Grid>
+</ContentPage>

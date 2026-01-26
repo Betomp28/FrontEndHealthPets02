@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VetPortal.VetFlyoutMenuPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Menú"
+    BackgroundColor="#F8F9FA">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!--  Header with Vet Profile  -->
+        <Frame
+            Grid.Row="0"
+            Margin="0,0,0,0"
+            Padding="0"
+            CornerRadius="0"
+            HasShadow="False">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#667eea" />
+                    <GradientStop Offset="0.5" Color="#764ba2" />
+                    <GradientStop Offset="1.0" Color="#667eea" />
+                </LinearGradientBrush>
+            </Frame.Background>
+
+            <VerticalStackLayout Padding="20,50,20,30" Spacing="12">
+                <!--  Vet Avatar  -->
+                <Frame
+                    Padding="3"
+                    BackgroundColor="White"
+                    CornerRadius="40"
+                    HasShadow="False"
+                    HeightRequest="80"
+                    HorizontalOptions="Start"
+                    WidthRequest="80">
+                    <Frame
+                        Padding="0"
+                        BackgroundColor="#E8E8FF"
+                        CornerRadius="37"
+                        HasShadow="False">
+                        <Label
+                            FontSize="40"
+                            HorizontalOptions="Center"
+                            Text="🏥"
+                            VerticalOptions="Center" />
+                    </Frame>
+                </Frame>
+
+                <!--  Vet Info  -->
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        x:Name="VetNameLabel"
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="Dr. Veterinario"
+                        TextColor="White" />
+                    <Label
+                        x:Name="VetSpecialtyLabel"
+                        FontSize="14"
+                        Opacity="0.85"
+                        Text="Especialidad"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!--  Menu Items  -->
+        <ScrollView Grid.Row="1" Padding="16,20">
+            <VerticalStackLayout Spacing="8">
+
+                <!--  Dashboard  -->
+                <Frame
+                    x:Name="DashboardItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDashboardTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#F0EFFF"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="📊"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Dashboard"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Resumen general"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  Mis Citas  -->
+                <Frame
+                    x:Name="AppointmentsItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAppointmentsTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E0F7FA"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="📅"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Mis Citas"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Ver y gestionar citas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  Horarios  -->
+                <Frame
+                    x:Name="ScheduleItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnScheduleTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#FFF3E0"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🕐"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Horarios"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Gestionar disponibilidad"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  Mi Perfil  -->
+                <Frame
+                    x:Name="ProfileItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnProfileTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#F0F3F5"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="👤"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Mi Perfil"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Editar información"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Footer with Logout  -->
+        <Frame
+            Grid.Row="2"
+            Padding="20"
+            BackgroundColor="White"
+            BorderColor="#F0F3F5"
+            CornerRadius="0"
+            HasShadow="False">
+            <Button
+                x:Name="LogoutButton"
+                BackgroundColor="#FF5252"
+                Clicked="OnLogoutClicked"
+                CornerRadius="12"
+                FontAttributes="Bold"
+                FontSize="16"
+                HeightRequest="50"
+                Text="Cerrar Sesión"
+                TextColor="White">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#FF5252"
+                        Opacity="0.3"
+                        Radius="10"
+                        Offset="0,4" />
+                </Button.Shadow>
+            </Button>
+        </Frame>
+
+    </Grid>
+
+</ContentPage>

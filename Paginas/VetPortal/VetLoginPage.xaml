@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VetPortal.VetLoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#1a1a2e"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid Padding="30" RowDefinitions="Auto,*,Auto">
+
+            <!--  Header  -->
+            <StackLayout
+                Grid.Row="0"
+                Margin="0,40,0,30"
+                Spacing="10">
+                <Frame
+                    Padding="0"
+                    BackgroundColor="#6B4EE6"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    HeightRequest="80"
+                    HorizontalOptions="Center"
+                    WidthRequest="80">
+                    <Label
+                        FontSize="40"
+                        HorizontalOptions="Center"
+                        Text="🏥"
+                        VerticalOptions="Center" />
+                </Frame>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    Text="Portal Veterinario"
+                    TextColor="White" />
+                <Label
+                    FontSize="14"
+                    HorizontalOptions="Center"
+                    Text="Gestiona tus citas y horarios"
+                    TextColor="#888" />
+            </StackLayout>
+
+            <!--  Login Form  -->
+            <StackLayout
+                Grid.Row="1"
+                Spacing="20"
+                VerticalOptions="Center">
+                <!--  Email  -->
+                <Frame
+                    Padding="15"
+                    BackgroundColor="#252542"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <StackLayout Spacing="5">
+                        <Label
+                            FontSize="13"
+                            Text="Email"
+                            TextColor="#888" />
+                        <Entry
+                            Keyboard="Email"
+                            Placeholder="tucorreo@veterinaria.com"
+                            PlaceholderColor="#555"
+                            Text="{Binding Email}"
+                            TextColor="White" />
+                    </StackLayout>
+                </Frame>
+                <Label
+                    Margin="5,0,0,0"
+                    FontSize="12"
+                    IsVisible="{Binding HasEmailError}"
+                    Text="{Binding EmailError}"
+                    TextColor="#FF6B6B" />
+
+                <!--  Password  -->
+                <Frame
+                    Padding="15"
+                    BackgroundColor="#252542"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <StackLayout Spacing="5">
+                        <Label
+                            FontSize="13"
+                            Text="Contraseña"
+                            TextColor="#888" />
+                        <Entry
+                            IsPassword="True"
+                            Placeholder="••••••••"
+                            PlaceholderColor="#555"
+                            Text="{Binding Password}"
+                            TextColor="White" />
+                    </StackLayout>
+                </Frame>
+                <Label
+                    Margin="5,0,0,0"
+                    FontSize="12"
+                    IsVisible="{Binding HasPasswordError}"
+                    Text="{Binding PasswordError}"
+                    TextColor="#FF6B6B" />
+
+                <!--  Login Button  -->
+                <Button
+                    Margin="0,20,0,0"
+                    BackgroundColor="#6B4EE6"
+                    Command="{Binding LoginCommand}"
+                    CornerRadius="12"
+                    FontAttributes="Bold"
+                    HeightRequest="55"
+                    IsEnabled="{Binding IsNotBusy}"
+                    Text="Iniciar Sesión"
+                    TextColor="White" />
+
+                <!--  Loading Indicator  -->
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    Color="#6B4EE6" />
+            </StackLayout>
+
+            <!--  Footer  -->
+            <StackLayout
+                Grid.Row="2"
+                Margin="0,0,0,20"
+                Spacing="15">
+                <BoxView
+                    Margin="0,10"
+                    HeightRequest="1"
+                    Color="#333" />
+
+                <Button
+                    BackgroundColor="Transparent"
+                    Command="{Binding BackToMainCommand}"
+                    FontSize="14"
+                    Text="← Volver al inicio"
+                    TextColor="#888" />
+
+                <Label
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="Solo veterinarios registrados pueden acceder"
+                    TextColor="#555" />
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

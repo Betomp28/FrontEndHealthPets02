@@ -2,70 +2,215 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FrontEndHealthPets.Paginas.Registro"
-             Title="Registro">
-    <ScrollView>
-        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-            <ScrollView>
-                <VerticalStackLayout Spacing="20">
-                    <VerticalStackLayout
-             Padding="10,20"
-             Spacing="10">
+             Title="Registro"
+             Shell.NavBarIsVisible="True"
+             Shell.BackgroundColor="#6C63FF">
 
-                        <Frame BackgroundColor="White" BorderColor="Black">
-                            <Grid>
-                                <Entry x:Name="Nombre" Placeholder="Nombre" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="Apellido" Placeholder="Apellido" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="Email" Placeholder="Correo Electronico" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="50"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="Comfirmacion_Email" Placeholder="Confirmar Electronico" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="50"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="Password" Placeholder="Password" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="8" IsPassword="True"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="Confirmar_Password" Placeholder="Confirmar Password" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="8" IsPassword="True"/>
-                            </Grid>
-                        </Frame>
-                        <Frame BackgroundColor="White" BorderColor="MediumPurple">
-                            <Grid>
-                                <Entry x:Name="NumeroVerificacion" Placeholder="Número de verificación" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="6" Keyboard="Numeric"/>
-                            </Grid>
-                        </Frame>
-                        <Button Margin="0,20,0,0"
-         x:Name="btRegistrar"
-         BackgroundColor="Purple"
-         BorderColor="White"
-         FontAttributes="Bold"
-         FontSize="Medium"
-         Text="Registrarse"
-         Clicked="btRegistrar_Clicked" />
-                        <Button Margin="0,20,0,0"
-                          x:Name="btRegresar"
-                            BackgroundColor="Purple"
-                               BorderColor="White"
+    <Grid>
+        <!-- Background -->
+        <BoxView BackgroundColor="#F8F9FA" />
+
+        <!-- Content -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
+                
+                <!-- Header -->
+                <VerticalStackLayout Spacing="8" Margin="0,20,0,10">
+                    <Label Text="Crear Cuenta"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           TextColor="#2D3436" />
+                    
+                    <Label Text="Únete a HealthPets y empieza a cuidar de tus mascotas"
+                           FontSize="15"
+                           TextColor="#636E72" />
+                </VerticalStackLayout>
+
+                <!-- Registration Form Card -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="20"
+                       Padding="20"
+                       HasShadow="False"
+                       BorderColor="Transparent">
+                    <Frame.Shadow>
+                        <Shadow Brush="Black" Opacity="0.1" Radius="10" Offset="0,2" />
+                    </Frame.Shadow>
+
+                    <VerticalStackLayout Spacing="16">
+                        
+                        <!-- Personal Info Section -->
+                        <Label Text="Información Personal"
+                               FontSize="18"
                                FontAttributes="Bold"
-                               FontSize="Medium"
-                               Text="Regresar"
-                               Clicked="btRegresar_Clicked" />
+                               TextColor="#2D3436" />
+
+                        <!-- Name -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Nombre" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Nombre" 
+                                       Placeholder="Tu nombre" 
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="50"/>
+                            </Border>
+                            <Label x:Name="NombreError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Last Name -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Apellido" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Apellido" 
+                                       Placeholder="Tu apellido" 
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="50"/>
+                            </Border>
+                            <Label x:Name="ApellidoError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Divider -->
+                        <BoxView HeightRequest="1" BackgroundColor="#F0F3F5" Margin="0,10" />
+
+                        <!-- Account Info Section -->
+                        <Label Text="Información de Cuenta"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#2D3436" />
+
+                        <!-- Email -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Correo Electrónico" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Email" 
+                                       Placeholder="tu@email.com" 
+                                       Keyboard="Email"
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="100"/>
+                            </Border>
+                            <Label x:Name="EmailError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Confirm Email -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Confirmar Email" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Comfirmacion_Email" 
+                                       Placeholder="Confirma tu email" 
+                                       Keyboard="Email"
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="100"/>
+                            </Border>
+                            <Label x:Name="ConfirmEmailError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Password -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Contraseña" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Password" 
+                                       Placeholder="Mínimo 8 caracteres" 
+                                       IsPassword="True"
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="50"
+                                       TextChanged="Password_TextChanged"/>
+                            </Border>
+                            <!-- Password Strength -->
+                            <HorizontalStackLayout Spacing="4">
+                                <Label Text="Seguridad:" FontSize="12" TextColor="#636E72" />
+                                <Label x:Name="PasswordStrength" Text="Débil" FontSize="12" FontAttributes="Bold" />
+                            </HorizontalStackLayout>
+                            <Label x:Name="PasswordError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Confirm Password -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Confirmar Contraseña" FontSize="14" FontAttributes="Bold" TextColor="#2D3436" />
+                            <Border Stroke="#DFE6E9" StrokeThickness="1" BackgroundColor="White" 
+                                    Padding="12" StrokeShape="RoundRectangle 12">
+                                <Entry x:Name="Confirmar_Password" 
+                                       Placeholder="Confirma tu contraseña" 
+                                       IsPassword="True"
+                                       TextColor="#2D3436"
+                                       PlaceholderColor="#B2BEC3"
+                                       FontSize="16" 
+                                       MaxLength="50"/>
+                            </Border>
+                            <Label x:Name="ConfirmPasswordError" Text="" FontSize="12" TextColor="#FF5252" IsVisible="False" />
+                        </VerticalStackLayout>
+
+                        <!-- Terms and Conditions -->
+                        <HorizontalStackLayout Spacing="8" Margin="0,10,0,0">
+                            <CheckBox x:Name="AcceptTerms" Color="#6C63FF" />
+                            <Label VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Acepto los " FontSize="13" TextColor="#636E72" />
+                                        <Span Text="Términos y Condiciones" FontSize="13" TextColor="#6C63FF" FontAttributes="Bold" TextDecorations="Underline" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <!-- Register Button -->
+                        <Button x:Name="btRegistrar"
+                                Text="Crear Cuenta"
+                                BackgroundColor="#6C63FF"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                CornerRadius="12"
+                                HeightRequest="55"
+                                Margin="0,20,0,0"
+                                Clicked="btRegistrar_Clicked">
+                            <Button.Shadow>
+                                <Shadow Brush="#6C63FF" Opacity="0.4" Radius="15" Offset="0,6" />
+                            </Button.Shadow>
+                        </Button>
+
+                        <!-- Back Button -->
+                        <Button x:Name="btRegresar"
+                                Text="Ya tengo cuenta"
+                                BackgroundColor="Transparent"
+                                TextColor="#6C63FF"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Clicked="btRegresar_Clicked" />
 
                     </VerticalStackLayout>
-                </VerticalStackLayout>
-            </ScrollView>
-        </Frame>
-    </ScrollView>
+                </Frame>
+
+                <!-- Extra spacing -->
+                <BoxView HeightRequest="20" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay" 
+              IsVisible="False"
+              BackgroundColor="#80000000">
+            <ActivityIndicator IsRunning="True"
+                               Color="White"
+                               WidthRequest="50"
+                               HeightRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+
 </ContentPage>

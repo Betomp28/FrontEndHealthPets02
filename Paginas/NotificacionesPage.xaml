@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.NotificacionesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:FrontEndHealthPets.Converters"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Notificaciones"
+    BackgroundColor="#F5F5F5">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NotificationTypeIconConverter x:Key="NotificationTypeIconConverter" />
+            <converters:TimeAgoConverter x:Key="TimeAgoConverter" />
+            <converters:GreaterThanZeroConverter x:Key="GreaterThanZeroConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding MarkAllAsReadCommand}" Text="Leer todo" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, Auto, *">
+        <!-- Unread Badge -->
+        <Frame
+            Grid.Row="0"
+            Margin="10,10,10,0"
+            Padding="10"
+            BackgroundColor="#6B4EE6"
+            CornerRadius="10"
+            HasShadow="True"
+            IsVisible="{Binding UnreadCount, Converter={StaticResource GreaterThanZeroConverter}}">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Label
+                    FontSize="24"
+                    Text="🔔"
+                    VerticalOptions="Center" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="{Binding UnreadCount, StringFormat='Tienes {0} notificaciones sin leer'}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- Filter Toggle -->
+        <Frame
+            Grid.Row="1"
+            Margin="10"
+            Padding="10"
+            BackgroundColor="White"
+            CornerRadius="10"
+            HasShadow="True">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+                <Label
+                    FontSize="14"
+                    Text="Mostrar solo no leidas"
+                    TextColor="#333"
+                    VerticalOptions="Center" />
+                <Switch IsToggled="{Binding ShowUnreadOnly}" OnColor="#6B4EE6" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- Notifications List -->
+        <RefreshView
+            Grid.Row="2"
+            Command="{Binding LoadNotificacionesCommand}"
+            IsRefreshing="{Binding IsLoading}">
+            <CollectionView Margin="10" ItemsSource="{Binding Notificaciones}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="10"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="48"
+                            HorizontalOptions="Center"
+                            Text="🔔" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Text="No tienes notificaciones"
+                            TextColor="#666" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Notificacion">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="#D32F2F"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificacionesViewModel}}, Path=DeleteNotificacionCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Eliminar" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame
+                                Margin="0,5"
+                                Padding="12"
+                                BackgroundColor="{Binding Leida, Converter={StaticResource ReadBackgroundConverter}}"
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NotificacionesViewModel}}, Path=MarkAsReadCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto">
+                                    <!-- Icon -->
+                                    <Frame
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Margin="0,0,12,0"
+                                        Padding="0"
+                                        BackgroundColor="#F0EBF8"
+                                        CornerRadius="20"
+                                        HasShadow="False"
+                                        HeightRequest="40"
+                                        WidthRequest="40">
+                                        <Label
+                                            FontSize="18"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding Tipo, Converter={StaticResource NotificationTypeIconConverter}}"
+                                            VerticalOptions="Center" />
+                                    </Frame>
+
+                                    <!-- Title -->
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontAttributes="{Binding Leida, Converter={StaticResource ReadFontAttributeConverter}}"
+                                        FontSize="14"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="1"
+                                        Text="{Binding Titulo}"
+                                        TextColor="#333" />
+
+                                    <!-- Time -->
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        FontSize="11"
+                                        Text="{Binding FechaCreacion, Converter={StaticResource TimeAgoConverter}}"
+                                        TextColor="#888" />
+
+                                    <!-- Message -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        FontSize="12"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Text="{Binding Mensaje}"
+                                        TextColor="#666" />
+
+                                    <!-- Unread Indicator -->
+                                    <Ellipse
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Fill="#6B4EE6"
+                                        HeightRequest="8"
+                                        HorizontalOptions="End"
+                                        IsVisible="{Binding Leida, Converter={StaticResource InverseBoolConverter}}"
+                                        VerticalOptions="Start"
+                                        WidthRequest="8" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+</ContentPage>

@@ -1,99 +1,176 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
-             Title="MisMascotas">
-    <ScrollView>
-        <Frame 
- Margin="20"
- BackgroundColor="White" 
- BorderColor="Purple">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.FlyPaginas.MisMascotas"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Mis Mascotas"
+    BackgroundColor="#F0F4F8">
 
-                <!-- Sección: Encabezado "Mis Mascotas" -->
-                <Grid Grid.Row="0" Grid.Column="0" Padding="10">
-                    <Grid BackgroundColor="#f8fafb" Padding="4" Margin="0,0,0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Label 
-                 Grid.Column="0" 
-                 Text="Mis Mascotas" 
-                 FontSize="Large" 
-                 FontAttributes="Bold" 
-                 HorizontalTextAlignment="Center"
-                 VerticalOptions="Center" />
-                        <Button 
-                 Grid.Column="1" 
-                 ImageSource="Gear" 
-                 WidthRequest="24" 
-                 HeightRequest="24" 
-                 HorizontalOptions="End" 
-                 VerticalOptions="Center"/>
-                    </Grid>
-                </Grid>
+    <Grid RowDefinitions="Auto,*">
 
-                <!-- Sección: Perfil de la mascota -->
-                <Grid Grid.Row="1" Grid.Column="0" Padding="10">
-                    <Grid ColumnSpacing="10" VerticalOptions="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Image 
-                 Grid.Column="0" 
-                 Source="tarjetaperro.png" 
-                 WidthRequest="40" 
-                 HeightRequest="40" 
-                 VerticalOptions="Center" />
-                        <StackLayout 
-                 Grid.Column="1" 
-                 Spacing="2" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="Start">
-                            <Label 
-                     Text="Sample Pet Profile" 
-                     FontSize="Medium" />
-                            <Label 
-                     Text="This is a sample pet profile" 
-                     FontSize="Small" 
-                     TextColor="Gray" />
-                        </StackLayout>
-                        <Button 
-                 Grid.Column="2" 
-                 ImageSource="CaretRight" 
-                 WidthRequest="24" 
-                 HeightRequest="24" 
-                 VerticalOptions="Center" 
-                 HorizontalOptions="End" />
-                    </Grid>
-                </Grid>
+        <!--  Header with Gradient  -->
+        <Grid
+            Grid.Row="0"
+            Padding="0"
+            HeightRequest="180">
+            <BoxView>
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#667eea" />
+                        <GradientStop Offset="1.0" Color="#764ba2" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
 
-                <!-- Sección: Botón "Agregar Nueva Mascota" al final -->
-                <Grid Grid.Row="3" Grid.Column="0" Padding="10" VerticalOptions="EndAndExpand">
-                    <Grid Padding="4" Margin="0,0,0,2">
-                        <Button 
-                  x:Name="btNuevaMascota"        
-                 Text="Agregar Nueva Mascota" 
-                 BackgroundColor="#368ce2" 
-                 TextColor="#f8fafb" 
-                 FontSize="Medium" 
-                 HorizontalOptions="FillAndExpand" 
-                 Clicked="btNuevaMascota_Clicked" />
-                    </Grid>
+            <VerticalStackLayout Padding="20,50,20,20" Spacing="16">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label
+                            FontSize="16"
+                            Opacity="0.9"
+                            Text="Mis Mascotas"
+                            TextColor="White" />
+                        <Label
+                            x:Name="PetsCount"
+                            FontAttributes="Bold"
+                            FontSize="28"
+                            Text="0"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+
+                    <Button
+                        x:Name="btNuevaMascota"
+                        Grid.Column="1"
+                        Padding="0"
+                        BackgroundColor="White"
+                        Clicked="btNuevaMascota_Clicked"
+                        CornerRadius="25"
+                        FontAttributes="Bold"
+                        FontSize="26"
+                        HeightRequest="50"
+                        Text="+"
+                        TextColor="#667eea"
+                        WidthRequest="50" />
                 </Grid>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!--  Content Area  -->
+        <Grid Grid.Row="1">
+
+            <ScrollView x:Name="PetsScrollView">
+                <VerticalStackLayout Padding="20" Spacing="16">
+
+                    <!--  Pet Cards  -->
+                    <CollectionView x:Name="PetsCollectionView" SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="12" Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame
+                                    Padding="16"
+                                    BackgroundColor="White"
+                                    CornerRadius="16"
+                                    HasShadow="True">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="OnPetTapped" />
+                                    </Frame.GestureRecognizers>
+
+                                    <Grid ColumnDefinitions="60,*" ColumnSpacing="16">
+                                        <!--  Pet Icon  -->
+                                        <Frame
+                                            Grid.Column="0"
+                                            Padding="0"
+                                            BackgroundColor="#E8F4FD"
+                                            CornerRadius="30"
+                                            HasShadow="False"
+                                            HeightRequest="60"
+                                            WidthRequest="60">
+                                            <Label
+                                                FontSize="28"
+                                                HorizontalOptions="Center"
+                                                Text="🐾"
+                                                VerticalOptions="Center" />
+                                        </Frame>
+
+                                        <!--  Pet Info  -->
+                                        <VerticalStackLayout
+                                            Grid.Column="1"
+                                            Spacing="4"
+                                            VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="18"
+                                                Text="{Binding Name}"
+                                                TextColor="#333" />
+                                            <Label
+                                                FontSize="14"
+                                                Text="{Binding Breed}"
+                                                TextColor="#888" />
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding AgeDisplay}"
+                                                TextColor="#667eea" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!--  Empty State  -->
+            <VerticalStackLayout
+                x:Name="EmptyState"
+                Padding="40"
+                HorizontalOptions="Center"
+                IsVisible="False"
+                Spacing="20"
+                VerticalOptions="Center">
+                <Label
+                    FontSize="60"
+                    HorizontalOptions="Center"
+                    Text="🐾" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    Text="No tienes mascotas"
+                    TextColor="#333" />
+                <Label
+                    FontSize="14"
+                    HorizontalOptions="Center"
+                    Text="Agrega tu primera mascota"
+                    TextColor="#888" />
+                <Button
+                    Margin="0,10,0,0"
+                    Padding="20,12"
+                    BackgroundColor="#667eea"
+                    Clicked="btNuevaMascota_Clicked"
+                    CornerRadius="20"
+                    FontAttributes="Bold"
+                    Text="+ Agregar Mascota"
+                    TextColor="White" />
+            </VerticalStackLayout>
+
+            <!--  Loading  -->
+            <Grid
+                x:Name="LoadingOverlay"
+                BackgroundColor="#80FFFFFF"
+                IsVisible="False">
+                <ActivityIndicator
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    VerticalOptions="Center"
+                    WidthRequest="50"
+                    Color="#667eea" />
             </Grid>
-        </Frame>
-    </ScrollView>
+
+        </Grid>
+    </Grid>
+
 </ContentPage>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Pages.BathControlPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:viewmodels="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Control de Baños"
+    BackgroundColor="#F8F9FA">
+
+    <ContentPage.BindingContext>
+        <viewmodels:BathControlViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <!--  Header  -->
+        <Grid
+            Grid.Row="0"
+            Padding="20,20,20,20"
+            BackgroundColor="#6C63FF">
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    Text="Control de Baños 🛁"
+                    TextColor="White" />
+                <Label
+                    FontSize="14"
+                    Opacity="0.9"
+                    Text="Registro de higiene de tus mascotas"
+                    TextColor="White" />
+
+                <!--  Pet Selector  -->
+                <Frame
+                    Margin="0,10,0,0"
+                    Padding="10,0"
+                    BackgroundColor="White"
+                    CornerRadius="10"
+                    HasShadow="False"
+                    HeightRequest="50">
+                    <Picker
+                        Title="Selecciona una mascota"
+                        ItemDisplayBinding="{Binding Name}"
+                        ItemsSource="{Binding Pets}"
+                        SelectedIndex="{Binding SelectedPetIndex}"
+                        SelectedItem="{Binding SelectedPet}"
+                        TextColor="#2D3436" />
+                </Frame>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!--  Main Content  -->
+        <Grid Grid.Row="1">
+            <!--  Records List  -->
+            <CollectionView
+                x:Name="BathHistoryList"
+                ItemsSource="{Binding BathHistory}"
+                SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="10"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="40"
+                            HorizontalOptions="Center"
+                            Text="🛁" />
+                        <Label
+                            FontSize="16"
+                            HorizontalOptions="Center"
+                            Text="No hay registros de baños"
+                            TextColor="#636E72" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Agrega el primer baño usando el botón +"
+                            TextColor="#B2BEC3" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:BathRecord">
+                        <Frame
+                            Margin="15,8"
+                            Padding="15"
+                            BackgroundColor="White"
+                            BorderColor="Transparent"
+                            CornerRadius="12"
+                            HasShadow="False">
+                            <Frame.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="5"
+                                    Offset="0,2" />
+                            </Frame.Shadow>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <!--  Date Icon  -->
+                                <Frame
+                                    Grid.RowSpan="3"
+                                    Grid.Column="0"
+                                    Margin="0,0,15,0"
+                                    Padding="0"
+                                    BackgroundColor="#E8F5FF"
+                                    CornerRadius="10"
+                                    HasShadow="False"
+                                    HeightRequest="50"
+                                    VerticalOptions="Start"
+                                    WidthRequest="50">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding Date, StringFormat='{0:dd\nMMM}'}"
+                                        TextColor="#0984E3"
+                                        VerticalOptions="Center" />
+                                </Frame>
+
+                                <!--  Details  -->
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="{Binding GroomerName}"
+                                    TextColor="#2D3436" />
+
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontSize="14"
+                                    Text="{Binding Notes}"
+                                    TextColor="#636E72" />
+
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,0"
+                                    FontSize="12"
+                                    Text="{Binding NextBathDisplay, StringFormat='Próximo: {0}'}"
+                                    TextColor="#6C63FF" />
+
+                                <!--  Delete Action  -->
+                                <ImageButton
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="2"
+                                    BackgroundColor="Transparent"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BathControlViewModel}}, Path=DeleteBathCommand}"
+                                    CommandParameter="{Binding Id}"
+                                    HeightRequest="30"
+                                    Source="trash_icon.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="30">
+                                    <!--  Fallback text/icon if image missing  -->
+                                </ImageButton>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!--  FAB Add Button  -->
+            <Button
+                Margin="20"
+                Padding="0"
+                BackgroundColor="#6C63FF"
+                Command="{Binding AddBathCommand}"
+                CornerRadius="30"
+                FontSize="30"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                Text="+"
+                TextColor="White"
+                VerticalOptions="End"
+                WidthRequest="60">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#6C63FF"
+                        Opacity="0.4"
+                        Radius="10"
+                        Offset="0,4" />
+                </Button.Shadow>
+            </Button>
+
+            <!--  Loading Indicator  -->
+            <Grid
+                BackgroundColor="#80FFFFFF"
+                HorizontalOptions="Fill"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Fill">
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    IsRunning="{Binding IsBusy}"
+                    VerticalOptions="Center"
+                    Color="#6C63FF" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

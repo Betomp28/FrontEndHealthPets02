@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VeterinariansPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Veterinarios"
+    BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="Auto, *">
+        <!--  Header / Search  -->
+        <VerticalStackLayout
+            Grid.Row="0"
+            Padding="20,10"
+            BackgroundColor="White">
+            <Label
+                Margin="0,10,0,10"
+                FontAttributes="Bold"
+                FontSize="24"
+                Text="Encuentra tu Veterinario"
+                TextColor="#333" />
+
+            <Frame
+                Padding="0"
+                BackgroundColor="#F5F5F5"
+                BorderColor="#E0E0E0"
+                CornerRadius="10"
+                HasShadow="False">
+                <SearchBar
+                    BackgroundColor="Transparent"
+                    Placeholder="Buscar por especialidad o nombre..."
+                    SearchCommand="{Binding SearchCommand}"
+                    Text="{Binding SearchText}"
+                    TextColor="#333" />
+            </Frame>
+        </VerticalStackLayout>
+
+        <!--  List  -->
+        <CollectionView
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            ItemsSource="{Binding Veterinarians}"
+            SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="10"
+                    VerticalOptions="Center">
+                    <Label
+                        HorizontalOptions="Center"
+                        Text="No se encontraron veterinarios"
+                        TextColor="#666" />
+                    <Button
+                        BackgroundColor="#6B4EE6"
+                        Command="{Binding LoadVeterinariansCommand}"
+                        Text="Recargar"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Veterinarian">
+                    <Frame
+                        Margin="15,5"
+                        Padding="0"
+                        BackgroundColor="White"
+                        BorderColor="Transparent"
+                        CornerRadius="15"
+                        HasShadow="True">
+                        <Grid ColumnDefinitions="100, *" HeightRequest="120">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VeterinariansViewModel}}, Path=GoToDetailsCommand}" CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+
+                            <!--  Image  -->
+                            <Image
+                                Grid.Column="0"
+                                Aspect="AspectFill"
+                                BackgroundColor="#E0E0E0"
+                                Source="{Binding ProfileImage, TargetNullValue='vet_placeholder.png'}" />
+
+                            <!--  Content  -->
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Padding="15,10"
+                                Spacing="2">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="{Binding Name}"
+                                    TextColor="#333" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="{Binding Specialty}"
+                                    TextColor="#6B4EE6" />
+                                <Label
+                                    FontSize="12"
+                                    Text="{Binding ClinicName}"
+                                    TextColor="#666" />
+                                <Label
+                                    FontSize="12"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="2"
+                                    Text="{Binding Description}"
+                                    TextColor="#888" />
+
+                                <Label
+                                    Margin="0,5,0,0"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="{Binding ConsultationPrice, StringFormat='Consulta: ₡{0:N0}'}"
+                                    TextColor="#333" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Loading Indicator  -->
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+</ContentPage>

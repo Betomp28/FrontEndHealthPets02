@@ -1,99 +1,147 @@
-﻿using FrontEndHealthPets.Entidades.Entitys;
-using FrontEndHealthPets.Entidades.Request;
-using FrontEndHealthPets.Entidades.Response;
+﻿using FrontEndHealthPets.Helpers;
 using FrontEndHealthPets.Paginas;
-using Newtonsoft.Json;
+using FrontEndHealthPets.Paginas.FlyPaginas;
+using FrontEndHealthPets.Services;
 
 namespace FrontEndHealthPets
 {
     public partial class MainPage : ContentPage
     {
-        string laURL = "https://localhost:44348/api";
+        private readonly IAuthenticationService _authService;
 
         public MainPage()
         {
             InitializeComponent();
+            _authService = new AuthenticationService();
+            
+            // Load saved credentials if present
+            if (Settings.RememberMe && !string.IsNullOrEmpty(Settings.UserEmail))
+            {
+                Correo.Text = Settings.UserEmail;
+                RememberMeCheckbox.IsChecked = true;
+            }
         }
 
         private async void btiniciarsecion_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new pruevasession());
-             /*
+            // Reset error messages
+            EmailErrorLabel.IsVisible = false;
+            PasswordErrorLabel.IsVisible = false;
+
+            // Validate inputs
+            bool isValid = true;
+
+            if (string.IsNullOrWhiteSpace(Correo.Text))
+            {
+                EmailErrorLabel.Text = "El email es requerido";
+                EmailErrorLabel.IsVisible = true;
+                isValid = false;
+            }
+            else if (!Validators.IsValidEmail(Correo.Text))
+            {
+                EmailErrorLabel.Text = "Email inválido";
+                EmailErrorLabel.IsVisible = true;
+                isValid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Passwoord.Text))
+            {
+                PasswordErrorLabel.Text = "La contraseña es requerida";
+                PasswordErrorLabel.IsVisible = true;
+                isValid = false;
+            }
+            else if (Passwoord.Text.Length < 6)
+            {
+                PasswordErrorLabel.Text = "La contraseña debe tener al menos 6 caracteres";
+                PasswordErrorLabel.IsVisible = true;
+                isValid = false;
+            }
+
+            if (!isValid)
+                return;
+
+            // Show loading
+            LoadingOverlay.IsVisible = true;
+            btiniciarsecion.IsEnabled = false;
+
             try
             {
-                // Validación de campos de inicio de sesión
-                if (string.IsNullOrWhiteSpace(Correo.Text))
-                {
-                    await DisplayAlert("Error", "Por favor, ingresa tu usuario o correo electrónico.", "OK");
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(Passwoord.Text))
-                {
-                    await DisplayAlert("Error", "Por favor, ingresa tu contraseña.", "OK");
-                    return;
-                }
+                // Call real authentication service
+                var (success, user, error) = await _authService.LoginAsync(Correo.Text.Trim(), Passwoord.Text);
 
-                Req_Login req = new Req_Login
+                if (success && user != null)
                 {
-                    Correo_Electronico = Correo.Text,
-                    Contrasena = Passwoord.Text
-                };
-
-                var jsonContent = new StringContent(JsonConvert.SerializeObject(req), System.Text.Encoding.UTF8, "application/json");
-
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    var responseTask = httpClient.PostAsync($"{laURL}/login/IngresarLogin", jsonContent);
-                    var response = await responseTask;
-
-                    if (response.IsSuccessStatusCode)
+                    // Save settings
+                    Settings.RememberMe = RememberMeCheckbox.IsChecked;
+                    if (Settings.RememberMe)
                     {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        Res_Login res = JsonConvert.DeserializeObject<Res_Login>(responseContent);
-
-
-                        if (res.resultado)
-                        {
-
-                            Sesion.id_usuario = res.Registro_Usuario.Id_Usuario;
-                            Sesion.nombre = res.Registro_Usuario.Nombre;
-                            Sesion.apellidos = res.Registro_Usuario.Apellidos;
-                            Sesion.token = res.Registro_Usuario.token;
-
-                            await Navigation.PushAsync(new PagFlyPrincipal());
-                        }
-                        else
-                        {
-                            await DisplayAlert("Error en backend", "Login incorrecto!", "Aceptar");
-                        }
+                        Settings.UserEmail = Correo.Text;
                     }
-                    else
-                    {
-                        await DisplayAlert($"Error de conexión", "Ocurrió un error de conexión", "Aceptar");
-                    }
+
+                    // Navigate to main page
+                    Application.Current!.MainPage = new PagFlyPrincipal();
+                }
+                else
+                {
+                    // Show error from server
+                    await DisplayAlert("Error de Inicio de Sesión", error ?? "Credenciales inválidas", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error de aplicación", "Reinstale la aplicación. Detalle: " + ex.Message, "Aceptar");
+                await DisplayAlert("Error", $"No se pudo iniciar sesión: {ex.Message}", "OK");
             }
-
-            */
+            finally
+            {
+                LoadingOverlay.IsVisible = false;
+                btiniciarsecion.IsEnabled = true;
+            }
         }
 
-
-
-
-
-        private void btregistrarse_Clicked(object sender, EventArgs e)
+        private async void btregistrarse_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new Registro());
+            await Navigation.PushAsync(new Registro());
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+        private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
         {
+            try
+            {
+                var navigationService = ServiceHelper.GetService<INavigationService>();
+                if (navigationService != null)
+                {
+                    await navigationService.NavigateToAsync("ForgotPassword");
+                }
+                else
+                {
+                    // Fallback if DI fails (shouldn't happen if MauiProgram is correct)
+                    await Navigation.PushAsync(new ForgotPasswordPage(new ViewModels.ForgotPasswordViewModel(new AuthenticationService(), new NavigationService())));
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo navegar: {ex.Message}", "OK");
+            }
+        }
 
+        private async void btnVetPortal_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var vetLoginPage = ServiceHelper.GetService<Paginas.VetPortal.VetLoginPage>();
+                if (vetLoginPage != null)
+                {
+                    await Navigation.PushAsync(vetLoginPage);
+                }
+                else
+                {
+                    await DisplayAlert("Error", "No se pudo cargar el portal veterinario", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Error al abrir portal: {ex.Message}", "OK");
+            }
         }
     }
 }
-

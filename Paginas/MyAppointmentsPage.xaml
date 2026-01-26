@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.MyAppointmentsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Mis Citas Veterinarias"
+    BackgroundColor="#F5F5F5">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LoadAppointmentsCommand}" Text="Actualizar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <CollectionView
+            Margin="10"
+            ItemsSource="{Binding Appointments}"
+            SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="10"
+                    VerticalOptions="Center">
+                    <Label
+                        HorizontalOptions="Center"
+                        Text="No tienes citas agendadas"
+                        TextColor="#666" />
+                    <Button
+                        BackgroundColor="#6B4EE6"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=GoToVeterinariansCommand}"
+                        Text="Buscar Veterinarios"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:VetAppointment">
+                    <Frame
+                        Margin="0,5"
+                        Padding="15"
+                        BorderColor="Transparent"
+                        CornerRadius="10"
+                        HasShadow="True">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto">
+
+                            <!--  Header: Vet Name & Status  -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding VeterinarianName}"
+                                TextColor="#333" />
+                            <Frame
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Padding="8,4"
+                                BackgroundColor="{Binding StatusColor}"
+                                CornerRadius="5"
+                                HasShadow="False">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    Text="{Binding Status}"
+                                    TextColor="White" />
+                            </Frame>
+
+                            <!--  Date & Pet  -->
+                            <VerticalStackLayout
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="0,10"
+                                Spacing="2">
+                                <Label Text="{Binding AppointmentDateTime, StringFormat='📅 {0:dddd, dd MMMM yyyy - hh:mm tt}'}" TextColor="#555" />
+                                <Label Text="{Binding PetName, StringFormat='🐾 Mascota: {0}'}" TextColor="#555" />
+                                <Label
+                                    FontAttributes="Italic"
+                                    Text="{Binding Reason, StringFormat='📝 Motivo: {0}'}"
+                                    TextColor="#666" />
+                            </VerticalStackLayout>
+
+                            <!--  Action  -->
+                            <Button
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                BackgroundColor="#FFCDD2"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyAppointmentsViewModel}}, Path=CancelAppointmentCommand}"
+                                CommandParameter="{Binding .}"
+                                CornerRadius="5"
+                                FontSize="12"
+                                HeightRequest="35"
+                                IsVisible="{Binding Status, Converter={StaticResource StatusCancelVisibleConverter}}"
+                                Text="Cancelar Cita"
+                                TextColor="#D32F2F" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+
+    <ContentPage.Resources>
+        <!--  Simple converter workaround: if status is Cancelled or Completed, hide cancel button  -->
+        <!--  Since we can't easily add C# converter here, we'll relay on ViewModel or just let it be visible and handle in logic  -->
+    </ContentPage.Resources>
+</ContentPage>

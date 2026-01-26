@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.MedicationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Control de Medicamentos"
+    BackgroundColor="#F5F5F5">
+
+    <!-- BindingContext is set via Constructor Injection in code-behind -->
+
+    <!-- Toolbar Item for Adding Medication -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddMedicationCommand}" Text="Agregar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Pet Selector Header -->
+        <Border
+            Grid.Row="0"
+            Margin="10,10,10,0"
+            Padding="10"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 10">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.1"
+                    Radius="3"
+                    Offset="0,2" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label
+                        FontSize="12"
+                        Text="Mascota Seleccionada:"
+                        TextColor="#888" />
+                    <Picker
+                        Title="Seleccionar Mascota"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        ItemDisplayBinding="{Binding Name}"
+                        ItemsSource="{Binding Pets}"
+                        SelectedItem="{Binding SelectedPet}"
+                        TextColor="#333"
+                        TitleColor="#999" />
+                </VerticalStackLayout>
+                <Label
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    Text="▼"
+                    TextColor="#666"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="{StaticResource Primary}" />
+
+        <!-- Empty State -->
+        <VerticalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsVisible="{Binding HasNoMedications}"
+            VerticalOptions="Center">
+            <Label
+                FontSize="48"
+                HorizontalOptions="Center"
+                Text="💊" />
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="No hay medicamentos registrados"
+                TextColor="#888" />
+            <Label
+                FontSize="14"
+                HorizontalOptions="Center"
+                Text="Las recetas de tu mascota aparecerán aquí"
+                TextColor="#AAA" />
+        </VerticalStackLayout>
+
+        <!-- Main Content - Medications List -->
+        <CollectionView
+            Grid.Row="1"
+            Margin="10"
+            IsVisible="{Binding HasNoMedications, Converter={StaticResource InvertedBoolConverter}}"
+            ItemsSource="{Binding Medications}"
+            SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}"
+            SelectionChangedCommand="{Binding NavigateToDetailsCommand}"
+            SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}"
+            SelectionMode="Single">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="12" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:Medication">
+                    <Border
+                        Padding="0"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 12"
+                        StrokeThickness="0">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.1"
+                                Radius="5"
+                                Offset="0,2" />
+                        </Border.Shadow>
+
+                        <Grid ColumnDefinitions="5, *">
+
+                            <!-- Status Indicator Strip (Left Border) -->
+                            <BoxView
+                                Grid.Column="0"
+                                CornerRadius="12,0,0,12"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill">
+                                <BoxView.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="BoxView"
+                                        Value="Active">
+                                        <Setter Property="Color" Value="#4CAF50" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding Status}"
+                                        TargetType="BoxView"
+                                        Value="Finished">
+                                        <Setter Property="Color" Value="#9E9E9E" />
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+
+                            <!-- Card Content -->
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Padding="15"
+                                Spacing="8">
+
+                                <!-- Header: Name + Status Badge -->
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <!-- Medication Name -->
+                                    <Label
+                                        Grid.Column="0"
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="{Binding Nombre}"
+                                        TextColor="#333"
+                                        VerticalOptions="Center" />
+
+                                    <!-- Status Badge -->
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="8,4"
+                                        VerticalOptions="Center">
+                                        <Border.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding Status}"
+                                                TargetType="Border"
+                                                Value="Active">
+                                                <Setter Property="BackgroundColor" Value="#E8F5E9" />
+                                                <Setter Property="StrokeShape" Value="RoundRectangle 6" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding Status}"
+                                                TargetType="Border"
+                                                Value="Finished">
+                                                <Setter Property="BackgroundColor" Value="#F5F5F5" />
+                                                <Setter Property="StrokeShape" Value="RoundRectangle 6" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="11"
+                                            VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Status}"
+                                                    TargetType="Label"
+                                                    Value="Active">
+                                                    <Setter Property="Text" Value="EN TRATAMIENTO" />
+                                                    <Setter Property="TextColor" Value="#4CAF50" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Status}"
+                                                    TargetType="Label"
+                                                    Value="Finished">
+                                                    <Setter Property="Text" Value="FINALIZADO" />
+                                                    <Setter Property="TextColor" Value="#757575" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Border>
+                                </Grid>
+
+                                <!-- Dosage Instructions -->
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding DosisFormateada}"
+                                    TextColor="#666" />
+
+                                <!-- Veterinarian Info -->
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label
+                                        FontSize="14"
+                                        Text="👨‍⚕️"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="#888"
+                                        VerticalOptions="Center">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="Recetado por: {0} - {1}">
+                                                <Binding Path="Veterinario.Nombre" />
+                                                <Binding Path="Veterinario.Clinica" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </HorizontalStackLayout>
+
+                                <!-- Dates Section -->
+                                <Grid ColumnDefinitions="*, *" Margin="0,4,0,0">
+                                    <VerticalStackLayout Grid.Column="0">
+                                        <Label
+                                            FontSize="10"
+                                            Text="Inicio:"
+                                            TextColor="#AAA" />
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding FechaInicio, StringFormat='{0:dd/MM/yyyy}'}"
+                                            TextColor="#555" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label
+                                            FontSize="10"
+                                            Text="Fin:"
+                                            TextColor="#AAA" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="{Binding FechaFin, StringFormat='{0:dd/MM/yyyy}'}"
+                                            TextColor="#555" />
+                                    </VerticalStackLayout>
+                                </Grid>
+
+                                <!-- Additional Instructions (if any) -->
+                                <Border
+                                    Padding="10,8"
+                                    BackgroundColor="#FFF8E1"
+                                    IsVisible="{Binding InstruccionesAdicionales, Converter={StaticResource StringNotEmptyConverter}}"
+                                    StrokeShape="RoundRectangle 6"
+                                    StrokeThickness="0">
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label
+                                            FontSize="12"
+                                            Text="📝"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding InstruccionesAdicionales}"
+                                            TextColor="#F57C00"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Visual State Manager for Selection -->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal" />
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#F0F0F0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Floating Action Button -->
+        <Button
+            Grid.Row="1"
+            Margin="20"
+            BackgroundColor="{StaticResource Primary}"
+            Command="{Binding AddMedicationCommand}"
+            CornerRadius="30"
+            FontSize="30"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            Shadow="{Shadow Brush=Black,
+                            Offset='0,5',
+                            Radius=5,
+                            Opacity=0.3}"
+            Text="+"
+            TextColor="White"
+            VerticalOptions="End"
+            WidthRequest="60" />
+    </Grid>
+</ContentPage>

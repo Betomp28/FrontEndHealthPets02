@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.FlyPaginas.PetProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="{Binding Title}"
+    BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TabButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Style.Triggers>
+                    <DataTrigger
+                        Binding="{Binding IsVaccinesTabVisible}"
+                        TargetType="Button"
+                        Value="True">
+                        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, *">
+        <!--  Header  -->
+        <Grid Grid.Row="0" Padding="0">
+            <BoxView>
+                <BoxView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.0" Color="#667eea" />
+                        <GradientStop Offset="1.0" Color="#764ba2" />
+                    </LinearGradientBrush>
+                </BoxView.Background>
+            </BoxView>
+
+            <Grid Padding="20" ColumnDefinitions="Auto, *">
+                <Grid VerticalOptions="Center">
+                    <Frame
+                        Padding="0"
+                        BorderColor="White"
+                        CornerRadius="50"
+                        HeightRequest="100"
+                        IsClippedToBounds="True"
+                        WidthRequest="100">
+                        <Image Aspect="AspectFill" Source="{Binding Pet.ProfileImage}" />
+                    </Frame>
+                    <Frame
+                        Padding="4"
+                        BackgroundColor="{StaticResource Primary}"
+                        CornerRadius="12"
+                        HeightRequest="24"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        WidthRequest="24">
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="📷"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Frame>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding UploadProfilePhotoCommand}" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Margin="20,0,0,0"
+                    VerticalOptions="Center">
+                    <Label
+                        Style="{StaticResource Title1}"
+                        Text="{Binding Pet.Name}"
+                        TextColor="White" />
+                    <Label
+                        Style="{StaticResource Subhead}"
+                        Text="{Binding Pet.Breed}"
+                        TextColor="#E0E0E0" />
+                    <HorizontalStackLayout Spacing="10">
+                        <Label
+                            Style="{StaticResource Caption1}"
+                            Text="{Binding Pet.Species}"
+                            TextColor="#E0E0E0" />
+                        <Label Text="•" TextColor="#CCCCCC" />
+                        <Label
+                            Style="{StaticResource Caption1}"
+                            Text="{Binding Pet.BirthDate, StringFormat='{0:dd/MM/yyyy}'}"
+                            TextColor="#E0E0E0" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+
+        <!--  Tabs  -->
+        <VerticalStackLayout Grid.Row="1">
+            <Grid BackgroundColor="{StaticResource Surface}" ColumnDefinitions="*, *, *">
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding ShowVaccinesCommand}"
+                    Style="{StaticResource TabButton}"
+                    Text="VACUNAS">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsVaccinesTabVisible}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BorderWidth" Value="0,0,0,3" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ShowAppointmentsCommand}"
+                    Style="{StaticResource TabButton}"
+                    Text="CITAS">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsAppointmentsTabVisible}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BorderWidth" Value="0,0,0,3" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding ShowGalleryCommand}"
+                    Style="{StaticResource TabButton}"
+                    Text="GALERÍA">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsGalleryTabVisible}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BorderWidth" Value="0,0,0,3" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+
+            <!--  Content Area  -->
+            <Grid>
+                <!--  Vaccines Tab  -->
+                <ScrollView IsVisible="{Binding IsVaccinesTabVisible}">
+                    <VerticalStackLayout Padding="16" Spacing="10">
+                        <Button
+                            Margin="0,0,0,10"
+                            Command="{Binding AddVaccineCommand}"
+                            HeightRequest="40"
+                            Style="{StaticResource SecondaryButton}"
+                            Text="+ AGREGAR VACUNA" />
+
+                        <CollectionView ItemsSource="{Binding Vaccines}">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout
+                                    Padding="40"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="Center"
+                                        Text="No hay vacunas registradas"
+                                        TextColor="{StaticResource TextSecondary}" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="m:VaccineRecord">
+                                    <Frame Margin="0,5" Style="{StaticResource Card}">
+                                        <Grid ColumnDefinitions="*, Auto">
+                                            <VerticalStackLayout>
+                                                <Label Style="{StaticResource Headline}" Text="{Binding VaccineName}" />
+                                                <Label Style="{StaticResource Caption1}" Text="{Binding DateAdministered, StringFormat='Aplicada: {0:dd/MM/yyyy}'}" />
+                                                <Label
+                                                    Style="{StaticResource Caption1}"
+                                                    Text="{Binding NextDueDate, StringFormat='Próxima: {0:dd/MM/yyyy}'}"
+                                                    TextColor="{StaticResource Primary}" />
+                                            </VerticalStackLayout>
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="20"
+                                                Text="✓"
+                                                TextColor="{StaticResource Success}"
+                                                VerticalOptions="Center" />
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!--  Appointments Tab  -->
+                <ScrollView IsVisible="{Binding IsAppointmentsTabVisible}">
+                    <VerticalStackLayout Padding="16" Spacing="10">
+                        <Button
+                            Margin="0,0,0,10"
+                            Command="{Binding AddAppointmentCommand}"
+                            HeightRequest="40"
+                            Style="{StaticResource SecondaryButton}"
+                            Text="+ AGREGAR CITA" />
+
+                        <CollectionView ItemsSource="{Binding Appointments}">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout
+                                    Padding="40"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        HorizontalTextAlignment="Center"
+                                        Text="No hay citas programadas"
+                                        TextColor="{StaticResource TextSecondary}" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="m:Appointment">
+                                    <Frame Margin="0,5" Style="{StaticResource Card}">
+                                        <Grid ColumnDefinitions="Auto, *">
+                                            <BoxView
+                                                Margin="-16,-16,10,-16"
+                                                BackgroundColor="{StaticResource Info}"
+                                                WidthRequest="4" />
+                                            <VerticalStackLayout Grid.Column="1">
+                                                <Label Style="{StaticResource Headline}" Text="{Binding Date, StringFormat='{0:dd/MM/yyyy HH:mm}'}" />
+                                                <Label Style="{StaticResource Subhead}" Text="{Binding ClinicName}" />
+                                                <Label
+                                                    MaxLines="1"
+                                                    Style="{StaticResource Caption1}"
+                                                    Text="{Binding Reason}" />
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+                <!--  Gallery Tab  -->
+                <ScrollView IsVisible="{Binding IsGalleryTabVisible}">
+                    <VerticalStackLayout Padding="16" Spacing="10">
+                        <Button
+                            Margin="0,0,0,10"
+                            Command="{Binding UploadGalleryPhotoCommand}"
+                            HeightRequest="40"
+                            Style="{StaticResource SecondaryButton}"
+                            Text="+ AGREGAR FOTO" />
+
+                        <CollectionView ItemsSource="{Binding GalleryPhotos}">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout
+                                    Padding="40"
+                                    HorizontalOptions="Center"
+                                    Spacing="10"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="40"
+                                        HorizontalTextAlignment="Center"
+                                        Text="🖼️" />
+                                    <Label
+                                        HorizontalTextAlignment="Center"
+                                        Text="Sin fotos en la galería"
+                                        TextColor="{StaticResource TextSecondary}" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout
+                                    HorizontalItemSpacing="5"
+                                    Orientation="Vertical"
+                                    Span="3"
+                                    VerticalItemSpacing="5" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="m:PetPhoto">
+                                    <Grid HeightRequest="120">
+                                        <Image Aspect="AspectFill" Source="{Binding PhotoUrl}" />
+                                        <ImageButton
+                                            Margin="5"
+                                            BackgroundColor="#80000000"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PetProfileViewModel}}, Path=DeleteGalleryPhotoCommand}"
+                                            CommandParameter="{Binding .}"
+                                            CornerRadius="10"
+                                            HeightRequest="20"
+                                            HorizontalOptions="End"
+                                            Source="trash_icon.png"
+                                            VerticalOptions="Start"
+                                            WidthRequest="20">
+                                            <!--  Simple X if icon missing  -->
+                                            <!-- <Label Text="X" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/> -->
+                                        </ImageButton>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+        </VerticalStackLayout>
+
+        <!--  Loading Overlay  -->
+        <Grid
+            Grid.RowSpan="2"
+            BackgroundColor="{StaticResource Overlay}"
+            IsVisible="{Binding IsBusy}">
+            <ActivityIndicator
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsRunning="{Binding IsBusy}"
+                VerticalOptions="Center"
+                WidthRequest="50"
+                Color="{StaticResource PrimaryLight}" />
+        </Grid>
+    </Grid>
+</ContentPage>

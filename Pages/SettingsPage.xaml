@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Configuración"
+    Shell.BackgroundColor="#6C63FF">
+
+    <ScrollView BackgroundColor="#F8F9FA">
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!--  User Profile Section  -->
+            <Frame
+                Padding="20"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="False">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.1"
+                        Radius="10"
+                        Offset="0,2" />
+                </Frame.Shadow>
+
+                <Grid ColumnDefinitions="80,*,Auto" ColumnSpacing="16">
+                    <!--  Profile Picture  -->
+                    <Frame
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#F0F3F5"
+                        CornerRadius="40"
+                        HasShadow="False"
+                        HeightRequest="80"
+                        WidthRequest="80">
+                        <Image Aspect="AspectFill" Source="user_avatar.png" />
+                    </Frame>
+
+                    <!--  User Info  -->
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="4"
+                        VerticalOptions="Center">
+                        <Label
+                            x:Name="UserName"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Usuario"
+                            TextColor="#2D3436" />
+                        <Label
+                            x:Name="UserEmail"
+                            FontSize="14"
+                            Text="usuario@email.com"
+                            TextColor="#636E72" />
+
+                    </VerticalStackLayout>
+
+                    <!--  Edit Button  -->
+                    <ImageButton
+                        Grid.Column="2"
+                        Padding="6"
+                        BackgroundColor="#F0F3F5"
+                        Clicked="EditProfile_Clicked"
+                        CornerRadius="16"
+                        HeightRequest="32"
+                        Source="edit.png"
+                        VerticalOptions="Center"
+                        WidthRequest="32" />
+                </Grid>
+            </Frame>
+
+            <!--  Account Settings  -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Cuenta"
+                TextColor="#2D3436" />
+
+            <Frame
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="False">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.1"
+                        Radius="10"
+                        Offset="0,2" />
+                </Frame.Shadow>
+
+                <VerticalStackLayout>
+                    <!--  Change Password  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="🔒"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Cambiar Contraseña"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#DFE6E9"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="ChangePassword_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Email Preferences  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="📧"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Preferencias de Email"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#DFE6E9"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="EmailPreferences_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Notifications  -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Notificaciones"
+                TextColor="#2D3436" />
+
+            <Frame
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="False">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.1"
+                        Radius="10"
+                        Offset="0,2" />
+                </Frame.Shadow>
+
+                <VerticalStackLayout>
+                    <!--  Enable Notifications  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="🔔"
+                            VerticalOptions="Center" />
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            Spacing="2"
+                            VerticalOptions="Center">
+                            <Label
+                                FontSize="16"
+                                Text="Activar Notificaciones"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Recibe recordatorios importantes"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Switch
+                            x:Name="NotificationsSwitch"
+                            Grid.Column="2"
+                            OnColor="#6C63FF"
+                            Toggled="Notifications_Toggled" />
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Vaccine Reminders  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="💉"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Recordatorios de Vacunas"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="VaccineRemindersSwitch"
+                            Grid.Column="2"
+                            OnColor="#6C63FF"
+                            Toggled="VaccineReminders_Toggled" />
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Appointment Reminders  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="📅"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Recordatorios de Citas"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="AppointmentRemindersSwitch"
+                            Grid.Column="2"
+                            OnColor="#6C63FF"
+                            Toggled="AppointmentReminders_Toggled" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+
+
+            <!--  App Settings  -->
+            <Label
+                Margin="0,10,0,0"
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="Aplicación"
+                TextColor="#2D3436" />
+
+            <Frame
+                Padding="0"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="20"
+                HasShadow="False">
+                <Frame.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Opacity="0.1"
+                        Radius="10"
+                        Offset="0,2" />
+                </Frame.Shadow>
+
+                <VerticalStackLayout>
+                    <!--  Dark Mode (Future)  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="🌙"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Modo Oscuro"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Switch
+                            x:Name="DarkModeSwitch"
+                            Grid.Column="2"
+                            IsEnabled="False"
+                            OnColor="#6C63FF" />
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Language  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="🌍"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Idioma"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <HorizontalStackLayout Grid.Column="2" Spacing="8">
+                            <Label
+                                FontSize="14"
+                                Text="Español"
+                                TextColor="#636E72"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontSize="24"
+                                Text="›"
+                                TextColor="#DFE6E9"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Language_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Privacy Policy  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="🔐"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Política de Privacidad"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#DFE6E9"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PrivacyPolicy_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  Terms of Service  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="📄"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Términos de Servicio"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#DFE6E9"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Terms_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+
+                    <BoxView
+                        Margin="16,0"
+                        BackgroundColor="#F0F3F5"
+                        HeightRequest="1" />
+
+                    <!--  About  -->
+                    <Grid Padding="16" ColumnDefinitions="Auto,*,Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="24"
+                            Text="ℹ️"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="1"
+                            Margin="12,0,0,0"
+                            FontSize="16"
+                            Text="Acerca de HealthPets"
+                            TextColor="#2D3436"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#DFE6E9"
+                            VerticalOptions="Center" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="About_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Logout Button  -->
+            <Button
+                Margin="0,20,0,0"
+                BackgroundColor="Transparent"
+                Clicked="Logout_Clicked"
+                FontAttributes="Bold"
+                FontSize="16"
+                Text="Cerrar Sesión"
+                TextColor="#FF5252" />
+
+            <!--  App Version  -->
+            <Label
+                x:Name="AppVersion"
+                Margin="0,10,0,40"
+                FontSize="12"
+                HorizontalOptions="Center"
+                Text="Versión 1.0.0"
+                TextColor="#B2BEC3" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

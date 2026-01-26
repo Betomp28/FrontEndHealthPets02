@@ -1,82 +1,311 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.MainPage">
+<ContentPage
+    x:Class="FrontEndHealthPets.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <Grid RowDefinitions="*,*">
-            <Image Grid.Row="0" Aspect="AspectFill" Source="imagen_20240730.png"/>
+    <Grid>
+        <!--  Background Gradient  -->
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#667eea" />
+                    <GradientStop Offset="1.0" Color="#764ba2" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
 
-            <Grid Grid.Row="1" Margin="10">
-                <RoundRectangle Margin="-15,-40,-20,-15"
-                 CornerRadius="50,50,0,0"
-                 Fill="White"/>
+        <!--  Decorative Circles  -->
+        <AbsoluteLayout>
+            <BoxView
+                AbsoluteLayout.LayoutBounds="0.9, -0.05, 200, 200"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                CornerRadius="100"
+                Opacity="0.15"
+                Color="White" />
+            <BoxView
+                AbsoluteLayout.LayoutBounds="-0.15, 0.3, 250, 250"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                CornerRadius="125"
+                Opacity="0.1"
+                Color="White" />
+            <BoxView
+                AbsoluteLayout.LayoutBounds="0.85, 0.85, 180, 180"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                CornerRadius="90"
+                Opacity="0.1"
+                Color="White" />
+        </AbsoluteLayout>
 
-                <VerticalStackLayout Margin="20" Spacing="10">
-                    <Label FontAttributes="Bold"
-                   FontSize="Large" 
-                   Text="Bienvenido"
-                   TextColor="Black"/>
-                    <Label Text="por que es un placer cuidar de nuestras mascotas"
-                   TextColor="Black"/>
-                    <Grid ColumnDefinitions=".2*,.8*">
-                        <Grid WidthRequest="40" HeightRequest="40">
-                            <RoundRectangle Background="White"
-                                        CornerRadius="10"
-                                        Fill="White" />
-                            <Image Source="iconsmail.png"
-                               Aspect="Fill"
-                               HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand"/>
-                        </Grid>
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="30,60,30,40"
+                Spacing="0"
+                VerticalOptions="Center">
 
-                        <Entry x:Name="Correo" Grid.Column="1" Placeholder="Email" Text="" TextColor="black" VerticalOptions="Center"/>
-                    </Grid>
+                <!--  Logo Section  -->
+                <VerticalStackLayout Margin="0,0,0,40" Spacing="15">
+                    <Frame
+                        Padding="20"
+                        BackgroundColor="#40FFFFFF"
+                        CornerRadius="40"
+                        HasShadow="False"
+                        HorizontalOptions="Center">
+                        <Image
+                            Aspect="AspectFit"
+                            HeightRequest="80"
+                            Source="health_pets.png"
+                            WidthRequest="80" />
+                    </Frame>
 
-                    <Grid ColumnDefinitions=".2*,.8*">
-                        <Grid WidthRequest="40" HeightRequest="40">
-                            <RoundRectangle Background="White"
-                                        CornerRadius="10"
-                                        Fill="White" />
-                            <Image Source="icon_password.png"
-                                Aspect="Fill"
-                               HorizontalOptions="CenterAndExpand"
-                               VerticalOptions="CenterAndExpand"/>
-                        </Grid>
-                        <Entry x:Name="Passwoord" Grid.Column="1" Placeholder="Password" Text="" TextColor="Black" VerticalOptions="Center"/>
-                    </Grid>
-                    <Button Margin="0,10,0,0"
-                    x:Name="btiniciarsecion"
-                    BackgroundColor="Purple"
-                    BorderColor="Black"
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    Text="Iniciar Sesion"
-                    TextColor="White"
-                    Clicked="btiniciarsecion_Clicked"/>
-                    <Button Margin="0,10,0,0"
-                    x:Name="btregistrarse"
-                    BackgroundColor="Purple"
-                    BorderColor="Black"
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    Text="Registrarse"
-                    TextColor="White"
-                    Clicked="btregistrarse_Clicked"/>
-                    <Label Margin="0,10,0,0"
-                   x:Name="btrecuperarcontrasena"
-                   HorizontalOptions="Center"
-                   Text="olvidaste tu contrasena"
-                   TextColor="Purple"
-                   TextDecorations="Underline">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="36"
+                        HorizontalOptions="Center"
+                        Text="HELPETS"
+                        TextColor="White" />
 
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                        </Label.GestureRecognizers>
-                    </Label>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Opacity="0.9"
+                        Text="El cuidado de tu mascota, simplificado"
+                        TextColor="White" />
                 </VerticalStackLayout>
-            </Grid>
+
+                <!--  Login Card  -->
+                <Frame
+                    Margin="0,0,0,20"
+                    Padding="25"
+                    BackgroundColor="White"
+                    CornerRadius="30"
+                    HasShadow="True">
+
+                    <VerticalStackLayout Spacing="20">
+
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            HorizontalOptions="Center"
+                            Text="Iniciar Sesión"
+                            TextColor="#333" />
+
+                        <Label
+                            Margin="0,0,0,10"
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="Ingresa tus credenciales para continuar"
+                            TextColor="#888" />
+
+                        <!--  Email  -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Correo Electrónico"
+                                TextColor="#555" />
+                            <Frame
+                                Padding="15,12"
+                                BackgroundColor="#F5F7FA"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label
+                                        Grid.Column="0"
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Text="✉️"
+                                        VerticalOptions="Center" />
+                                    <Entry
+                                        x:Name="Correo"
+                                        Grid.Column="1"
+                                        FontSize="16"
+                                        Keyboard="Email"
+                                        Placeholder="ejemplo@correo.com"
+                                        PlaceholderColor="#AAA"
+                                        TextColor="#333" />
+                                </Grid>
+                            </Frame>
+                            <Label
+                                x:Name="EmailErrorLabel"
+                                Margin="5,0,0,0"
+                                FontSize="12"
+                                IsVisible="False"
+                                TextColor="#FF5252" />
+                        </VerticalStackLayout>
+
+                        <!--  Password  -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Contraseña"
+                                TextColor="#555" />
+                            <Frame
+                                Padding="15,12"
+                                BackgroundColor="#F5F7FA"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Label
+                                        Grid.Column="0"
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Text="🔒"
+                                        VerticalOptions="Center" />
+                                    <Entry
+                                        x:Name="Passwoord"
+                                        Grid.Column="1"
+                                        FontSize="16"
+                                        IsPassword="True"
+                                        Placeholder="••••••••"
+                                        PlaceholderColor="#AAA"
+                                        TextColor="#333" />
+                                </Grid>
+                            </Frame>
+                            <Label
+                                x:Name="PasswordErrorLabel"
+                                Margin="5,0,0,0"
+                                FontSize="12"
+                                IsVisible="False"
+                                TextColor="#FF5252" />
+                        </VerticalStackLayout>
+
+                        <!--  Remember & Forgot  -->
+                        <VerticalStackLayout Margin="0,5,0,10" Spacing="12">
+                            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                                <CheckBox x:Name="RememberMeCheckbox" Color="#667eea" />
+                                <Label
+                                    FontSize="14"
+                                    Text="Recordarme"
+                                    TextColor="#666"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                HorizontalOptions="End"
+                                Text="¿Olvidaste tu contraseña?"
+                                TextColor="#667eea">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </VerticalStackLayout>
+
+                        <!--  Login Button  -->
+                        <Button
+                            x:Name="btiniciarsecion"
+                            BackgroundColor="#667eea"
+                            Clicked="btiniciarsecion_Clicked"
+                            CornerRadius="15"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HeightRequest="55"
+                            Text="Iniciar Sesión"
+                            TextColor="White" />
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Register Section  -->
+                <VerticalStackLayout Spacing="15">
+                    <Label
+                        FontSize="15"
+                        HorizontalOptions="Center"
+                        Opacity="0.9"
+                        Text="¿No tienes una cuenta?"
+                        TextColor="White" />
+
+                    <Button
+                        x:Name="btregistrarse"
+                        BackgroundColor="#40FFFFFF"
+                        Clicked="btregistrarse_Clicked"
+                        CornerRadius="15"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        Text="Crear Cuenta Nueva"
+                        TextColor="White" />
+                </VerticalStackLayout>
+
+                <!--  Footer  -->
+                <HorizontalStackLayout
+                    Margin="0,40,0,0"
+                    HorizontalOptions="Center"
+                    Spacing="5">
+                    <Label FontSize="14" Text="🐾" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.7"
+                        Text="Hecho con amor para tus mascotas"
+                        TextColor="White" />
+                </HorizontalStackLayout>
+
+                <!--  Vet Portal Access  -->
+                <Frame
+                    Margin="0,30,0,0"
+                    Padding="15"
+                    BackgroundColor="#20FFFFFF"
+                    CornerRadius="15"
+                    HasShadow="False">
+                    <VerticalStackLayout Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HorizontalOptions="Center"
+                            Text="🏥 Portal Veterinario"
+                            TextColor="White" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Opacity="0.8"
+                            Text="Gestiona tu perfil y horarios"
+                            TextColor="White" />
+                        <Button
+                            x:Name="btnVetPortal"
+                            BackgroundColor="#6B4EE6"
+                            Clicked="btnVetPortal_Clicked"
+                            CornerRadius="10"
+                            FontSize="14"
+                            HeightRequest="45"
+                            Text="Acceder como Veterinario"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Loading Overlay  -->
+        <Grid
+            x:Name="LoadingOverlay"
+            BackgroundColor="#80000000"
+            IsVisible="False">
+            <Frame
+                Padding="30"
+                BackgroundColor="White"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="15">
+                    <ActivityIndicator
+                        HeightRequest="40"
+                        IsRunning="True"
+                        WidthRequest="40"
+                        Color="#667eea" />
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="Iniciando sesión..."
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
         </Grid>
-    </ScrollView>
+
+    </Grid>
 
 </ContentPage>

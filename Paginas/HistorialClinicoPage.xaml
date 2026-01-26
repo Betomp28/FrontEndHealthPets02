@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.HistorialClinicoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:FrontEndHealthPets.Converters"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Historial Clinico"
+    BackgroundColor="#F5F5F5">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LoadHistorialCommand}" Text="Actualizar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+        <!--  Pet Selector  -->
+        <Frame
+            Grid.Row="0"
+            Margin="10"
+            Padding="10"
+            BackgroundColor="White"
+            CornerRadius="10"
+            HasShadow="True">
+            <VerticalStackLayout Spacing="5">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Text="Selecciona tu mascota:"
+                    TextColor="#333" />
+                <Picker
+                    Title="Seleccionar mascota"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Pets}"
+                    SelectedItem="{Binding SelectedPet}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!--  Historial Content  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="10" Spacing="10">
+                <!--  Summary Card  -->
+                <Frame
+                    Padding="15"
+                    BackgroundColor="White"
+                    CornerRadius="10"
+                    HasShadow="True"
+                    IsVisible="{Binding Historial, Converter={StaticResource IsNotNullConverter}}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Resumen del Historial"
+                            TextColor="#6B4EE6" />
+                        <BoxView BackgroundColor="#E0E0E0" HeightRequest="1" />
+
+                        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto">
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding Historial.TotalConsultas}"
+                                    TextColor="#6B4EE6" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="Total Consultas"
+                                    TextColor="#666" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                                <Label
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding Historial.TotalVacunas}"
+                                    TextColor="#4CAF50" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalOptions="Center"
+                                    Text="Vacunas"
+                                    TextColor="#666" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <Label
+                            FontSize="12"
+                            IsVisible="{Binding Historial.UltimaConsulta, Converter={StaticResource IsNotNullConverter}}"
+                            Text="{Binding Historial.UltimaConsulta, StringFormat='Ultima consulta: {0:dd/MM/yyyy}'}"
+                            TextColor="#888" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Consultas List Header  -->
+                <Label
+                    Margin="5,10,0,0"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Historial de Consultas"
+                    TextColor="#333" />
+
+                <!--  Consultas List  -->
+                <CollectionView ItemsSource="{Binding Consultas}" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            HorizontalOptions="Center"
+                            Spacing="10"
+                            VerticalOptions="Center">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="No hay consultas registradas"
+                                TextColor="#666" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="El historial aparecera aqui despues de cada consulta"
+                                TextColor="#999" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Consulta">
+                            <Frame
+                                Margin="0,5"
+                                Padding="12"
+                                BackgroundColor="White"
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HistorialClinicoViewModel}}, Path=ViewConsultaDetailCommand}" CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto, Auto">
+                                    <!--  Date Badge  -->
+                                    <Frame
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="0"
+                                        Margin="0,0,12,0"
+                                        Padding="8"
+                                        BackgroundColor="#6B4EE6"
+                                        CornerRadius="8"
+                                        HasShadow="False"
+                                        HeightRequest="50"
+                                        WidthRequest="50">
+                                        <VerticalStackLayout VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding FechaConsulta, StringFormat='{0:dd}'}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding FechaConsulta, StringFormat='{0:MMM}'}"
+                                                TextColor="White" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+
+                                    <!--  Tipo Consulta  -->
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding TipoConsulta}"
+                                        TextColor="#333" />
+
+                                    <!--  Status Badge  -->
+                                    <Frame
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Padding="6,2"
+                                        BackgroundColor="#E3F2FD"
+                                        CornerRadius="4"
+                                        HasShadow="False">
+                                        <Label
+                                            FontSize="10"
+                                            Text="{Binding ConsultationType}"
+                                            TextColor="#1976D2" />
+                                    </Frame>
+
+                                    <!--  Veterinario  -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        FontSize="12"
+                                        Text="{Binding VeterinarioNombre, StringFormat='Dr. {0}'}"
+                                        TextColor="#666" />
+
+                                    <!--  Motivo  -->
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        FontSize="11"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="1"
+                                        Text="{Binding MotivoConsulta}"
+                                        TextColor="#888" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Loading Indicator  -->
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+</ContentPage>

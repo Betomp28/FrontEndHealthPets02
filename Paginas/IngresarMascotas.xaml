@@ -1,72 +1,458 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.Paginas.IngresarMascotas"
-             Title="IngresarMascotas">
-    <ScrollView>
-        <Frame BackgroundColor="White" BorderColor="Purple">
-            <ScrollView>
-                <VerticalStackLayout Spacing="20">
-                    <VerticalStackLayout Padding="10,20" Spacing="10">
-                        <Grid BackgroundColor="#f8fafb">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Frame WidthRequest="80" HeightRequest="80" CornerRadius="40" BackgroundColor="White" BorderColor="Purple" HorizontalOptions="Start" VerticalOptions="Center" Grid.Row="0" Grid.Column="0">
-                                <Image x:Name="imgPerfil" Source="default_profile.png" Aspect="AspectFill" />
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.IngresarMascotas"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Nueva Mascota"
+    BackgroundColor="#F8F9FA"
+    Shell.BackgroundColor="#6C63FF">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  Header  -->
+        <Frame
+            Grid.Row="0"
+            Padding="0"
+            BackgroundColor="#6C63FF"
+            CornerRadius="0"
+            HasShadow="False">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#6C63FF" />
+                    <GradientStop Offset="0.5" Color="#5548D9" />
+                    <GradientStop Offset="1.0" Color="#7C4DFF" />
+                </LinearGradientBrush>
+            </Frame.Background>
+
+            <VerticalStackLayout Padding="20,20,20,30" Spacing="8">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    Text="Agregar Mascota"
+                    TextColor="White" />
+                <Label
+                    FontSize="14"
+                    Opacity="0.85"
+                    Text="Ingresa los datos de tu nueva mascota"
+                    TextColor="White" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!--  Content  -->
+        <ScrollView Grid.Row="1" Margin="0,-20,0,0">
+            <VerticalStackLayout Padding="20" Spacing="16">
+
+                <!--  Photo Selection Card  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="White"
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.08"
+                            Radius="15"
+                            Offset="0,4" />
+                    </Frame.Shadow>
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="16">
+                        <Frame
+                            Padding="4"
+                            BackgroundColor="#F0EFFF"
+                            CornerRadius="60"
+                            HasShadow="False"
+                            HeightRequest="120"
+                            HorizontalOptions="Center"
+                            WidthRequest="120">
+                            <Frame
+                                Padding="0"
+                                BackgroundColor="#E8E8FF"
+                                CornerRadius="56"
+                                HasShadow="False">
+                                <Grid>
+                                    <Image
+                                        x:Name="imgPerfil"
+                                        Aspect="AspectFill"
+                                        Source="default_profile.png" />
+                                    <!--  Camera overlay  -->
+                                    <Frame
+                                        Margin="0,0,5,5"
+                                        Padding="0"
+                                        BackgroundColor="#6C63FF"
+                                        CornerRadius="16"
+                                        HasShadow="False"
+                                        HeightRequest="32"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        WidthRequest="32">
+                                        <Label
+                                            FontSize="14"
+                                            HorizontalOptions="Center"
+                                            Text="📷"
+                                            VerticalOptions="Center" />
+                                    </Frame>
+                                </Grid>
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                    <TapGestureRecognizer Tapped="OnSelectPhotoTapped" />
                                 </Frame.GestureRecognizers>
                             </Frame>
-                            <Label Text="Registro de Mascota" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,-20,0" />
-                            <Button Text="X" FontSize="Small" BackgroundColor="Purple" BorderColor="Black" HorizontalOptions="End" VerticalOptions="Center" Grid.Row="0" Grid.Column="1" Margin="5" Padding="5,0" />
-                            <!-- Resto del contenido -->
-                        </Grid>
-                        <!-- Usa un Grid con RowDefinitions para apilar las entradas -->
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="0">
-                                <Grid>
-                                    <Entry x:Name="Nombre" Placeholder="Nombre" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                                </Grid>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="1">
-                                <Grid>
-                                    <Entry x:Name="Especie" Placeholder="Especie" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                                </Grid>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="2">
-                                <Grid>
-                                    <Entry x:Name="Fecha_Nacimiento" Placeholder="Fecha Nacimiento" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                                </Grid>
-                            </Frame>
-                            <Frame BackgroundColor="White" BorderColor="Purple" Grid.Row="3">
-                                <Grid>
-                                    <Entry x:Name="Raza" Placeholder="Raza" Text="" TextColor="Black" VerticalOptions="Center" MaxLength="15"/>
-                                </Grid>
-                            </Frame>
-                        </Grid>
-                        <Button Margin="0,20,0,0"
-             x:Name="btRegistrar"
-             BackgroundColor="Purple"
-             BorderColor="White"
-             FontAttributes="Bold"
-             FontSize="Medium"
-             Text="Registrarse"
-             Clicked="btRegistrar_Clicked"  />
+                        </Frame>
+                        <Label
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            Text="Toca para agregar foto"
+                            TextColor="#636E72" />
                     </VerticalStackLayout>
-                </VerticalStackLayout>
-            </ScrollView>
-        </Frame>
-    </ScrollView>
+                </Frame>
+
+                <!--  Basic Info Card  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="White"
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.08"
+                            Radius="15"
+                            Offset="0,4" />
+                    </Frame.Shadow>
+
+                    <VerticalStackLayout Spacing="16">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Información Básica"
+                            TextColor="#2D3436" />
+
+                        <!--  Nombre  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Nombre"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Entry
+                                    x:Name="Nombre"
+                                    FontSize="16"
+                                    MaxLength="30"
+                                    Placeholder="Nombre de tu mascota"
+                                    PlaceholderColor="#B2BEC3"
+                                    TextColor="#2D3436"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Label
+                                x:Name="NombreError"
+                                FontSize="12"
+                                IsVisible="False"
+                                Text=""
+                                TextColor="#FF5252" />
+                        </VerticalStackLayout>
+
+                        <!--  Especie  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Especie"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Picker
+                                    x:Name="EspeciePicker"
+                                    Title="Selecciona especie"
+                                    FontSize="16"
+                                    TextColor="#2D3436"
+                                    TitleColor="#B2BEC3"
+                                    VerticalOptions="Center">
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>🐕 Perro</x:String>
+                                            <x:String>🐈 Gato</x:String>
+                                            <x:String>🐦 Ave</x:String>
+                                            <x:String>🐰 Conejo</x:String>
+                                            <x:String>🐹 Hámster</x:String>
+                                            <x:String>🐢 Tortuga</x:String>
+                                            <x:String>🐠 Pez</x:String>
+                                            <x:String>🦎 Reptil</x:String>
+                                            <x:String>🐾 Otro</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Raza  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Raza"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Entry
+                                    x:Name="Raza"
+                                    FontSize="16"
+                                    MaxLength="50"
+                                    Placeholder="Raza de tu mascota"
+                                    PlaceholderColor="#B2BEC3"
+                                    TextColor="#2D3436"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Fecha de Nacimiento  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Fecha de Nacimiento"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <DatePicker
+                                    x:Name="FechaNacimiento"
+                                    FontSize="16"
+                                    Format="dd/MM/yyyy"
+                                    TextColor="#2D3436"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Additional Info Card  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="White"
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.08"
+                            Radius="15"
+                            Offset="0,4" />
+                    </Frame.Shadow>
+
+                    <VerticalStackLayout Spacing="16">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Detalles Adicionales"
+                            TextColor="#2D3436" />
+
+                        <!--  Género  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Género"
+                                TextColor="#2D3436" />
+                            <HorizontalStackLayout Spacing="12">
+                                <Frame
+                                    x:Name="MaleFrame"
+                                    Padding="20,12"
+                                    BackgroundColor="#E8F5FF"
+                                    BorderColor="Transparent"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnMaleTapped" />
+                                    </Frame.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label FontSize="18" Text="♂️" />
+                                        <Label
+                                            FontSize="14"
+                                            Text="Macho"
+                                            TextColor="#2196F3"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Frame>
+                                <Frame
+                                    x:Name="FemaleFrame"
+                                    Padding="20,12"
+                                    BackgroundColor="#FFE8EC"
+                                    BorderColor="Transparent"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnFemaleTapped" />
+                                    </Frame.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label FontSize="18" Text="♀️" />
+                                        <Label
+                                            FontSize="14"
+                                            Text="Hembra"
+                                            TextColor="#E91E63"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!--  Peso  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Peso (kg)"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Entry
+                                    x:Name="Peso"
+                                    FontSize="16"
+                                    Keyboard="Numeric"
+                                    MaxLength="6"
+                                    Placeholder="Ej: 5.5"
+                                    PlaceholderColor="#B2BEC3"
+                                    TextColor="#2D3436"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Color  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Color"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12,0"
+                                BackgroundColor="White"
+                                HeightRequest="50"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Entry
+                                    x:Name="ColorEntry"
+                                    FontSize="16"
+                                    MaxLength="30"
+                                    Placeholder="Color del pelaje"
+                                    PlaceholderColor="#B2BEC3"
+                                    TextColor="#2D3436"
+                                    VerticalOptions="Center" />
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!--  Notas  -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Notas adicionales"
+                                TextColor="#2D3436" />
+                            <Border
+                                Padding="12"
+                                BackgroundColor="White"
+                                Stroke="#DFE6E9"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="1">
+                                <Editor
+                                    x:Name="Notas"
+                                    FontSize="14"
+                                    HeightRequest="100"
+                                    MaxLength="500"
+                                    Placeholder="Información adicional sobre tu mascota..."
+                                    PlaceholderColor="#B2BEC3"
+                                    TextColor="#2D3436" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Submit Button  -->
+                <Button
+                    x:Name="btRegistrar"
+                    Margin="0,10,0,0"
+                    BackgroundColor="#6C63FF"
+                    Clicked="btRegistrar_Clicked"
+                    CornerRadius="16"
+                    FontAttributes="Bold"
+                    FontSize="17"
+                    HeightRequest="55"
+                    Text="Guardar Mascota"
+                    TextColor="White">
+                    <Button.Shadow>
+                        <Shadow
+                            Brush="#6C63FF"
+                            Opacity="0.4"
+                            Radius="15"
+                            Offset="0,6" />
+                    </Button.Shadow>
+                </Button>
+
+                <!--  Cancel Button  -->
+                <Button
+                    x:Name="btCancelar"
+                    BackgroundColor="Transparent"
+                    Clicked="btCancelar_Clicked"
+                    FontSize="15"
+                    Text="Cancelar"
+                    TextColor="#636E72" />
+
+                <BoxView HeightRequest="30" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Loading Overlay  -->
+        <Grid
+            x:Name="LoadingOverlay"
+            Grid.RowSpan="2"
+            BackgroundColor="#80000000"
+            IsVisible="False">
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                Spacing="16"
+                VerticalOptions="Center">
+                <ActivityIndicator
+                    HeightRequest="50"
+                    IsRunning="True"
+                    WidthRequest="50"
+                    Color="White" />
+                <Label
+                    FontSize="16"
+                    HorizontalOptions="Center"
+                    Text="Guardando mascota..."
+                    TextColor="White" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+
 </ContentPage>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VetPortal.VetDashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Dashboard"
+    BackgroundColor="#1a1a2e">
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20">
+
+                <!--  Welcome Header  -->
+                <StackLayout Spacing="5">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        Text="{Binding WelcomeMessage}"
+                        TextColor="White" />
+                    <Label
+                        FontSize="14"
+                        Text="{Binding TodayDate}"
+                        TextColor="#888" />
+                </StackLayout>
+
+                <!--  Stats Cards  -->
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="15"
+                    RowDefinitions="Auto">
+                    <!--  Today's Appointments  -->
+                    <Frame
+                        Grid.Column="0"
+                        Padding="20"
+                        BackgroundColor="#6B4EE6"
+                        CornerRadius="15"
+                        HasShadow="True">
+                        <StackLayout Spacing="10">
+                            <Label FontSize="28" Text="📅" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="32"
+                                Text="{Binding TodayAppointments}"
+                                TextColor="White" />
+                            <Label
+                                FontSize="13"
+                                Text="Citas Hoy"
+                                TextColor="#DDD" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!--  Pending Appointments  -->
+                    <Frame
+                        Grid.Column="1"
+                        Padding="20"
+                        BackgroundColor="#FF9F43"
+                        CornerRadius="15"
+                        HasShadow="True">
+                        <StackLayout Spacing="10">
+                            <Label FontSize="28" Text="⏳" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="32"
+                                Text="{Binding PendingAppointments}"
+                                TextColor="White" />
+                            <Label
+                                FontSize="13"
+                                Text="Pendientes"
+                                TextColor="#DDD" />
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <!--  Upcoming Appointments Section  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#252542"
+                    CornerRadius="15"
+                    HasShadow="False">
+                    <StackLayout Spacing="15">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            Text="Próximas Citas"
+                            TextColor="White" />
+
+                        <StackLayout IsVisible="{Binding HasNoAppointments}">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="No tienes citas programadas"
+                                TextColor="#888" />
+                        </StackLayout>
+
+                        <CollectionView IsVisible="{Binding HasAppointments}" ItemsSource="{Binding UpcomingAppointments}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame
+                                        Margin="0,5"
+                                        Padding="15"
+                                        BackgroundColor="#1a1a2e"
+                                        CornerRadius="10"
+                                        HasShadow="False">
+                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                            <!--  Time  -->
+                                            <StackLayout
+                                                Grid.Column="0"
+                                                VerticalOptions="Center"
+                                                WidthRequest="60">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    Text="{Binding AppointmentTime}"
+                                                    TextColor="#6B4EE6" />
+                                                <Label
+                                                    FontSize="11"
+                                                    Text="{Binding AppointmentDateShort}"
+                                                    TextColor="#888" />
+                                            </StackLayout>
+
+                                            <!--  Client Info  -->
+                                            <StackLayout
+                                                Grid.Column="1"
+                                                Padding="15,0"
+                                                VerticalOptions="Center">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="15"
+                                                    Text="{Binding UserName}"
+                                                    TextColor="White" />
+                                                <Label
+                                                    FontSize="13"
+                                                    Text="{Binding PetName}"
+                                                    TextColor="#888" />
+                                                <Label
+                                                    FontSize="12"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding Reason}"
+                                                    TextColor="#666" />
+                                            </StackLayout>
+
+                                            <!--  Status Badge  -->
+                                            <Frame
+                                                Grid.Column="2"
+                                                Padding="10,5"
+                                                BackgroundColor="{Binding StatusColor}"
+                                                CornerRadius="8"
+                                                HasShadow="False"
+                                                VerticalOptions="Center">
+                                                <Label
+                                                    FontSize="11"
+                                                    Text="{Binding StatusText}"
+                                                    TextColor="White" />
+                                            </Frame>
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!--  Quick Actions  -->
+                <Label
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    Text="Acciones Rápidas"
+                    TextColor="White" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="#252542"
+                        Command="{Binding ViewAppointmentsCommand}"
+                        CornerRadius="12"
+                        HeightRequest="60"
+                        Text="📅 Ver Citas"
+                        TextColor="White" />
+
+                    <Button
+                        Grid.Column="1"
+                        BackgroundColor="#252542"
+                        Command="{Binding ManageScheduleCommand}"
+                        CornerRadius="12"
+                        HeightRequest="60"
+                        Text="🕐 Horarios"
+                        TextColor="White" />
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

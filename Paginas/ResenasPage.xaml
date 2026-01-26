@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.ResenasPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:FrontEndHealthPets.Converters"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Mis Resenas"
+    BackgroundColor="#F5F5F5">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:RatingStarsConverter x:Key="RatingStarsConverter" />
+            <converters:TimeAgoConverter x:Key="TimeAgoConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LoadMisResenasCommand}" Text="Actualizar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <!-- Main List View -->
+        <Grid IsVisible="{Binding IsWritingReview, Converter={StaticResource InverseBoolConverter}}">
+            <CollectionView Margin="10" ItemsSource="{Binding MisResenas}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="10"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="48"
+                            HorizontalOptions="Center"
+                            Text="⭐" />
+                        <Label
+                            HorizontalOptions="Center"
+                            Text="No has escrito resenas"
+                            TextColor="#666" />
+                        <Label
+                            FontSize="12"
+                            HorizontalOptions="Center"
+                            Text="Despues de cada cita podras calificar al veterinario"
+                            TextColor="#999" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Resena">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="#FF9800"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ResenasViewModel}}, Path=EditResenaCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Editar" />
+                                    <SwipeItem
+                                        BackgroundColor="#D32F2F"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ResenasViewModel}}, Path=DeleteResenaCommand}"
+                                        CommandParameter="{Binding .}"
+                                        Text="Eliminar" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame
+                                Margin="0,5"
+                                Padding="12"
+                                BackgroundColor="White"
+                                CornerRadius="10"
+                                HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ResenasViewModel}}, Path=ViewResenaDetailCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+
+                                <Grid RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="8">
+                                    <!-- Header: Vet Name & Rating -->
+                                    <Grid
+                                        Grid.Row="0"
+                                        ColumnDefinitions="*, Auto">
+                                        <Label
+                                            Grid.Column="0"
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="{Binding VeterinarioNombre}"
+                                            TextColor="#333" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontSize="14"
+                                            Text="{Binding Calificacion, Converter={StaticResource RatingStarsConverter}}"
+                                            TextColor="#FFB800" />
+                                    </Grid>
+
+                                    <!-- Comment -->
+                                    <Label
+                                        Grid.Row="1"
+                                        FontSize="13"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Text="{Binding Comentario}"
+                                        TextColor="#555" />
+
+                                    <!-- Vet Response (if exists) -->
+                                    <Frame
+                                        Grid.Row="2"
+                                        Padding="10"
+                                        BackgroundColor="#F5F5F5"
+                                        CornerRadius="8"
+                                        HasShadow="False"
+                                        IsVisible="{Binding RespuestaVeterinario, Converter={StaticResource IsNotNullConverter}}">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                Text="Respuesta del veterinario:"
+                                                TextColor="#6B4EE6" />
+                                            <Label
+                                                FontSize="12"
+                                                LineBreakMode="TailTruncation"
+                                                MaxLines="2"
+                                                Text="{Binding RespuestaVeterinario}"
+                                                TextColor="#666" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+
+                                    <!-- Date -->
+                                    <Label
+                                        Grid.Row="3"
+                                        FontSize="11"
+                                        HorizontalOptions="End"
+                                        Text="{Binding FechaCreacion, Converter={StaticResource TimeAgoConverter}}"
+                                        TextColor="#888" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- Edit Review View -->
+        <Grid IsVisible="{Binding IsWritingReview}" Padding="15">
+            <Frame
+                Padding="20"
+                BackgroundColor="White"
+                CornerRadius="15"
+                HasShadow="True"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="15">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="Editar Resena"
+                        TextColor="#333" />
+
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Text="{Binding SelectedResena.VeterinarioNombre}"
+                        TextColor="#666" />
+
+                    <!-- Star Rating -->
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                        <Label
+                            FontSize="30"
+                            Text="☆"
+                            TextColor="{Binding SelectedRating, Converter={StaticResource StarColorConverter}, ConverterParameter=1}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding SetRatingCommand}"
+                                    CommandParameter="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            FontSize="30"
+                            Text="☆"
+                            TextColor="{Binding SelectedRating, Converter={StaticResource StarColorConverter}, ConverterParameter=2}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding SetRatingCommand}"
+                                    CommandParameter="2" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            FontSize="30"
+                            Text="☆"
+                            TextColor="{Binding SelectedRating, Converter={StaticResource StarColorConverter}, ConverterParameter=3}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding SetRatingCommand}"
+                                    CommandParameter="3" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            FontSize="30"
+                            Text="☆"
+                            TextColor="{Binding SelectedRating, Converter={StaticResource StarColorConverter}, ConverterParameter=4}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding SetRatingCommand}"
+                                    CommandParameter="4" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            FontSize="30"
+                            Text="☆"
+                            TextColor="{Binding SelectedRating, Converter={StaticResource StarColorConverter}, ConverterParameter=5}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding SetRatingCommand}"
+                                    CommandParameter="5" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                    <!-- Comment Editor -->
+                    <Frame
+                        Padding="10"
+                        BackgroundColor="#F5F5F5"
+                        CornerRadius="10"
+                        HasShadow="False">
+                        <Editor
+                            HeightRequest="120"
+                            Placeholder="Escribe tu comentario..."
+                            Text="{Binding ReviewComment}" />
+                    </Frame>
+
+                    <!-- Buttons -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Button
+                            Grid.Column="0"
+                            BackgroundColor="#E0E0E0"
+                            Command="{Binding CancelEditCommand}"
+                            CornerRadius="10"
+                            Text="Cancelar"
+                            TextColor="#333" />
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="#6B4EE6"
+                            Command="{Binding SaveResenaCommand}"
+                            CornerRadius="10"
+                            Text="Guardar"
+                            TextColor="White" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Loading -->
+        <ActivityIndicator
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="#6B4EE6" />
+    </Grid>
+</ContentPage>

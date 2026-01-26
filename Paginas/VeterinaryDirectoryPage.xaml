@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VeterinaryDirectoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:FrontEndHealthPets.Controls"
+    xmlns:m="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="{Binding Title}"
+    BackgroundColor="{StaticResource Background}">
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="15">
+
+                <!--  Search Bar  -->
+                <Frame Padding="5" Style="{StaticResource Card}">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Entry
+                            FontSize="16"
+                            Placeholder="Buscar veterinarias..."
+                            Text="{Binding SearchText}"
+                            VerticalOptions="Center" />
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            Command="{Binding SearchCommand}"
+                            Text="🔍" />
+                    </Grid>
+                </Frame>
+
+                <!--  Featured Section  -->
+                <Label
+                    Margin="0,10,0,5"
+                    Style="{StaticResource Headline}"
+                    Text="⭐ Destacadas" />
+
+                <CollectionView HeightRequest="160" ItemsSource="{Binding FeaturedVeterinaries}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="12" Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:Veterinary">
+                            <Frame
+                                Padding="12"
+                                BackgroundColor="{StaticResource Surface}"
+                                BorderColor="Transparent"
+                                CornerRadius="16"
+                                WidthRequest="200">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VeterinaryDirectoryViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <VerticalStackLayout Spacing="5">
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label FontSize="12" Text="{Binding EmergencyBadge}" />
+                                        <Label Style="{StaticResource Caption1}" Text="{Binding RatingDisplay}" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Style="{StaticResource Headline}"
+                                        Text="{Binding Nombre}" />
+                                    <Label
+                                        MaxLines="1"
+                                        Style="{StaticResource Caption1}"
+                                        Text="{Binding Direccion}" />
+                                    <HorizontalStackLayout Margin="0,5,0,0" Spacing="10">
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding StatusDisplay}"
+                                            TextColor="{Binding StatusColor}" />
+                                        <Label Style="{StaticResource Caption1}" Text="{Binding DistanceDisplay}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--  All Veterinaries  -->
+                <Label
+                    Margin="0,15,0,5"
+                    Style="{StaticResource Headline}"
+                    Text="📍 Cerca de ti" />
+
+                <CollectionView ItemsSource="{Binding Veterinaries}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            Padding="40"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                            <Label
+                                FontSize="48"
+                                HorizontalTextAlignment="Center"
+                                Text="🏥" />
+                            <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource Subhead}"
+                                Text="No se encontraron veterinarias" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="m:Veterinary">
+                            <Frame Margin="0,5" Style="{StaticResource Card}">
+                                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, Auto">
+                                    <!--  Header  -->
+                                    <VerticalStackLayout Grid.Row="0" Grid.Column="0">
+                                        <HorizontalStackLayout Spacing="8">
+                                            <Label Style="{StaticResource Headline}" Text="{Binding Nombre}" />
+                                            <Label
+                                                FontSize="12"
+                                                Text="{Binding EmergencyBadge}"
+                                                VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+                                        <Label Style="{StaticResource Caption1}" Text="{Binding Direccion}" />
+                                    </VerticalStackLayout>
+
+                                    <!--  Rating & Distance  -->
+                                    <VerticalStackLayout
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        HorizontalOptions="End">
+                                        <Label
+                                            HorizontalTextAlignment="End"
+                                            Style="{StaticResource Caption1}"
+                                            Text="{Binding RatingDisplay}" />
+                                        <Label
+                                            HorizontalTextAlignment="End"
+                                            Style="{StaticResource Caption1}"
+                                            Text="{Binding DistanceDisplay}"
+                                            TextColor="{StaticResource Primary}" />
+                                    </VerticalStackLayout>
+
+                                    <!--  Info Row  -->
+                                    <HorizontalStackLayout
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,8,0,0"
+                                        Spacing="15">
+                                        <Label Style="{StaticResource Caption1}" Text="{Binding HorarioAtencion}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding StatusDisplay}"
+                                            TextColor="{Binding StatusColor}" />
+                                    </HorizontalStackLayout>
+
+                                    <!--  Action Buttons  -->
+                                    <HorizontalStackLayout
+                                        Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,12,0,0"
+                                        Spacing="10">
+                                        <Button
+                                            Padding="15,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VeterinaryDirectoryViewModel}}, Path=CallVeterinaryCommand}"
+                                            CommandParameter="{Binding .}"
+                                            FontSize="12"
+                                            HeightRequest="36"
+                                            Style="{StaticResource PrimaryButton}"
+                                            Text="📞 Llamar" />
+                                        <Button
+                                            Padding="15,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VeterinaryDirectoryViewModel}}, Path=OpenMapsCommand}"
+                                            CommandParameter="{Binding .}"
+                                            FontSize="12"
+                                            HeightRequest="36"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Text="🗺️ Mapa" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--  Ad Banner  -->
+                <controls:AdBannerView Margin="0,10" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

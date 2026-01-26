@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FrontEndHealthPets.Paginas.VideoCallPage"
+             Title="Videollamada"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#1a1a2e">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Top Bar -->
+        <Grid Grid.Row="0"
+              Padding="16,8"
+              BackgroundColor="#1a1a2e"
+              ColumnDefinitions="Auto,*,Auto">
+
+            <!-- Back button (only when not in call) -->
+            <Button Grid.Column="0"
+                    Text="X"
+                    FontSize="20"
+                    TextColor="White"
+                    BackgroundColor="Transparent"
+                    Command="{Binding BackCommand}"
+                    IsVisible="{Binding CanGoBack}"
+                    WidthRequest="44"
+                    HeightRequest="44"/>
+
+            <!-- Call info -->
+            <VerticalStackLayout Grid.Column="1"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <Label Text="{Binding ParticipantName}"
+                       TextColor="White"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+                <Label Text="{Binding CallStatusText}"
+                       TextColor="#A0A0A0"
+                       FontSize="14"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Duration -->
+            <Frame Grid.Column="2"
+                   BackgroundColor="#333"
+                   CornerRadius="12"
+                   Padding="8,4"
+                   HasShadow="False"
+                   IsVisible="{Binding IsConnected}">
+                <Label Text="{Binding CallDuration}"
+                       TextColor="White"
+                       FontSize="14"/>
+            </Frame>
+        </Grid>
+
+        <!-- WebView for WebRTC -->
+        <WebView Grid.Row="1"
+                 x:Name="WebRtcView"
+                 Source="webrtc.html"
+                 Navigating="WebRtcView_Navigating"/>
+
+        <!-- Incoming Call Overlay -->
+        <Grid Grid.Row="1"
+              BackgroundColor="#CC1a1a2e"
+              IsVisible="{Binding IsIncomingCall}"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+            <VerticalStackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="20">
+                <!-- Caller Avatar -->
+                <Frame WidthRequest="120"
+                       HeightRequest="120"
+                       CornerRadius="60"
+                       BackgroundColor="#6B4EE6"
+                       Padding="0"
+                       HasShadow="False"
+                       HorizontalOptions="Center">
+                    <Label Text="{Binding CallerInitial}"
+                           TextColor="White"
+                           FontSize="48"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Frame>
+
+                <Label Text="{Binding CallerName}"
+                       TextColor="White"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Llamada entrante..."
+                       TextColor="#A0A0A0"
+                       FontSize="16"
+                       HorizontalOptions="Center"/>
+
+                <!-- Accept/Reject buttons -->
+                <HorizontalStackLayout Spacing="40"
+                                       HorizontalOptions="Center"
+                                       Margin="0,20,0,0">
+                    <!-- Reject -->
+                    <VerticalStackLayout>
+                        <Button WidthRequest="70"
+                                HeightRequest="70"
+                                CornerRadius="35"
+                                BackgroundColor="#FF3B30"
+                                Text="X"
+                                TextColor="White"
+                                FontSize="24"
+                                Command="{Binding RejectCallCommand}"/>
+                        <Label Text="Rechazar"
+                               TextColor="White"
+                               FontSize="12"
+                               HorizontalOptions="Center"
+                               Margin="0,8,0,0"/>
+                    </VerticalStackLayout>
+
+                    <!-- Accept -->
+                    <VerticalStackLayout>
+                        <Button WidthRequest="70"
+                                HeightRequest="70"
+                                CornerRadius="35"
+                                BackgroundColor="#34C759"
+                                Text="O"
+                                TextColor="White"
+                                FontSize="24"
+                                Command="{Binding AcceptCallCommand}"/>
+                        <Label Text="Aceptar"
+                               TextColor="White"
+                               FontSize="12"
+                               HorizontalOptions="Center"
+                               Margin="0,8,0,0"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Bottom Controls -->
+        <Grid Grid.Row="2"
+              Padding="16,12"
+              BackgroundColor="#1a1a2e"
+              ColumnDefinitions="*,*,*,*,*"
+              IsVisible="{Binding ShowControls}">
+
+            <!-- Toggle Video -->
+            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                <Button WidthRequest="56"
+                        HeightRequest="56"
+                        CornerRadius="28"
+                        BackgroundColor="{Binding VideoButtonColor}"
+                        Text="{Binding VideoButtonIcon}"
+                        TextColor="White"
+                        FontSize="20"
+                        Command="{Binding ToggleVideoCommand}"/>
+                <Label Text="Video"
+                       TextColor="#A0A0A0"
+                       FontSize="11"
+                       HorizontalOptions="Center"
+                       Margin="0,4,0,0"/>
+            </VerticalStackLayout>
+
+            <!-- Toggle Audio -->
+            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                <Button WidthRequest="56"
+                        HeightRequest="56"
+                        CornerRadius="28"
+                        BackgroundColor="{Binding AudioButtonColor}"
+                        Text="{Binding AudioButtonIcon}"
+                        TextColor="White"
+                        FontSize="20"
+                        Command="{Binding ToggleAudioCommand}"/>
+                <Label Text="Micro"
+                       TextColor="#A0A0A0"
+                       FontSize="11"
+                       HorizontalOptions="Center"
+                       Margin="0,4,0,0"/>
+            </VerticalStackLayout>
+
+            <!-- End Call -->
+            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                <Button WidthRequest="70"
+                        HeightRequest="56"
+                        CornerRadius="28"
+                        BackgroundColor="#FF3B30"
+                        Text="X"
+                        TextColor="White"
+                        FontSize="24"
+                        Command="{Binding EndCallCommand}"/>
+                <Label Text="Colgar"
+                       TextColor="#A0A0A0"
+                       FontSize="11"
+                       HorizontalOptions="Center"
+                       Margin="0,4,0,0"/>
+            </VerticalStackLayout>
+
+            <!-- Screen Share -->
+            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                <Button WidthRequest="56"
+                        HeightRequest="56"
+                        CornerRadius="28"
+                        BackgroundColor="{Binding ScreenShareButtonColor}"
+                        Text="S"
+                        TextColor="White"
+                        FontSize="20"
+                        Command="{Binding ToggleScreenShareCommand}"/>
+                <Label Text="Pantalla"
+                       TextColor="#A0A0A0"
+                       FontSize="11"
+                       HorizontalOptions="Center"
+                       Margin="0,4,0,0"/>
+            </VerticalStackLayout>
+
+            <!-- Record -->
+            <VerticalStackLayout Grid.Column="4" HorizontalOptions="Center">
+                <Button WidthRequest="56"
+                        HeightRequest="56"
+                        CornerRadius="28"
+                        BackgroundColor="{Binding RecordButtonColor}"
+                        Text="R"
+                        TextColor="White"
+                        FontSize="20"
+                        Command="{Binding ToggleRecordingCommand}"/>
+                <Label Text="Grabar"
+                       TextColor="#A0A0A0"
+                       FontSize="11"
+                       HorizontalOptions="Center"
+                       Margin="0,4,0,0"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.WeightTrackingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:microcharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    xmlns:m="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Seguimiento de Peso"
+    BackgroundColor="#F5F5F5">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ToggleAddFormCommand}" Text="+ Agregar" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!--  Pet Selector Header  -->
+        <Border
+            Grid.Row="0"
+            Margin="10,10,10,0"
+            Padding="10"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 10">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.1"
+                    Radius="3"
+                    Offset="0,2" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Label
+                        FontSize="12"
+                        Text="Mascota Seleccionada:"
+                        TextColor="#888" />
+                    <Picker
+                        Title="Seleccionar Mascota"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        ItemDisplayBinding="{Binding Name}"
+                        ItemsSource="{Binding Pets}"
+                        SelectedItem="{Binding SelectedPet}"
+                        TextColor="#333"
+                        TitleColor="#999" />
+                </VerticalStackLayout>
+                <Label
+                    Grid.Column="1"
+                    Margin="0,0,10,0"
+                    FontSize="28"
+                    Text="⚖️"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!--  Loading Indicator  -->
+        <ActivityIndicator
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="Center"
+            Color="{StaticResource Primary}" />
+
+        <!--  Empty State  -->
+        <VerticalStackLayout
+            Grid.Row="1"
+            HorizontalOptions="Center"
+            IsVisible="{Binding HasNoRecords}"
+            VerticalOptions="Center">
+            <Label
+                FontSize="48"
+                HorizontalOptions="Center"
+                Text="📊" />
+            <Label
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="No hay registros de peso"
+                TextColor="#888" />
+            <Label
+                FontSize="14"
+                HorizontalOptions="Center"
+                Text="Agrega el primer registro para ver la gráfica"
+                TextColor="#AAA" />
+            <Button
+                Margin="0,20,0,0"
+                BackgroundColor="{StaticResource Primary}"
+                Command="{Binding ToggleAddFormCommand}"
+                CornerRadius="10"
+                Text="Agregar Peso"
+                TextColor="White" />
+        </VerticalStackLayout>
+
+        <!--  Main Content  -->
+        <ScrollView
+            Grid.Row="1"
+            Margin="10"
+            IsVisible="{Binding HasNoRecords, Converter={StaticResource InverseBoolConverter}}">
+            <VerticalStackLayout Spacing="12">
+
+                <!--  Add Weight Form (Collapsible)  -->
+                <Border
+                    Padding="16"
+                    BackgroundColor="#E8F5E9"
+                    IsVisible="{Binding ShowAddForm}"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Nuevo Registro de Peso"
+                            TextColor="#2E7D32" />
+
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label
+                                    FontSize="12"
+                                    Text="Peso (kg)"
+                                    TextColor="#666" />
+                                <Entry
+                                    BackgroundColor="White"
+                                    Keyboard="Numeric"
+                                    Placeholder="Ej: 25.5"
+                                    Text="{Binding NewWeight}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label
+                                    FontSize="12"
+                                    Text="Fecha"
+                                    TextColor="#666" />
+                                <DatePicker
+                                    x:Name="DatePickerWeight"
+                                    BackgroundColor="White"
+                                    Date="{Binding NewDate}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <VerticalStackLayout>
+                            <Label
+                                FontSize="12"
+                                Text="Notas (opcional)"
+                                TextColor="#666" />
+                            <Entry
+                                BackgroundColor="White"
+                                Placeholder="Ej: Control mensual"
+                                Text="{Binding NewNotes}" />
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <Button
+                                Grid.Column="0"
+                                BackgroundColor="#BDBDBD"
+                                Command="{Binding ToggleAddFormCommand}"
+                                CornerRadius="8"
+                                Text="Cancelar"
+                                TextColor="White" />
+                            <Button
+                                Grid.Column="1"
+                                BackgroundColor="#4CAF50"
+                                Command="{Binding AddWeightRecordCommand}"
+                                CornerRadius="8"
+                                Text="Guardar"
+                                TextColor="White" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Stats Summary Cards  -->
+                <Grid
+                    ColumnDefinitions="*, *, *"
+                    ColumnSpacing="8"
+                    IsVisible="{Binding Stats, Converter={StaticResource IsNotNullConverter}}">
+
+                    <!--  Current Weight  -->
+                    <Border
+                        Grid.Column="0"
+                        Padding="12"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.08"
+                                Radius="4"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontSize="11"
+                                HorizontalOptions="Center"
+                                Text="ACTUAL"
+                                TextColor="#888" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="{Binding Stats.CurrentWeightFormatted}"
+                                TextColor="#333" />
+                            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                                <Label
+                                    FontSize="14"
+                                    Text="{Binding Stats.TrendIcon}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontSize="12"
+                                    Text="{Binding Stats.WeightChangeFormatted}"
+                                    TextColor="{Binding Stats.TrendColor}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Min Weight  -->
+                    <Border
+                        Grid.Column="1"
+                        Padding="12"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.08"
+                                Radius="4"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontSize="11"
+                                HorizontalOptions="Center"
+                                Text="MÍNIMO"
+                                TextColor="#888" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="{Binding Stats.MinWeightFormatted}"
+                                TextColor="#4CAF50" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="📉"
+                                TextColor="#AAA" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Max Weight  -->
+                    <Border
+                        Grid.Column="2"
+                        Padding="12"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.08"
+                                Radius="4"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label
+                                FontSize="11"
+                                HorizontalOptions="Center"
+                                Text="MÁXIMO"
+                                TextColor="#888" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="{Binding Stats.MaxWeightFormatted}"
+                                TextColor="#FF9800" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="📈"
+                                TextColor="#AAA" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!--  Weight Chart  -->
+                <Border
+                    Padding="16"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0">
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.1"
+                            Radius="5"
+                            Offset="0,2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Evolución del Peso"
+                            TextColor="#333" />
+                        <microcharts:ChartView
+                            HeightRequest="220"
+                            Chart="{Binding WeightChart}"
+                            HorizontalOptions="Fill" />
+                        <Label
+                            FontSize="11"
+                            HorizontalOptions="Center"
+                            Text="Últimos 6 registros"
+                            TextColor="#AAA" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Weight Records History  -->
+                <Border
+                    Padding="16"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 12"
+                    StrokeThickness="0">
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.1"
+                            Radius="5"
+                            Offset="0,2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Historial de Registros"
+                            TextColor="#333" />
+
+                        <CollectionView ItemsSource="{Binding WeightRecords}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="m:WeightRecord">
+                                    <SwipeView>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem
+                                                    BackgroundColor="#FF5252"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:WeightTrackingViewModel}}, Path=DeleteRecordCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Text="Eliminar" />
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+
+                                        <Border
+                                            Margin="0,4"
+                                            Padding="12"
+                                            BackgroundColor="#FAFAFA"
+                                            StrokeShape="RoundRectangle 8"
+                                            StrokeThickness="0">
+                                            <Grid ColumnDefinitions="50, *, Auto">
+                                                <!--  Date Badge  -->
+                                                <Border
+                                                    Grid.Column="0"
+                                                    Padding="8"
+                                                    BackgroundColor="{StaticResource Primary}"
+                                                    HeightRequest="50"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    StrokeThickness="0"
+                                                    WidthRequest="50">
+                                                    <VerticalStackLayout
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center">
+                                                        <Label
+                                                            FontAttributes="Bold"
+                                                            FontSize="14"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding RecordDate, StringFormat='{0:dd}'}"
+                                                            TextColor="White" />
+                                                        <Label
+                                                            FontSize="10"
+                                                            HorizontalOptions="Center"
+                                                            Text="{Binding RecordDate, StringFormat='{0:MMM}'}"
+                                                            TextColor="White" />
+                                                    </VerticalStackLayout>
+                                                </Border>
+
+                                                <!--  Weight Info  -->
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Margin="12,0,0,0"
+                                                    VerticalOptions="Center">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="16"
+                                                        Text="{Binding WeightFormatted}"
+                                                        TextColor="#333" />
+                                                    <Label
+                                                        FontSize="12"
+                                                        IsVisible="{Binding Notes, Converter={StaticResource StringNotEmptyConverter}}"
+                                                        Text="{Binding Notes}"
+                                                        TextColor="#888" />
+                                                </VerticalStackLayout>
+
+                                                <!--  Year  -->
+                                                <Label
+                                                    Grid.Column="2"
+                                                    FontSize="12"
+                                                    Text="{Binding RecordDate, StringFormat='{0:yyyy}'}"
+                                                    TextColor="#AAA"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Bottom spacing  -->
+                <BoxView HeightRequest="80" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Floating Action Button  -->
+        <Button
+            Grid.Row="1"
+            Margin="20"
+            BackgroundColor="{StaticResource Primary}"
+            Command="{Binding ToggleAddFormCommand}"
+            CornerRadius="30"
+            FontSize="30"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            IsVisible="{Binding HasNoRecords, Converter={StaticResource InverseBoolConverter}}"
+            Shadow="{Shadow Brush=Black,
+                            Offset='0,5',
+                            Radius=5,
+                            Opacity=0.3}"
+            Text="+"
+            TextColor="White"
+            VerticalOptions="End"
+            WidthRequest="60" />
+    </Grid>
+</ContentPage>

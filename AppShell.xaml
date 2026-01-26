@@ -4,12 +4,25 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FrontEndHealthPets"
-    Shell.FlyoutBehavior="Disabled"
-    Title="FrontEndHealthPets">
+    xmlns:pages="clr-namespace:FrontEndHealthPets.Paginas"
+    Title="FrontEndHealthPets"
+    Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+    <ShellContent
+        Title="Vacunación"
+        ContentTemplate="{DataTemplate pages:VaccinationPage}"
+        Route="VaccinationPage">
+        <ShellContent.Icon>
+            <FontImageSource
+                FontFamily="Segoe UI Emoji"
+                Glyph="💉"
+                Color="{StaticResource Primary}" />
+        </ShellContent.Icon>
+    </ShellContent>
 
 </Shell>

@@ -5,18 +5,36 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontEndHealthPets", "FrontEndHealthPets.csproj", "{7C0670F4-01D3-446A-A90F-1E36A277CA2E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthPetsAPI", "..\..\HealthPetsAPI Back end\HealthPetsAPI.csproj", "{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Debug|x86.Deploy.0 = Debug|Any CPU
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|x86.ActiveCfg = Release|x86
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|x86.Build.0 = Release|x86
+		{7C0670F4-01D3-446A-A90F-1E36A277CA2E}.Release|x86.Deploy.0 = Release|x86
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Debug|x86.Build.0 = Debug|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Release|x86.ActiveCfg = Release|Any CPU
+		{33A7A63C-B5BE-E9F1-DDEC-9262B18CEFAB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

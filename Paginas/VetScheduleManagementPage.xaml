@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VetScheduleManagementPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Gestionar Horarios"
+    BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!--  Header  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Gestionar Horarios de Atención"
+                TextColor="#333" />
+
+            <Label
+                FontSize="14"
+                Text="Selecciona un día y activa las horas en las que puedes atender pacientes. Cada cita tiene duración de 1 hora."
+                TextColor="#666" />
+
+            <!--  Day Selector  -->
+            <Frame
+                Padding="15"
+                BackgroundColor="White"
+                CornerRadius="12"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Seleccionar Día"
+                        TextColor="#333" />
+
+                    <ScrollView HorizontalScrollBarVisibility="Never" Orientation="Horizontal">
+                        <HorizontalStackLayout x:Name="DaysContainer" Spacing="8">
+                            <!--  Days will be added programmatically  -->
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Hour Grid - Morning (6 AM - 12 PM)  -->
+            <Frame
+                Padding="15"
+                BackgroundColor="White"
+                CornerRadius="12"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Horario Mañana (6:00 AM - 12:00 PM)"
+                        TextColor="#333" />
+
+                    <Label
+                        FontSize="12"
+                        Text="Toca para activar/desactivar cada hora"
+                        TextColor="#888" />
+
+                    <Grid
+                        x:Name="MorningHoursGrid"
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="10"
+                        RowSpacing="10">
+                        <!--  Hour blocks will be added programmatically  -->
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Hour Grid - Afternoon (12 PM - 6 PM)  -->
+            <Frame
+                Padding="15"
+                BackgroundColor="White"
+                CornerRadius="12"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Horario Tarde (12:00 PM - 6:00 PM)"
+                        TextColor="#333" />
+
+                    <Grid
+                        x:Name="AfternoonHoursGrid"
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="10"
+                        RowSpacing="10">
+                        <!--  Hour blocks will be added programmatically  -->
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Hour Grid - Evening (6 PM - 12 AM)  -->
+            <Frame
+                Padding="15"
+                BackgroundColor="White"
+                CornerRadius="12"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="12">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Horario Noche (6:00 PM - 12:00 AM)"
+                        TextColor="#333" />
+
+                    <Grid
+                        x:Name="EveningHoursGrid"
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="10"
+                        RowSpacing="10">
+                        <!--  Hour blocks will be added programmatically  -->
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Save Button  -->
+            <Button
+                x:Name="SaveButton"
+                BackgroundColor="#6B4EE6"
+                Clicked="OnSaveSchedule"
+                CornerRadius="12"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                Text="💾 Guardar Horario"
+                TextColor="White" />
+
+            <!--  Current Schedules Summary  -->
+            <Frame
+                x:Name="ScheduleSummaryFrame"
+                Padding="15"
+                BackgroundColor="#E8F5E9"
+                CornerRadius="12"
+                HasShadow="False"
+                IsVisible="False">
+                <VerticalStackLayout Spacing="8">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Horarios Guardados"
+                        TextColor="#2E7D32" />
+                    <Label
+                        x:Name="ScheduleSummaryLabel"
+                        FontSize="14"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Loading  -->
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                HorizontalOptions="Center"
+                IsRunning="False"
+                IsVisible="False"
+                Color="#6B4EE6" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

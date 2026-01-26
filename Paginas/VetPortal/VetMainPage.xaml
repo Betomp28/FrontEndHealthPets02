@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage
+    x:Class="FrontEndHealthPets.Paginas.VetPortal.VetMainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:FrontEndHealthPets.Paginas.VetPortal"
+    FlyoutLayoutBehavior="Popover">
+
+    <!--  Flyout Menu  -->
+    <FlyoutPage.Flyout>
+        <local:VetFlyoutMenuPage x:Name="flyoutMenu" />
+    </FlyoutPage.Flyout>
+
+    <!--  Detail Content  -->
+    <FlyoutPage.Detail>
+        <NavigationPage
+            x:Name="DetailNavigation"
+            BarBackgroundColor="#1a1a2e"
+            BarTextColor="White">
+            <x:Arguments>
+                <ContentPage Title="Dashboard">
+                    <Label
+                        HorizontalOptions="Center"
+                        Text="Cargando..."
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+</FlyoutPage>

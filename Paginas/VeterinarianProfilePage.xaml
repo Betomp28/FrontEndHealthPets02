@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.VeterinarianProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="{Binding Veterinarian.Name, TargetNullValue='Perfil Veterinario'}"
+    BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="0,0,0,30" Spacing="15">
+            <!--  Header Profile  -->
+            <Grid Padding="20,30,20,20" BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Frame
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#F5F5F5"
+                    BorderColor="#E0E0E0"
+                    CornerRadius="50"
+                    HasShadow="False"
+                    HeightRequest="100"
+                    VerticalOptions="Start"
+                    WidthRequest="100">
+                    <Image Aspect="AspectFill" Source="{Binding Veterinarian.ProfileImage, TargetNullValue='vet_placeholder.png'}" />
+                </Frame>
+
+                <VerticalStackLayout
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="15,0,0,0"
+                    Spacing="2">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="22"
+                        Text="{Binding Veterinarian.Name}"
+                        TextColor="#333" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="{Binding Veterinarian.Specialty}"
+                        TextColor="#6B4EE6" />
+                    <Label
+                        FontSize="14"
+                        Text="{Binding Veterinarian.ClinicName}"
+                        TextColor="#666" />
+                    <Label
+                        Margin="0,5,0,0"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        Text="{Binding Veterinarian.ConsultationPrice, StringFormat='Precio Consulta: ₡{0:N0}'}"
+                        TextColor="#333" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!--  Description  -->
+            <Frame
+                Margin="20,0"
+                Padding="15"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="15"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="5">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Sobre el veterinario"
+                        TextColor="#333" />
+                    <Label
+                        FontSize="14"
+                        Text="{Binding Veterinarian.Description}"
+                        TextColor="#555" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--  Booking Section  -->
+            <Frame
+                Margin="20,0"
+                Padding="15"
+                BackgroundColor="White"
+                BorderColor="Transparent"
+                CornerRadius="15"
+                HasShadow="False">
+                <VerticalStackLayout Spacing="15">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="Agendar Cita"
+                        TextColor="#333" />
+
+                    <!--  Date Picker  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="14"
+                            Text="Selecciona una fecha:"
+                            TextColor="#666" />
+                        <DatePicker
+                            Date="{Binding SelectedDate}"
+                            Format="D"
+                            MinimumDate="{x:Static sys:DateTime.Today}"
+                            TextColor="#333" />
+                    </VerticalStackLayout>
+
+                    <!--  Slots  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="14"
+                            Text="Horarios disponibles:"
+                            TextColor="#666" />
+                        <CollectionView
+                            HeightRequest="60"
+                            ItemsSource="{Binding AvailableSlots}"
+                            SelectedItem="{Binding SelectedSlot}"
+                            SelectionMode="Single">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AvailableSlot">
+                                    <Border
+                                        Padding="15,10"
+                                        BackgroundColor="White"
+                                        Stroke="#E0E0E0"
+                                        StrokeShape="RoundRectangle 10"
+                                        StrokeThickness="1">
+                                        <Label
+                                            x:Name="Label"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding TimeDisplay}"
+                                            TextColor="#333"
+                                            VerticalOptions="Center" />
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal" />
+                                                    <VisualState x:Name="Selected">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="#6B4EE6" />
+                                                            <Setter Property="Stroke" Value="#6B4EE6" />
+                                                            <Setter TargetName="Label" Property="Label.TextColor" Value="White" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <Label
+                                    FontAttributes="Italic"
+                                    Text="No hay horarios disponibles para esta fecha"
+                                    TextColor="#999" />
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </VerticalStackLayout>
+
+                    <!--  Pet Selection  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="14"
+                            Text="Mascota:"
+                            TextColor="#666" />
+                        <Picker
+                            Title="Selecciona tu mascota"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding MyPets}"
+                            SelectedItem="{Binding SelectedPet}" />
+                    </VerticalStackLayout>
+
+                    <!--  Reason  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="14"
+                            Text="Motivo:"
+                            TextColor="#666" />
+                        <Entry Placeholder="¿Por qué nos visitas?" Text="{Binding Reason}" />
+                    </VerticalStackLayout>
+
+                    <!--  Notes  -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontSize="14"
+                            Text="Notas adicionales (opcional):"
+                            TextColor="#666" />
+                        <Editor
+                            HeightRequest="80"
+                            Placeholder="Detalles extra..."
+                            Text="{Binding Notes}" />
+                    </VerticalStackLayout>
+
+                    <!--  Book Button  -->
+                    <Button
+                        Margin="0,10,0,0"
+                        BackgroundColor="#6B4EE6"
+                        Command="{Binding BookAppointmentCommand}"
+                        Text="Agendar Cita"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+
+    <!--  Resources for converters (inline for simplicity or use existing)  -->
+    <ContentPage.Resources>
+        <!--  Add your converters here or assume they exist globally  -->
+        <!--  Fallback simple styling since we can't easily add converters without C# code  -->
+    </ContentPage.Resources>
+</ContentPage>

@@ -1,47 +1,678 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FrontEndHealthPets.Paginas.PaginaFlyMenu"
-             xmlns:local="clr-namespace:FrontEndHealthPets.Paginas.FlyPaginas"
-             xmlns:loca1="clr-namespace:FrontEndHealthPets.Datos"
-             Title="PaginaFlyMenu"
-             Padding="0,40,0,0" 
-             IconImageSource="hanburguer.png">
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.PaginaFlyMenu"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:loca1="clr-namespace:FrontEndHealthPets.Datos"
+    xmlns:local="clr-namespace:FrontEndHealthPets.Paginas.FlyPaginas"
+    Title="Menú"
+    BackgroundColor="#F8F9FA"
+    IconImageSource="hanburguer.png">
 
-    <CollectionView x:Name="collectionView"
-                 x:FieldModifier="public"
-                 SelectionMode="Single">
-        <CollectionView.ItemsSource>
-            <x:Array Type="{x:Type loca1:Pagina_Flyout_Items}">
-                <loca1:Pagina_Flyout_Items  Titulo="Busqueda de Mascotas"
-                                            Icono="contacto.png"
-                                            TargetType="{x:Type local:RazasAnimales}" />
-                <loca1:Pagina_Flyout_Items  Titulo="MisMAscotas"
-                                            Icono="tarjetaperro.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
-                <loca1:Pagina_Flyout_Items  Titulo="Contacto"
-                                            Icono="contacto.png"
-                                            TargetType="{x:Type local:MisMascotas}" />
-              
-                
-            </x:Array>
-        </CollectionView.ItemsSource>
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Grid Padding="5,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{Binding Icono}" />
-                    <Label Grid.Column="1"
-                        Margin="20,0"
-                        Text="{Binding Titulo}"
-                        FontSize="20"
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  Header with User Profile  -->
+        <Frame
+            Grid.Row="0"
+            Margin="0,0,0,0"
+            Padding="0"
+            BackgroundColor="#6C63FF"
+            CornerRadius="0"
+            HasShadow="False">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#667eea" />
+                    <GradientStop Offset="0.5" Color="#764ba2" />
+                    <GradientStop Offset="1.0" Color="#667eea" />
+                </LinearGradientBrush>
+            </Frame.Background>
+
+            <VerticalStackLayout Padding="20,50,20,30" Spacing="12">
+                <!--  User Avatar  -->
+                <Frame
+                    Padding="3"
+                    BackgroundColor="White"
+                    CornerRadius="40"
+                    HasShadow="False"
+                    HeightRequest="80"
+                    HorizontalOptions="Start"
+                    WidthRequest="80">
+                    <Frame
+                        Padding="0"
+                        BackgroundColor="#E8E8FF"
+                        CornerRadius="37"
+                        HasShadow="False">
+                        <Image Aspect="AspectFill" Source="imagen_20240730.png" />
+                    </Frame>
+                </Frame>
+
+                <!--  User Info  -->
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        x:Name="UserNameLabel"
                         FontAttributes="Bold"
-                        VerticalOptions="Center" />
-                </Grid>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                        FontSize="22"
+                        Text="¡Hola, Usuario!"
+                        TextColor="White" />
+                    <Label
+                        x:Name="UserEmailLabel"
+                        FontSize="14"
+                        Opacity="0.85"
+                        Text="usuario@email.com"
+                        TextColor="White" />
+                </VerticalStackLayout>
+
+
+            </VerticalStackLayout>
+        </Frame>
+
+        <!--  Menu Items  -->
+        <ScrollView Grid.Row="1" Padding="16,20">
+            <VerticalStackLayout Spacing="8">
+
+                <!--  1. Dashboard  -->
+                <Frame
+                    x:Name="DashboardItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDashboardTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#F0EFFF"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🏠"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Dashboard"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Resumen general"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  2. Veterinarios  -->
+                <Frame
+                    x:Name="VeterinariansListItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnVeterinariansListTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#F3E5F5"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="👨‍⚕️"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Veterinarios"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Agendar cita con especialistas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  3. Mis Mascotas  -->
+                <Frame
+                    x:Name="MisMascotasItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMisMascotasTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#FFE8EC"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🐾"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Mis Mascotas"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Gestiona tus mascotas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  4. Mis Citas  -->
+                <Frame
+                    x:Name="MyAppointmentsItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMyAppointmentsTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E0F7FA"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="📅"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Mis Citas"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Historial y próximas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  5. Control de Baños  -->
+                <Frame
+                    x:Name="BathControlItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBathControlTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E8F5FF"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🛁"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Control de Baños"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Registro de higiene"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  6. Vacunación  -->
+                <Frame
+                    x:Name="VaccinationItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnVacunacionTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E8F9FF"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="💉"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Vacunación"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Historial de vacunas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  7. Medicamentos  -->
+                <Frame
+                    x:Name="MedicamentosItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMedicamentosTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#FFF3E0"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="💊"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Medicamentos"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Control de recetas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  8. Seguimiento de Peso  -->
+                <Frame
+                    x:Name="WeightTrackingItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnWeightTrackingTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E3F2FD"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="⚖️"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Peso"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Seguimiento y gráficas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  9. Recordatorios  -->
+                <Frame
+                    x:Name="RecordatoriosItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecordatoriosTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#FFF8E1"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🔔"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Recordatorios"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Vacunas, citas y más"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  9. Veterinarias  -->
+                <Frame
+                    x:Name="VeterinariasItem"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnVeterinariasTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#E8FFF5"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="🏥"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Veterinarias"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Clínicas cercanas"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+                <!--  10. Configuración  -->
+                <Frame
+                    x:Name="ConfigItem"
+                    Margin="0,20,0,0"
+                    Padding="16"
+                    BackgroundColor="White"
+                    CornerRadius="16"
+                    HasShadow="False">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.05"
+                            Radius="8"
+                            Offset="0,2" />
+                    </Frame.Shadow>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfigTapped" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
+                        <Frame
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="#F0F3F5"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            HeightRequest="44"
+                            WidthRequest="44">
+                            <Label
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="⚙️"
+                                VerticalOptions="Center" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Configuración"
+                                TextColor="#2D3436" />
+                            <Label
+                                FontSize="12"
+                                Text="Ajustes de la app"
+                                TextColor="#636E72" />
+                        </VerticalStackLayout>
+                        <Label
+                            Grid.Column="2"
+                            FontSize="24"
+                            Text="›"
+                            TextColor="#B2BEC3"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Footer with Logout  -->
+        <Frame
+            Grid.Row="2"
+            Padding="20"
+            BackgroundColor="White"
+            BorderColor="#F0F3F5"
+            CornerRadius="0"
+            HasShadow="False">
+            <Button
+                x:Name="LogoutButton"
+                BackgroundColor="#FF5252"
+                Clicked="OnLogoutClicked"
+                CornerRadius="12"
+                FontAttributes="Bold"
+                FontSize="16"
+                HeightRequest="50"
+                Text="Cerrar Sesión"
+                TextColor="White">
+                <Button.Shadow>
+                    <Shadow
+                        Brush="#FF5252"
+                        Opacity="0.3"
+                        Radius="10"
+                        Offset="0,4" />
+                </Button.Shadow>
+            </Button>
+        </Frame>
+
+    </Grid>
 </ContentPage>

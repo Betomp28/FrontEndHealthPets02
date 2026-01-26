@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FrontEndHealthPets.Paginas.ClinicsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:FrontEndHealthPets.Models"
+    xmlns:vm="clr-namespace:FrontEndHealthPets.ViewModels"
+    Title="Clínicas Veterinarias"
+    x:DataType="vm:ClinicsViewModel"
+    BackgroundColor="#F5F5F5">
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <ScrollView>
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <!--  Header  -->
+                <Frame
+                    Padding="20"
+                    CornerRadius="15"
+                    HasShadow="True">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0.0" Color="#4CAF50" />
+                            <GradientStop Offset="1.0" Color="#2E7D32" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    <VerticalStackLayout Spacing="5">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="22"
+                            Text="🏥 Clínicas Veterinarias"
+                            TextColor="White" />
+                        <Label
+                            FontSize="14"
+                            Text="Encuentra la mejor atención para tu mascota"
+                            TextColor="#E0E0E0" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!--  Search Bar  -->
+                <Frame
+                    Padding="10"
+                    BackgroundColor="White"
+                    CornerRadius="10"
+                    HasShadow="True">
+                    <SearchBar
+                        BackgroundColor="Transparent"
+                        Placeholder="Buscar clínica, dirección..."
+                        Text="{Binding SearchText}" />
+                </Frame>
+
+                <!--  Clinics List  -->
+                <Label
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Clínicas Disponibles"
+                    TextColor="#333" />
+
+                <CollectionView ItemsSource="{Binding Clinics}" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            Padding="40"
+                            HorizontalOptions="Center"
+                            Spacing="15"
+                            VerticalOptions="Center">
+                            <Label
+                                FontSize="48"
+                                HorizontalOptions="Center"
+                                Text="🏥" />
+                            <Label
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                Text="No hay clínicas disponibles"
+                                TextColor="#666" />
+                            <Label
+                                FontSize="13"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="Pronto agregaremos más clínicas a tu zona"
+                                TextColor="#999" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Clinic">
+                            <Frame
+                                Margin="0,5"
+                                Padding="15"
+                                BackgroundColor="White"
+                                CornerRadius="12"
+                                HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClinicsViewModel}}, Path=SelectClinicCommand}" CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <Grid ColumnDefinitions="60, *, Auto" RowDefinitions="Auto, Auto, Auto">
+                                    <!--  Icon  -->
+                                    <Frame
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="0"
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        BackgroundColor="#E8F5E9"
+                                        CornerRadius="10"
+                                        HasShadow="False"
+                                        HeightRequest="55"
+                                        WidthRequest="55">
+                                        <Label
+                                            FontSize="28"
+                                            HorizontalOptions="Center"
+                                            Text="🏥"
+                                            VerticalOptions="Center" />
+                                    </Frame>
+
+                                    <!--  Name  -->
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="16"
+                                        Text="{Binding Name}"
+                                        TextColor="#333" />
+
+                                    <!--  Call Button  -->
+                                    <Button
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="2"
+                                        Padding="8"
+                                        BackgroundColor="#E3F2FD"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ClinicsViewModel}}, Path=CallClinicCommand}"
+                                        CommandParameter="{Binding .}"
+                                        CornerRadius="20"
+                                        FontSize="16"
+                                        HeightRequest="40"
+                                        Text="📞"
+                                        WidthRequest="40" />
+
+                                    <!--  Veterinarian  -->
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="13"
+                                        Text="{Binding VeterinarianName}"
+                                        TextColor="#666" />
+
+                                    <!--  Address  -->
+                                    <HorizontalStackLayout
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Spacing="5">
+                                        <Label
+                                            FontSize="12"
+                                            Text="📍"
+                                            TextColor="#999" />
+                                        <Label
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Address}"
+                                            TextColor="#999" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
